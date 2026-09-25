@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>برنامه هفتگی من</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  :root{
+    --bg:#0f0f1a; --bg2:#1a1a2e; --card:#1e1e35; --card2:#252540;
+    --text:#e8e8f0; --muted:#8b8ba7; --border:#2d2d4a; --accent:#8b5cf6;
+  }
+  body{
+    font-family:'Vazirmatn',-apple-system,sans-serif;
+    background:var(--bg); color:var(--text); min-height:100vh;
+    padding:16px 12px 40px;
+    background-image:
+      radial-gradient(circle at 20% 10%, rgba(139,92,246,0.15) 0%, transparent 40%),
+      radial-gradient(circle at 80% 80%, rgba(6,182,212,0.1) 0%, transparent 40%);
+    background-attachment:fixed;
+  }
+
+  .header{ text-align:center; margin-bottom:16px; padding:8px 16px; }
+  .header h1{
+    font-size:22px; font-weight:800;
+    background:linear-gradient(135deg,#8b5cf6,#06b6d4);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    background-clip:text; margin-bottom:6px;
+  }
+  .header p{ font-size:12px; color:var(--muted); }
+
+  /* ==== NOW BOX ==== */
+  .now-box{
+    background:linear-gradient(135deg,#1a1a2e,#252540);
+    border-radius:24px; padding:18px; margin-bottom:20px;
+    border:1px solid rgba(139,92,246,0.35);
+    box-shadow:0 8px 32px rgba(139,92,246,0.18);
+    position:relative; overflow:hidden;
+  }
+  .now-box::before{
+    content:''; position:absolute; top:0; left:0; right:0; height:3px;
+    background:linear-gradient(90deg,#8b5cf6,#06b6d4,#10b981,#8b5cf6);
+    background-size:200% 100%;
+    animation:shine 4s linear infinite;
+  }
+  @keyframes shine{ 0%{background-position:0% 50%} 100%{background-position:200% 50%} }
+
+  .now-header{
+    display:flex; justify-content:space-between; align-items:center;
+    padding-bottom:12px; margin-bottom:14px;
+    border-bottom:1px solid rgba(139,92,246,0.18);
+  }
+  .now-day{
+    font-size:14px; font-weight:700; color:#a78bfa;
+    padding:4px 12px; background:rgba(139,92,246,0.12);
+    border-radius:20px;
+  }
+  .now-time{
+    font-size:26px; font-weight:800; color:#fff;
+    font-variant-numeric:tabular-nums; letter-spacing:1px;
+    background:linear-gradient(135deg,#fff,#a78bfa);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    background-clip:text;
+  }
+
+  .now-label{
+    font-size:10px; font-weight:800; color:#a78bfa;
+    letter-spacing:3px; margin-bottom:8px; padding-right:4px;
+  }
+
+  .now-activity{
+    padding:14px; background:rgba(255,255,255,0.03);
+    border-radius:16px; margin-bottom:10px;
+    border-right:4px solid #8b5cf6;
+    animation:fadeIn .35s ease;
+  }
+  .now-activity:last-child{ margin-bottom:0; }
+  .now-activity.uni{ border-color:#8b5cf6; }
+  .now-activity.lang{ border-color:#06b6d4; }
+  .now-activity.sport{ border-color:#10b981; }
+  .now-activity.work{ border-color:#f59e0b; }
+  .now-activity.free{ border-color:#64748b; }
+  .now-activity.sleep{ border-color:#475569; }
+  .now-activity.meal{ border-color:#ec4899; }
+  .now-activity.prep{ border-color:#94a3b8; }
+  .now-activity.travel{ border-color:#f97316; }
+  .now-activity.narges{ border-color:#ec4899; }
+
+  .now-activity-name{
+    font-size:18px; font-weight:800; color:#fff;
+    line-height:1.4; margin-bottom:4px;
+  }
+  .now-activity-meta{
+    font-size:12px; color:#8b8ba7; margin-bottom:10px;
+  }
+  .now-progress{
+    height:6px; background:rgba(255,255,255,0.06);
+    border-radius:3px; overflow:hidden; margin-bottom:6px;
+  }
+  .now-progress-bar{
+    height:100%; border-radius:3px;
+    transition:width 0.6s ease;
+    background:linear-gradient(90deg,#8b5cf6,#06b6d4);
+  }
+  .now-progress-bar.uni{ background:linear-gradient(90deg,#6366f1,#8b5cf6); }
+  .now-progress-bar.lang{ background:linear-gradient(90deg,#06b6d4,#0891b2); }
+  .now-progress-bar.sport{ background:linear-gradient(90deg,#10b981,#059669); }
+  .now-progress-bar.work{ background:linear-gradient(90deg,#f59e0b,#d97706); }
+  .now-progress-bar.free{ background:linear-gradient(90deg,#64748b,#475569); }
+  .now-progress-bar.sleep{ background:linear-gradient(90deg,#475569,#1e293b); }
+  .now-progress-bar.meal{ background:linear-gradient(90deg,#f472b6,#ec4899); }
+  .now-progress-bar.prep{ background:linear-gradient(90deg,#94a3b8,#64748b); }
+  .now-progress-bar.travel{ background:linear-gradient(90deg,#fb923c,#f97316); }
+  .now-progress-bar.narges{ background:linear-gradient(90deg,#ec4899,#be185d); }
+
+  .now-progress-text{
+    font-size:11px; color:#8b8ba7;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .now-progress-text .rem{ color:#a78bfa; font-weight:600; }
+  .now-progress-text .times{ font-variant-numeric:tabular-nums; direction:ltr; }
+
+  .now-nav{
+    display:grid; grid-template-columns:1fr 1fr;
+    gap:10px; margin-top:14px;
+  }
+  .now-nav-item{
+    padding:12px; border-radius:14px;
+    background:rgba(255,255,255,0.02);
+    border:1px solid rgba(255,255,255,0.06);
+    position:relative; overflow:hidden;
+  }
+  .now-nav-item.prev{ border-right:3px solid #64748b; }
+  .now-nav-item.next{ border-right:3px solid #8b5cf6; }
+  .now-nav-label{
+    font-size:10px; font-weight:800; color:#8b8ba7;
+    letter-spacing:2px; margin-bottom:6px;
+  }
+  .now-nav-item.next .now-nav-label{ color:#a78bfa; }
+  .now-nav-name{
+    font-size:13px; font-weight:700; color:#fff;
+    line-height:1.4; margin-bottom:5px;
+    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
+    overflow:hidden;
+  }
+  .now-nav-time{
+    font-size:10.5px; color:#8b8ba7;
+    font-variant-numeric:tabular-nums;
+    direction:rtl; text-align:right;
+  }
+  .now-nav-day{
+    font-size:10px; color:#a78bfa; margin-top:3px; font-weight:600;
+  }
+
+  /* Tabs */
+  .tabs{
+    display:flex; gap:6px; overflow-x:auto;
+    padding-bottom:8px; margin-bottom:16px;
+    scrollbar-width:none;
+  }
+  .tabs::-webkit-scrollbar{ display:none; }
+  .tab{
+    flex-shrink:0; padding:10px 16px; border-radius:14px;
+    background:var(--card); border:1px solid var(--border);
+    color:var(--muted); font-size:13px; font-weight:600;
+    cursor:pointer; transition:all 0.25s ease;
+    font-family:inherit; white-space:nowrap;
+  }
+  .tab.active{
+    background:linear-gradient(135deg,#6366f1,#8b5cf6);
+    color:#fff; border-color:transparent;
+    box-shadow:0 6px 20px rgba(139,92,246,0.4);
+    transform:translateY(-2px);
+  }
+
+  .day{ display:none; animation:fadeIn 0.35s ease; }
+  .day.active{ display:block; }
+  @keyframes fadeIn{ from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+  .day-title{
+    font-size:16px; font-weight:700; margin-bottom:14px;
+    padding-right:6px; display:flex; align-items:center;
+    gap:8px; color:#fff;
+  }
+  .day-title::before{
+    content:''; width:4px; height:20px; border-radius:4px;
+    background:linear-gradient(135deg,#6366f1,#8b5cf6);
+  }
+
+  .item{ display:flex; gap:12px; margin-bottom:10px; }
+  .time-col{
+    flex-shrink:0; width:78px;
+    display:flex; flex-direction:column;
+    align-items:flex-end; padding-top:12px;
+  }
+  .time{
+    font-size:11.5px; font-weight:600; color:var(--muted);
+    direction:ltr; font-variant-numeric:tabular-nums;
+    letter-spacing:-0.3px;
+  }
+  .card{
+    flex:1; padding:12px 14px; border-radius:16px;
+    background:var(--card); border:1px solid var(--border);
+    position:relative; overflow:hidden; transition:transform 0.2s ease;
+  }
+  .card:active{ transform:scale(0.98); }
+  .card::before{
+    content:''; position:absolute; top:0; right:0;
+    width:4px; height:100%;
+  }
+  .card.uni::before{ background:linear-gradient(135deg,#6366f1,#8b5cf6); }
+  .card.lang::before{ background:linear-gradient(135deg,#06b6d4,#0891b2); }
+  .card.sport::before{ background:linear-gradient(135deg,#10b981,#059669); }
+  .card.work::before{ background:linear-gradient(135deg,#f59e0b,#d97706); }
+  .card.free::before{ background:linear-gradient(135deg,#64748b,#475569); }
+  .card.sleep::before{ background:linear-gradient(135deg,#1e293b,#0f172a); }
+  .card.meal::before{ background:linear-gradient(135deg,#f472b6,#ec4899); }
+  .card.prep::before{ background:linear-gradient(135deg,#94a3b8,#64748b); }
+  .card.travel::before{ background:linear-gradient(135deg,#fb923c,#f97316); }
+  .card.narges::before{ background:linear-gradient(135deg,#ec4899,#be185d); }
+
+  .card .name{
+    font-size:13.5px; font-weight:600; color:#fff;
+    line-height:1.5; margin-bottom:3px;
+  }
+  .card .meta{ font-size:11.5px; color:var(--muted); line-height:1.5; }
+  .card .badge{
+    display:inline-block; padding:2px 8px; border-radius:20px;
+    font-size:10px; font-weight:600; margin-top:6px;
+    background:rgba(139,92,246,0.15); color:#a78bfa;
+  }
+  .card.lang .badge{ background:rgba(6,182,212,0.15); color:#22d3ee; }
+  .card.sport .badge{ background:rgba(16,185,129,0.15); color:#34d399; }
+  .card.work .badge{ background:rgba(245,158,11,0.15); color:#fbbf24; }
+  .card.meal .badge{ background:rgba(236,72,153,0.15); color:#f472b6; }
+  .card.travel .badge{ background:rgba(249,115,22,0.15); color:#fb923c; }
+  .card.narges .badge{ background:rgba(236,72,153,0.15); color:#f472b6; }
+
+  .legend{
+    margin-top:24px; padding:16px;
+    background:var(--card); border-radius:18px;
+    border:1px solid var(--border);
+  }
+  .legend h3{ font-size:13px; font-weight:700; margin-bottom:12px; color:#fff; }
+  .legend-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
+  .legend-item{
+    display:flex; align-items:center; gap:8px;
+    font-size:11.5px; color:var(--muted);
+  }
+  .dot{ width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+  .dot.uni{ background:linear-gradient(135deg,#6366f1,#8b5cf6); }
+  .dot.lang{ background:linear-gradient(135deg,#06b6d4,#0891b2); }
+  .dot.sport{ background:linear-gradient(135deg,#10b981,#059669); }
+  .dot.work{ background:linear-gradient(135deg,#f59e0b,#d97706); }
+  .dot.free{ background:linear-gradient(135deg,#64748b,#475569); }
+  .dot.sleep{ background:linear-gradient(135deg,#1e293b,#0f172a); border:1px solid #334155; }
+  .dot.meal{ background:linear-gradient(135deg,#f472b6,#ec4899); }
+  .dot.narges{ background:linear-gradient(135deg,#ec4899,#be185d); }
+
+  .footer{
+    text-align:center; margin-top:24px;
+    font-size:11px; color:var(--muted); line-height:1.8;
+  }
+  .footer strong{ color:#a78bfa; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>برنامه هفتگی من</h1>
+  <p>با نرگس می‌رویم و برمی‌گردیم</p>
+</div>
+
+<!-- ============ NOW BOX ============ -->
+<div class="now-box" id="nowBox">
+  <div class="now-header">
+    <span class="now-day" id="nowDay">—</span>
+    <span class="now-time" id="nowTime">—:—</span>
+  </div>
+
+  <div class="now-label">الان</div>
+  <div id="nowCurrent"></div>
+
+  <div class="now-nav">
+    <div class="now-nav-item prev">
+      <div class="now-nav-label">قبلی</div>
+      <div id="nowPrev"><div class="now-nav-name">—</div></div>
+    </div>
+    <div class="now-nav-item next">
+      <div class="now-nav-label">بعدی</div>
+      <div id="nowNext"><div class="now-nav-name">—</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Tabs -->
+<div class="tabs" id="tabs">
+  <button class="tab active" data-day="sat">شنبه</button>
+  <button class="tab" data-day="sun">یکشنبه</button>
+  <button class="tab" data-day="mon">دوشنبه</button>
+  <button class="tab" data-day="tue">سه‌شنبه</button>
+  <button class="tab" data-day="wed">چهارشنبه</button>
+  <button class="tab" data-day="thu">پنجشنبه</button>
+  <button class="tab" data-day="fri">جمعه</button>
+</div>
+
+<!-- شنبه -->
+<div class="day active" id="sat">
+  <div class="day-title">شنبه</div>
+  <div class="item"><div class="time-col"><div class="time">06:30<br>07:00</div></div><div class="card meal"><div class="name">صبحانه</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">07:00<br>08:00</div></div><div class="card free"><div class="name">آزاد</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">08:00<br>08:30</div></div><div class="card prep"><div class="name">آماده شدن</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">08:30<br>09:00</div></div><div class="card free"><div class="name">آزاد</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">09:00<br>12:00</div></div><div class="card work"><div class="name">مغازه</div><span class="badge">۳ ساعت</span></div></div>
+  <div class="item"><div class="time-col"><div class="time">12:00<br>12:30</div></div><div class="card meal"><div class="name">ناهار</div><span class="badge">در مغازه</span></div></div>
+  <div class="item"><div class="time-col"><div class="time">12:30<br>13:00</div></div><div class="card travel"><div class="name">با نرگس: خانه → دانشگاه</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">13:00<br>14:30</div></div><div class="card sport"><div class="name">تربیت بدنی</div><div class="meta">وحید ترک ملک</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">14:30<br>14:45</div></div><div class="card prep"><div class="name">آمادگی ۱۵ دقیقه</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">14:45<br>16:15</div></div><div class="card sport"><div class="name">ورزش ۱</div><div class="meta">حسین ساکی</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">16:15<br>16:45</div></div><div class="card travel"><div class="name">با نرگس: برگشت</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">16:45<br>20:00</div></div><div class="card work"><div class="name">مغازه</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">19:15<br>20:00</div></div><div class="card lang"><div class="name">زبان انگلیسی عمومی-ترکیبی (۳)</div><div class="meta">سینا کسرائی</div><span class="badge">مجازی از مغازه</span></div></div>
+  <div class="item"><div class="time-col"><div class="time">20:00<br>20:30</div></div><div class="card meal"><div class="name">شام</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">20:30<br>23:00</div></div><div class="card free"><div class="name">آزاد</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">23:00<br>06:30</div></div><div class="card sleep"><div class="name">خواب شب</div><span class="badge">۷.۵ ساعت</span></div></div>
+</div>
+
+<!-- یکشنبه -->
+<div class="day" id="sun">
+  <div class="day-title">یکشنبه</div>
+  <div class="item"><div class="time-col"><div class="time">06:30<br>07:00</div></div><div class="card meal"><div class="name">صبحانه / آماده</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">07:00<br>07:30</div></div><div class="card travel"><div class="name">با نرگس: خانه → دانشگاه</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">07:30<br>08:00</div></div><div class="card free"><div class="name">آزاد</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">08:00<br>09:30</div></div><div class="card uni"><div class="name">اصول فقه (۱)</div><div class="meta">محمد گودرزی</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">09:30<br>10:00</div></div><div class="card free"><div class="name">آزاد / آمادگی ۱۵ دقیقه</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">10:00<br>11:30</div></div><div class="card uni"><div class="name">حقوق سازمان‌های بین‌المللی</div><div class="meta">رضا کرمی</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">11:30<br>12:00</div></div><div class="card free"><div class="name">آزاد</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">12:00<br>12:30</div></div><div class="card meal"><div class="name">ناهار</div><span class="badge">در دانشگاه</span></div></div>
+  <div class="item"><div class="time-col"><div class="time">12:30<br>13:00</div></div><div class="card sleep"><div class="name">خواب میان‌روز</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">13:00<br>14:30</div></div><div class="card uni"><div class="name">تفسیر موضوعی قرآن</div><div class="meta">مجتبی بیرانوند</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">14:30<br>14:45</div></div><div class="card prep"><div class="name">آمادگی ۱۵ دقیقه</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">14:45<br>16:15</div></div><div class="card uni"><div class="name">حقوق بین‌الملل عمومی (۳)</div><div class="meta">مهدی یوسف‌وند</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">16:15<br>16:30</div></div><div class="card prep"><div class="name">آمادگی ۱۵ دقیقه</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">16:30<br>18:00</div></div><div class="card uni"><div class="name">حقوق جزای عمومی (۲)</div><div class="meta">رضا محبی فر</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">18:00<br>18:30</div></div><div class="card travel"><div class="name">با نرگس: برگشت</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">18:30<br>20:00</div></div><div class="card work"><div class="name">مغازه</div><span class="badge">با پدر</span></div></div>
+  <div class="item"><div class="time-col"><div class="time">19:30<br>20:15</div></div><div class="card lang"><div class="name">زبان انگلیسی عمومی-ترکیبی (۲)</div><div class="meta">مریم بیرجندی</div><span class="badge">مجازی از مغازه</span></div></div>
+  <div class="item"><div class="time-col"><div class="time">20:15<br>20:45</div></div><div class="card meal"><div class="name">شام</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">20:45<br>23:00</div></div><div class="card free"><div class="name">آزاد</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">23:00<br>06:30</div></div><div class="card sleep"><div class="name">خواب شب</div><span class="badge">۷.۵ ساعت</span></div></div>
+</div>
+
+<!-- دوشنبه -->
+<div class="day" id="mon">
+  <div class="day-title">دوشنبه</div>
+  <div class="item"><div class="time-col"><div class="time">06:30<br>08:00</div></div><div class="card sport"><div class="name">ورزش</div><span class="badge">۱.۵ ساعت</span></div></div>
+  <div class="item"><div class="time-col"><div class="time">08:00<br>08:30</div></div><div class="card meal"><div class="name">صبحانه / آماده</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">08:30<br>09:00</div></div><div class="card free"><div class="name">آزاد</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">09:00<br>12:00</div></div><div class="card work"><div class="name">مغازه</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">12:00<br>12:30</div></div><div class="card meal"><div class="name">ناهار</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">12:30<br>13:00</div></div><div class="card travel"><div class="name">با نرگس: خانه → دانشگاه</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">13:00<br>14:30</div></div><div class="card sport"><div class="name">ورزش در سالن دانشگاه</div><span class="badge">۱.۵ ساعت</span></div></div>
+  <div class="item"><div class="time-col"><div class="time">14:30<br>14:45</div></div><div class="card prep"><div class="name">آمادگی ۱۵ دقیقه</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">14:45<br>16:15</div></div><div class="card uni"><div class="name">آیین دادرسی مدنی (۱)</div><div class="meta">محمدصفر نوروزی</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">16:15<br>16:30</div></div><div class="card prep"><div class="name">آمادگی ۱۵ دقیقه</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">16:30<br>18:00</div></div><div class="card uni"><div class="name">انس با قرآن کریم</div><div class="meta">محمدحسن مقصودی گودرزی</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">18:00<br>18:30</div></div><div class="card travel"><div class="name">با نرگس: برگشت</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">18:30<br>20:00</div></div><div class="card work"><div class="name">مغازه</div><span class="badge">با پدر</span></div></div>
+  <div class="item"><div class="time-col"><div class="time">20:00<br>20:30</div></div><div class="card meal"><div class="name">شام</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">20:30<br>23:00</div></div><div class="card free"><div class="name">آزاد</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">23:00<br>06:30</div></div><div class="card sleep"><div class="name">خواب شب</div><span class="badge">۷.۵ ساعت</span></div></div>
+</div>
+
+<!-- سه‌شنبه -->
+<div class="day" id="tue">
+  <div class="day-title">سه‌شنبه</div>
+  <div class="item"><div class="time-col"><div class="time">06:30<br>07:00</div></div><div class="card meal"><div class="name">صبحانه / آماده</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">07:00<br>07:30</div></div><div class="card travel"><div class="name">با نرگس: خانه → دانشگاه</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">07:30<br>09:45</div></div><div class="card uni"><div class="name">حقوق مدنی (۳) کلیات قراردادها</div><div class="meta">عبدالمحمد کردی</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">09:45<br>10:00</div></div><div class="card prep"><div class="name">آمادگی ۱۵ دقیقه</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">10:00<br>12:00</div></div><div class="card sport"><div class="name">ورزش در سالن دانشگاه</div><span class="badge">۲ ساعت</span></div></div>
+  <div class="item"><div class="time-col"><div class="time">12:00<br>12:30</div></div><div class="card meal"><div class="name">ناهار</div><span class="badge">در دانشگاه</span></div></div>
+  <div class="item"><div class="time-col"><div class="time">12:30<br>13:00</div></div><div class="card sleep"><div class="name">خواب میان‌روز</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">13:00<br>14:30</div></div><div class="card narges"><div class="name">کلاس نرگس: حقوق اساسی ۳</div><div class="meta">محمد صارمی</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">14:30<br>15:00</div></div><div class="card travel"><div class="name">با نرگس: برگشت</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">15:00<br>16:00</div></div><div class="card free"><div class="name">آزاد</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">16:00<br>20:00</div></div><div class="card work"><div class="name">مغازه</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">20:00<br>20:30</div></div><div class="card meal"><div class="name">شام</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">20:30<br>23:00</div></div><div class="card free"><div class="name">آزاد</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">23:00<br>06:30</div></div><div class="card sleep"><div class="name">خواب شب</div><span class="badge">۷.۵ ساعت</span></div></div>
+</div>
+
+<!-- چهارشنبه -->
+<div class="day" id="wed">
+  <div class="day-title">چهارشنبه</div>
+  <div class="item"><div class="time-col"><div class="time">06:30<br>07:00</div></div><div class="card meal"><div class="name">صبحانه</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">07:00<br>08:00</div></div><div class="card free"><div class="name">آزاد</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">08:00<br>08:30</div></div><div class="card prep"><div class="name">آماده شدن</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">08:30<br>09:00</div></div><div class="card free"><div class="name">آزاد</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">09:00<br>12:00</div></div><div class="card work"><div class="name">مغازه</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">12:00<br>12:30</div></div><div class="card meal"><div class="name">ناهار</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">12:30<br>13:00</div></div><div class="card travel"><div class="name">با نرگس: خانه → دانشگاه</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">13:00<br>14:30</div></div><div class="card uni"><div class="name">حقوق تجارت (۳) اسناد تجاری</div><div class="meta">حسین شعبان پور</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">14:30<br>16:30</div></div><div class="card sport"><div class="name">ورزش در سالن دانشگاه</div><span class="badge">۲ ساعت</span></div></div>
+  <div class="item"><div class="time-col"><div class="time">16:30<br>18:00</div></div><div class="card narges"><div class="name">کلاس نرگس: حقوق مدنی ۴</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">18:00<br>18:30</div></div><div class="card travel"><div class="name">با نرگس: برگشت</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">18:30<br>20:00</div></div><div class="card work"><div class="name">مغازه</div><span class="badge">با پدر</span></div></div>
+  <div class="item"><div class="time-col"><div class="time">20:00<br>20:30</div></div><div class="card meal"><div class="name">شام</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">20:30<br>23:00</div></div><div class="card free"><div class="name">آزاد</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">23:00<br>06:30</div></div><div class="card sleep"><div class="name">خواب شب</div><span class="badge">۷.۵ ساعت</span></div></div>
+</div>
+
+<!-- پنجشنبه -->
+<div class="day" id="thu">
+  <div class="day-title">پنجشنبه</div>
+  <div class="item"><div class="time-col"><div class="time">06:30<br>08:30</div></div><div class="card sport"><div class="name">ورزش</div><span class="badge">۲ ساعت</span></div></div>
+  <div class="item"><div class="time-col"><div class="time">08:30<br>09:00</div></div><div class="card meal"><div class="name">صبحانه / آماده</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">09:00<br>13:00</div></div><div class="card work"><div class="name">مغازه</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">13:00<br>13:30</div></div><div class="card meal"><div class="name">ناهار</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">13:30<br>14:30</div></div><div class="card sleep"><div class="name">خواب میان‌روز</div><span class="badge">۱ ساعت</span></div></div>
+  <div class="item"><div class="time-col"><div class="time">14:30<br>16:00</div></div><div class="card free"><div class="name">آزاد</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">16:00<br>20:00</div></div><div class="card work"><div class="name">مغازه</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">20:00<br>20:30</div></div><div class="card meal"><div class="name">شام</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">20:30<br>23:00</div></div><div class="card free"><div class="name">آزاد</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">23:00<br>06:30</div></div><div class="card sleep"><div class="name">خواب شب</div><span class="badge">۷.۵ ساعت</span></div></div>
+</div>
+
+<!-- جمعه -->
+<div class="day" id="fri">
+  <div class="day-title">جمعه</div>
+  <div class="item"><div class="time-col"><div class="time">06:30<br>08:30</div></div><div class="card sport"><div class="name">ورزش</div><span class="badge">۲ ساعت</span></div></div>
+  <div class="item"><div class="time-col"><div class="time">08:30<br>09:00</div></div><div class="card meal"><div class="name">صبحانه / آماده</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">09:00<br>13:00</div></div><div class="card work"><div class="name">مغازه</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">13:00<br>13:30</div></div><div class="card meal"><div class="name">ناهار</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">13:30<br>15:00</div></div><div class="card sleep"><div class="name">خواب میان‌روز</div><span class="badge">۱.۵ ساعت</span></div></div>
+  <div class="item"><div class="time-col"><div class="time">15:00<br>16:00</div></div><div class="card free"><div class="name">آزاد</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">16:00<br>20:00</div></div><div class="card work"><div class="name">مغازه</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">20:00<br>20:30</div></div><div class="card meal"><div class="name">شام</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">20:30<br>23:00</div></div><div class="card free"><div class="name">آزاد</div></div></div>
+  <div class="item"><div class="time-col"><div class="time">23:00<br>06:30</div></div><div class="card sleep"><div class="name">خواب شب</div><span class="badge">۷.۵ ساعت</span></div></div>
+</div>
+
+<!-- Legend -->
+<div class="legend">
+  <h3>راهنمای رنگ‌ها</h3>
+  <div class="legend-grid">
+    <div class="legend-item"><span class="dot uni"></span>کلاس دانشگاه</div>
+    <div class="legend-item"><span class="dot lang"></span>زبان (مجازی)</div>
+    <div class="legend-item"><span class="dot sport"></span>ورزش</div>
+    <div class="legend-item"><span class="dot work"></span>مغازه</div>
+    <div class="legend-item"><span class="dot free"></span>آزاد</div>
+    <div class="legend-item"><span class="dot sleep"></span>خواب</div>
+    <div class="legend-item"><span class="dot meal"></span>وعده غذایی</div>
+    <div class="legend-item"><span class="dot narges"></span>کلاس نرگس</div>
+  </div>
+</div>
+
+<div class="footer">
+  <strong>حضور پدر:</strong> یکشنبه کامل، دوشنبه عصر، سه‌شنبه صبح، چهارشنبه عصر — ۲۰ ساعت در هفته<br>
+  جمع ورزش: ۱۴ ساعت | جمع خواب: ۵۶ ساعت
+</div>
+
+<script>
+/* ========== داده‌های برنامه ========== */
+const scheduleData = {
+  sat: [
+    ['06:30','07:00','صبحانه','','meal'],
+    ['07:00','08:00','آزاد','','free'],
+    ['08:00','08:30','آماده شدن','','prep'],
+    ['08:30','09:00','آزاد','','free'],
+    ['09:00','12:00','مغازه','۳ ساعت','work'],
+    ['12:00','12:30','ناهار','در مغازه','meal'],
+    ['12:30','13:00','با نرگس: خانه → دانشگاه','','travel'],
+    ['13:00','14:30','تربیت بدنی','وحید ترک ملک','sport'],
+    ['14:30','14:45','آمادگی ۱۵ دقیقه','','prep'],
+    ['14:45','16:15','ورزش ۱','حسین ساکی','sport'],
+    ['16:15','16:45','با نرگس: برگشت','','travel'],
+    ['16:45','20:00','مغازه','','work'],
+    ['19:15','20:00','زبان انگلیسی عمومی-ترکیبی (۳)','سینا کسرائی','lang'],
+    ['20:00','20:30','شام','','meal'],
+    ['20:30','23:00','آزاد','','free'],
+    ['23:00','06:30','خواب شب','۷.۵ ساعت','sleep']
+  ],
+  sun: [
+    ['06:30','07:00','صبحانه / آماده','','meal'],
+    ['07:00','07:30','با نرگس: خانه → دانشگاه','','travel'],
+    ['07:30','08:00','آزاد','','free'],
+    ['08:00','09:30','اصول فقه (۱)','محمد گودرزی','uni'],
+    ['09:30','10:00','آزاد / آمادگی ۱۵ دقیقه','','free'],
+    ['10:00','11:30','حقوق سازمان‌های بین‌المللی','رضا کرمی','uni'],
+    ['11:30','12:00','آزاد','','free'],
+    ['12:00','12:30','ناهار','در دانشگاه','meal'],
+    ['12:30','13:00','خواب میان‌روز','','sleep'],
+    ['13:00','14:30','تفسیر موضوعی قرآن','مجتبی بیرانوند','uni'],
+    ['14:30','14:45','آمادگی ۱۵ دقیقه','','prep'],
+    ['14:45','16:15','حقوق بین‌الملل عمومی (۳)','مهدی یوسف‌وند','uni'],
+    ['16:15','16:30','آمادگی ۱۵ دقیقه','','prep'],
+    ['16:30','18:00','حقوق جزای عمومی (۲)','رضا محبی فر','uni'],
+    ['18:00','18:30','با نرگس: برگشت','','travel'],
+    ['18:30','20:00','مغازه','با پدر','work'],
+    ['19:30','20:15','زبان انگلیسی عمومی-ترکیبی (۲)','مریم بیرجندی','lang'],
+    ['20:15','20:45','شام','','meal'],
+    ['20:45','23:00','آزاد','','free'],
+    ['23:00','06:30','خواب شب','۷.۵ ساعت','sleep']
+  ],
+  mon: [
+    ['06:30','08:00','ورزش','۱.۵ ساعت','sport'],
+    ['08:00','08:30','صبحانه / آماده','','meal'],
+    ['08:30','09:00','آزاد','','free'],
+    ['09:00','12:00','مغازه','','work'],
+    ['12:00','12:30','ناهار','','meal'],
+    ['12:30','13:00','با نرگس: خانه → دانشگاه','','travel'],
+    ['13:00','14:30','ورزش در سالن دانشگاه','۱.۵ ساعت','sport'],
+    ['14:30','14:45','آمادگی ۱۵ دقیقه','','prep'],
+    ['14:45','16:15','آیین دادرسی مدنی (۱)','محمدصفر نوروزی','uni'],
+    ['16:15','16:30','آمادگی ۱۵ دقیقه','','prep'],
+    ['16:30','18:00','انس با قرآن کریم','محمدحسن مقصودی گودرزی','uni'],
+    ['18:00','18:30','با نرگس: برگشت','','travel'],
+    ['18:30','20:00','مغازه','با پدر','work'],
+    ['20:00','20:30','شام','','meal'],
+    ['20:30','23:00','آزاد','','free'],
+    ['23:00','06:30','خواب شب','۷.۵ ساعت','sleep']
+  ],
+  tue: [
+    ['06:30','07:00','صبحانه / آماده','','meal'],
+    ['07:00','07:30','با نرگس: خانه → دانشگاه','','travel'],
+    ['07:30','09:45','حقوق مدنی (۳) کلیات قراردادها','عبدالمحمد کردی','uni'],
+    ['09:45','10:00','آمادگی ۱۵ دقیقه','','prep'],
+    ['10:00','12:00','ورزش در سالن دانشگاه','۲ ساعت','sport'],
+    ['12:00','12:30','ناهار','در دانشگاه','meal'],
+    ['12:30','13:00','خواب میان‌روز','','sleep'],
+    ['13:00','14:30','کلاس نرگس: حقوق اساسی ۳','محمد صارمی','narges'],
+    ['14:30','15:00','با نرگس: برگشت','','travel'],
+    ['15:00','16:00','آزاد','','free'],
+    ['16:00','20:00','مغازه','','work'],
+    ['20:00','20:30','شام','','meal'],
+    ['20:30','23:00','آزاد','','free'],
+    ['23:00','06:30','خواب شب','۷.۵ ساعت','sleep']
+  ],
+  wed: [
+    ['06:30','07:00','صبحانه','','meal'],
+    ['07:00','08:00','آزاد','','free'],
+    ['08:00','08:30','آماده شدن','','prep'],
+    ['08:30','09:00','آزاد','','free'],
+    ['09:00','12:00','مغازه','','work'],
+    ['12:00','12:30','ناهار','','meal'],
+    ['12:30','13:00','با نرگس: خانه → دانشگاه','','travel'],
+    ['13:00','14:30','حقوق تجارت (۳) اسناد تجاری','حسین شعبان پور','uni'],
+    ['14:30','16:30','ورزش در سالن دانشگاه','۲ ساعت','sport'],
+    ['16:30','18:00','کلاس نرگس: حقوق مدنی ۴','','narges'],
+    ['18:00','18:30','با نرگس: برگشت','','travel'],
+    ['18:30','20:00','مغازه','با پدر','work'],
+    ['20:00','20:30','شام','','meal'],
+    ['20:30','23:00','آزاد','','free'],
+    ['23:00','06:30','خواب شب','۷.۵ ساعت','sleep']
+  ],
+  thu: [
+    ['06:30','08:30','ورزش','۲ ساعت','sport'],
+    ['08:30','09:00','صبحانه / آماده','','meal'],
+    ['09:00','13:00','مغازه','','work'],
+    ['13:00','13:30','ناهار','','meal'],
+    ['13:30','14:30','خواب میان‌روز','۱ ساعت','sleep'],
+    ['14:30','16:00','آزاد','','free'],
+    ['16:00','20:00','مغازه','','work'],
+    ['20:00','20:30','شام','','meal'],
+    ['20:30','23:00','آزاد','','free'],
+    ['23:00','06:30','خواب شب','۷.۵ ساعت','sleep']
+  ],
+  fri: [
+    ['06:30','08:30','ورزش','۲ ساعت','sport'],
+    ['08:30','09:00','صبحانه / آماده','','meal'],
+    ['09:00','13:00','مغازه','','work'],
+    ['13:00','13:30','ناهار','','meal'],
+    ['13:30','15:00','خواب میان‌روز','۱.۵ ساعت','sleep'],
+    ['15:00','16:00','آزاد','','free'],
+    ['16:00','20:00','مغازه','','work'],
+    ['20:00','20:30','شام','','meal'],
+    ['20:30','23:00','آزاد','','free'],
+    ['23:00','06:30','خواب شب','۷.۵ ساعت','sleep']
+  ]
+};
+
+const dayOrder = ['sat','sun','mon','tue','wed','thu','fri'];
+const dayNames = {
+  sat:'شنبه', sun:'یکشنبه', mon:'دوشنبه', tue:'سه‌شنبه',
+  wed:'چهارشنبه', thu:'پنجشنبه', fri:'جمعه'
+};
+const WEEK = 10080;
+
+function fa(s){
+  return String(s).replace(/[0-9]/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+}
+function toMin(s){
+  const [h,m] = s.split(':').map(Number);
+  return h*60 + m;
+}
+
+/* ساخت لیست مسطح هفته */
+const flat = [];
+dayOrder.forEach((day, i) => {
+  const offset = i * 1440;
+  scheduleData[day].forEach(([start, end, name, meta, type, badge]) => {
+    const s = toMin(start);
+    let e = toMin(end);
+    let crosses = false;
+    if (e <= s){ e += 1440; crosses = true; }
+    flat.push({
+      absStart: offset + s,
+      absEnd: offset + e,
+      name, meta, type, badge: badge || '',
+      day, startStr: start, endStr: end, crosses
+    });
+  });
+});
+
+/* بررسی فعال بودن در لحظه مشخص */
+function getEffectiveRange(item, now){
+  for (const off of [0, -WEEK, WEEK]){
+    const s = item.absStart + off;
+    const e = item.absEnd + off;
+    if (now >= s && now < e) return { start: s, end: e };
+  }
+  return null;
+}
+
+function findActive(now){
+  return flat.filter(it => getEffectiveRange(it, now) !== null);
+}
+
+function findPrev(now, activeSet){
+  let best = null, bestDelta = Infinity, bestRange = null;
+  flat.forEach(it => {
+    if (activeSet.has(it)) return;
+    for (const off of [0, -WEEK, WEEK]){
+      const e = it.absEnd + off;
+      const d = now - e;
+      if (d >= 0 && d < bestDelta){
+        bestDelta = d;
+        best = it;
+        bestRange = { end: e, delta: d };
+      }
+    }
+  });
+  return best ? { item: best, range: bestRange } : null;
+}
+
+function findNext(now, activeSet){
+  let best = null, bestDelta = Infinity, bestRange = null;
+  flat.forEach(it => {
+    if (activeSet.has(it)) return;
+    for (const off of [0, -WEEK, WEEK]){
+      const s = it.absStart + off;
+      const d = s - now;
+      if (d > 0 && d < bestDelta){
+        bestDelta = d;
+        best = it;
+        bestRange = { start: s, delta: d };
+      }
+    }
+  });
+  return best ? { item: best, range: bestRange } : null;
+}
+
+/* رندر باکس */
+function updateNowBox(){
+  const now = new Date();
+  const dayIdx = (now.getDay() + 1) % 7;
+  const nowMin = dayIdx * 1440 + now.getHours() * 60 + now.getMinutes();
+
+  // روز و ساعت
+  document.getElementById('nowDay').textContent = dayNames[dayOrder[dayIdx]];
+  document.getElementById('nowTime').textContent =
+    fa(String(now.getHours()).padStart(2,'0')) + ':' +
+    fa(String(now.getMinutes()).padStart(2,'0'));
+
+  const active = findActive(nowMin);
+  const activeSet = new Set(active);
+  const prev = findPrev(nowMin, activeSet);
+  const next = findNext(nowMin, activeSet);
+
+  // بخش «الان»
+  const currentEl = document.getElementById('nowCurrent');
+  if (active.length === 0){
+    currentEl.innerHTML = '<div class="now-activity"><div class="now-activity-name">—</div></div>';
+  } else {
+    currentEl.innerHTML = active.map(it => {
+      const range = getEffectiveRange(it, nowMin);
+      const dur = range.end - range.start;
+      const elapsed = nowMin - range.start;
+      const pct = Math.min(100, Math.max(0, (elapsed / dur) * 100));
+      const remaining = range.end - nowMin;
+      const remH = Math.floor(remaining / 60);
+      const remM = remaining % 60;
+      const remStr = remH > 0
+        ? `${fa(remH)} ساعت و ${fa(remM)} دقیقه`
+        : `${fa(remM)} دقیقه`;
+      const timeRange = fa(it.startStr) + ' تا ' + fa(it.endStr) +
+        (it.crosses ? ' (روز بعد)' : '');
+      return `
+        <div class="now-activity ${it.type}">
+          <div class="now-activity-name">${it.name}</div>
+          ${it.meta ? `<div class="now-activity-meta">${it.meta}</div>` : ''}
+          <div class="now-progress">
+            <div class="now-progress-bar ${it.type}" style="width:${pct}%"></div>
+          </div>
+          <div class="now-progress-text">
+            <span class="rem">${remStr} مانده</span>
+            <span class="times">${timeRange}</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // قبلی
+  const prevEl = document.getElementById('nowPrev');
+  if (prev){
+    const it = prev.item;
+    const dayLabel = dayNames[it.day];
+    prevEl.innerHTML = `
+      <div class="now-nav-name">${it.name}</div>
+      <div class="now-nav-time">${fa(it.startStr)} تا ${fa(it.endStr)}</div>
+      <div class="now-nav-day">${dayLabel}</div>
+    `;
+  } else {
+    prevEl.innerHTML = '<div class="now-nav-name">—</div>';
+  }
+
+  // بعدی
+  const nextEl = document.getElementById('nowNext');
+  if (next){
+    const it = next.item;
+    const dayLabel = dayNames[it.day];
+    const delta = next.range.delta;
+    const dh = Math.floor(delta / 60);
+    const dm = delta % 60;
+    const untilStr = dh > 0
+      ? `تا ${fa(dh)} ساعت و ${fa(dm)} دقیقه دیگر`
+      : `تا ${fa(dm)} دقیقه دیگر`;
+    nextEl.innerHTML = `
+      <div class="now-nav-name">${it.name}</div>
+      <div class="now-nav-time">${fa(it.startStr)} تا ${fa(it.endStr)}</div>
+      <div class="now-nav-day">${dayLabel} • ${untilStr}</div>
+    `;
+  } else {
+    nextEl.innerHTML = '<div class="now-nav-name">—</div>';
+  }
+}
+
+/* تب‌ها */
+const tabs = document.querySelectorAll('.tab');
+const days = document.querySelectorAll('.day');
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    const target = tab.dataset.day;
+    tabs.forEach(t => t.classList.remove('active'));
+    days.forEach(d => d.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(target).classList.add('active');
+    localStorage.setItem('lastDay', target);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+/* شروع */
+const saved = localStorage.getItem('lastDay');
+if (saved){
+  const tab = document.querySelector(`.tab[data-day="${saved}"]`);
+  if (tab) tab.click();
+}
+
+updateNowBox();
+setInterval(updateNowBox, 30000);
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden) updateNowBox();
+});
+</script>
+
+</body>
+</html>
