@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>برنامه هفتگی من</title>
+<title>برنامه هفتگی</title>
 <meta name="theme-color" content="#0f0f1a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="برنامه من">
+<meta name="apple-mobile-web-app-title" content="برنامه">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="manifest" id="manifestLink" href="data:application/manifest+json,{}">
 <link rel="apple-touch-icon" id="appleIcon">
@@ -30,15 +30,6 @@
     overflow-wrap:break-word;
     word-break:break-word;
   }
-
-  .header{ text-align:center; margin-bottom:16px; padding:8px 16px; }
-  .header h1{
-    font-size:22px; font-weight:800;
-    background:linear-gradient(135deg,#8b5cf6,#06b6d4);
-    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-    background-clip:text; margin-bottom:6px;
-  }
-  .header p{ font-size:12px; color:var(--muted); }
 
   /* ==== NOW BOX ==== */
   .now-box{
@@ -285,7 +276,6 @@
   .card.travel::before{ background:linear-gradient(135deg,#fb923c,#f97316); }
   .card.narges::before{ background:linear-gradient(135deg,#ec4899,#be185d); }
 
-  /* active highlight in schedule */
   .item.active-now .card{
     background:linear-gradient(135deg, rgba(139,92,246,0.18), rgba(6,182,212,0.12));
     border-color:rgba(139,92,246,0.6);
@@ -342,7 +332,6 @@
   }
   .footer strong{ color:#a78bfa; }
 
-  /* toast */
   .toast{
     position:fixed; bottom:24px; left:50%;
     transform:translateX(-50%) translateY(100px);
@@ -359,11 +348,6 @@
 </style>
 </head>
 <body>
-
-<div class="header">
-  <h1>برنامه هفتگی من</h1>
-  <p>با نرگس می‌رویم و برمی‌گردیم</p>
-</div>
 
 <div class="now-box" id="nowBox">
   <div class="now-header">
@@ -425,8 +409,7 @@
 </div>
 
 <div class="footer">
-  <strong>حضور پدر:</strong> یکشنبه کامل، دوشنبه عصر، سه‌شنبه صبح، چهارشنبه عصر — ۲۰ ساعت در هفته<br>
-  جمع ورزش: ۱۴ ساعت | جمع خواب: ۵۶ ساعت
+  <strong>حضور پدر:</strong> یکشنبه کامل، دوشنبه عصر، سه‌شنبه صبح، چهارشنبه عصر
 </div>
 
 <div class="toast" id="toast"></div>
@@ -686,7 +669,6 @@ function updateNowBox(){
   const prev = findPrev(nowMin, activeSet);
   const next = findNext(nowMin, activeSet);
 
-  // Current
   const currentEl = document.getElementById('nowCurrent');
   let newKey = '';
   if (active.length === 0){
@@ -726,7 +708,6 @@ function updateNowBox(){
     }).join('');
   }
 
-  // Prev
   const prevEl = document.getElementById('nowPrev');
   if (prev){
     prevEl.innerHTML = `
@@ -738,7 +719,6 @@ function updateNowBox(){
     prevEl.innerHTML = '<div class="now-nav-name">—</div>';
   }
 
-  // Next
   const nextEl = document.getElementById('nowNext');
   if (next){
     const it = next.item;
@@ -757,7 +737,6 @@ function updateNowBox(){
     nextEl.innerHTML = '<div class="now-nav-name">—</div>';
   }
 
-  // Auto-scroll if active changed
   if (newKey && newKey !== lastActiveKey){
     lastActiveKey = newKey;
     setTimeout(scrollToActiveIfNeeded, 200);
@@ -765,7 +744,6 @@ function updateNowBox(){
     lastActiveKey = '';
   }
 
-  // Tab dots
   document.querySelectorAll('.tab').forEach(tab => {
     tab.querySelector('.tab-dot')?.remove();
   });
@@ -778,10 +756,7 @@ function updateNowBox(){
     }
   });
 
-  // Highlight in schedule
   highlightActiveInSchedule(nowMin);
-
-  // Notifications
   checkNotifications(now, dayIdx, nowMin);
 }
 
@@ -946,7 +921,7 @@ tabs.forEach(tab => {
   const iconUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(iconSvg);
 
   const manifest = {
-    name: 'برنامه هفتگی من',
+    name: 'برنامه هفتگی',
     short_name: 'برنامه',
     description: 'برنامه هفتگی دانشگاه، مغازه، ورزش و خواب',
     start_url: './',
@@ -978,7 +953,6 @@ if (saved && document.querySelector(`.tab[data-day="${saved}"]`)){
 updateNotifBtn();
 updateNowBox();
 
-// Smart interval: check every 5s, but only redraw minute-change for text
 let lastMin = -1;
 setInterval(() => {
   const m = new Date().getMinutes();
