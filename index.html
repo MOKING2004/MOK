@@ -462,11 +462,9 @@ const ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <circle cx="340" cy="356" r="19" fill="#6366f1"/>
 </svg>`;
 
-// تزریق آیکون داخل لوگو و مدال
 document.getElementById('loginLogo').innerHTML = ICON_SVG;
 document.getElementById('modalIcon').innerHTML = ICON_SVG;
 
-// تبدیل SVG به PNG برای apple-touch-icon
 function svgToPng(svgString, size) {
   return new Promise((resolve, reject) => {
     const img = new Image();
@@ -488,11 +486,8 @@ function svgToPng(svgString, size) {
   });
 }
 
-// ساخت آیکون PNG و تنظیم آن
 svgToPng(ICON_SVG, 512).then(pngUrl => {
   document.getElementById('appleIcon').href = pngUrl;
-
-  // Manifest با آیکون PNG
   const manifest = {
     name: 'برنامه هفتگی',
     short_name: 'برنامه',
@@ -537,7 +532,6 @@ function showApp(){
   appContent.classList.remove('hidden');
   updateNotifBtn();
   updateNowBox();
-  // نمایش راهنمای نصب فقط بار اول
   try {
     if (!localStorage.getItem(INSTALL_KEY)){
       setTimeout(showInstallModal, 1200);
@@ -632,8 +626,6 @@ function showInstallModal(){
   installSteps.innerHTML = buildInstallSteps();
   installModal.classList.add('show');
   try { localStorage.setItem(INSTALL_KEY, '1'); } catch(e){}
-
-  // نوتیفیکیشن هم بفرست (اگه اجازه داشته باشه)
   if ('Notification' in window && Notification.permission === 'granted'){
     try {
       new Notification('برنامه هفتگی', {
@@ -988,12 +980,24 @@ tabs.forEach(tab => {
   });
 });
 
-/* ================== SERVICE WORKER ================== */
+/* ================== SERVICE WORKER (نسخه اصلاح‌شده) ================== */
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js')
-      .then(r => console.log('SW ✓', r.scope))
-      .catch(e => console.log('SW ✗', e));
+  window.addEventListener('load', async () => {
+    try {
+      // پاک کردن ثبت‌های قدیمی
+      const regs = await navigator.serviceWorker.getRegistrations();
+      for (const reg of regs) {
+        await reg.unregister();
+      }
+      // پاک کردن همه کش‌ها
+      const cacheNames = await caches.keys();
+      await Promise.all(cacheNames.map(n => caches.delete(n)));
+      // ثبت نسخه جدید با تایم‌استمپ برای دور زدن کش
+      const reg = await navigator.serviceWorker.register('./sw.js?v=' + Date.now());
+      console.log('SW ✓', reg.scope);
+    } catch(e){
+      console.log('SW ✗', e);
+    }
   });
 }
 
