@@ -7,13 +7,12 @@
 <meta name="theme-color" content="#0f0f1a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="برنامه">
+<meta name="apple-mobile-web-app-title" content="برنامه من">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="manifest" id="manifestLink" href="data:application/manifest+json,{}">
 <link rel="apple-touch-icon" id="appleIcon">
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  /* همان CSS قبلی بدون تغییر */
   * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
   :root{ --bg:#0f0f1a; --card:#1e1e35; --text:#e8e8f0; --muted:#8b8ba7; --border:#2d2d4a; --accent:#8b5cf6; }
   html { scroll-behavior:smooth; }
@@ -28,6 +27,90 @@
     overflow-wrap:break-word;
     word-break:break-word;
   }
+
+  /* ============ LOGIN SCREEN ============ */
+  .login-screen{
+    position:fixed; inset:0; z-index:9999;
+    background:linear-gradient(135deg,#0f0f1a 0%,#1a1a2e 50%,#0f0f1a 100%);
+    display:flex; align-items:center; justify-content:center;
+    padding:20px;
+    background-image:
+      radial-gradient(circle at 20% 20%, rgba(139,92,246,0.25) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(6,182,212,0.2) 0%, transparent 50%);
+    transition:opacity 0.4s ease, visibility 0.4s ease;
+  }
+  .login-screen.hidden{ opacity:0; visibility:hidden; pointer-events:none; }
+  .login-card{
+    width:100%; max-width:400px;
+    background:linear-gradient(135deg,rgba(30,30,53,0.95),rgba(37,37,64,0.95));
+    border-radius:28px; padding:32px 24px;
+    border:1px solid rgba(139,92,246,0.3);
+    box-shadow:0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(139,92,246,0.1) inset;
+    backdrop-filter:blur(20px);
+    animation:cardIn 0.5s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  @keyframes cardIn{ from{ opacity:0; transform:translateY(20px) scale(0.95);} to{ opacity:1; transform:translateY(0) scale(1);} }
+  .login-logo{
+    width:88px; height:88px; margin:0 auto 20px;
+    border-radius:24px; overflow:hidden;
+    box-shadow:0 12px 32px rgba(139,92,246,0.5);
+    position:relative;
+  }
+  .login-logo svg{ width:100%; height:100%; display:block; }
+  .login-card h2{
+    font-size:22px; font-weight:800; text-align:center; margin-bottom:6px;
+    background:linear-gradient(135deg,#a78bfa,#06b6d4);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    background-clip:text;
+  }
+  .login-card .sub{
+    font-size:12.5px; color:#8b8ba7; text-align:center; margin-bottom:26px;
+  }
+  .login-form{ display:flex; flex-direction:column; gap:14px; }
+  .login-field{ position:relative; }
+  .login-field input{
+    width:100%; padding:15px 46px 15px 16px;
+    background:rgba(15,15,26,0.7);
+    border:1.5px solid rgba(139,92,246,0.2);
+    border-radius:14px; color:#fff; font-size:14px;
+    font-family:inherit; outline:none;
+    transition:all 0.25s ease;
+  }
+  .login-field input:focus{
+    border-color:rgba(139,92,246,0.7);
+    box-shadow:0 0 0 4px rgba(139,92,246,0.15);
+    background:rgba(15,15,26,0.9);
+  }
+  .login-field input::placeholder{ color:#5c5c78; }
+  .login-field .field-icon{
+    position:absolute; right:16px; top:50%; transform:translateY(-50%);
+    font-size:16px; color:#8b8ba7; pointer-events:none;
+  }
+  .login-btn{
+    padding:15px; border-radius:14px; border:none;
+    background:linear-gradient(135deg,#8b5cf6,#06b6d4);
+    color:#fff; font-size:15px; font-weight:800;
+    font-family:inherit; cursor:pointer; margin-top:8px;
+    transition:all 0.25s ease;
+    box-shadow:0 8px 24px rgba(139,92,246,0.4);
+    letter-spacing:0.5px;
+  }
+  .login-btn:active{ transform:scale(0.97); box-shadow:0 4px 12px rgba(139,92,246,0.3); }
+  .login-btn:disabled{ opacity:0.6; cursor:not-allowed; }
+  .login-error{
+    text-align:center; font-size:12.5px; color:#f87171;
+    min-height:18px; margin-top:4px;
+    transition:opacity 0.2s ease;
+  }
+  .login-hint{
+    text-align:center; margin-top:18px; font-size:11px; color:#5c5c78;
+    line-height:1.7;
+  }
+
+  /* ============ APP ============ */
+  #appContent{ transition:opacity 0.3s ease; }
+  #appContent.hidden{ opacity:0; visibility:hidden; }
+
   .now-box{
     background:linear-gradient(135deg,#1a1a2e,#252540);
     border-radius:24px; padding:18px; margin-bottom:20px;
@@ -55,25 +138,27 @@
     border-radius:20px; display:inline-block; width:fit-content;
   }
   .now-date{ font-size:11px; color:#8b8ba7; padding-right:4px; }
-  .now-right{ display:flex; align-items:center; gap:8px; flex-shrink:0; }
+  .now-right{ display:flex; align-items:center; gap:6px; flex-shrink:0; }
   .now-time{
-    font-size:26px; font-weight:800; color:#fff;
+    font-size:24px; font-weight:800; color:#fff;
     font-variant-numeric:tabular-nums; letter-spacing:1px;
     background:linear-gradient(135deg,#fff,#a78bfa);
     -webkit-background-clip:text; -webkit-text-fill-color:transparent;
     background-clip:text;
   }
-  .notif-btn{
-    width:38px; height:38px; border-radius:12px;
+  .icon-btn{
+    width:36px; height:36px; border-radius:11px;
     background:rgba(139,92,246,0.15);
     border:1px solid rgba(139,92,246,0.3);
-    color:#a78bfa; font-size:16px;
+    color:#a78bfa; font-size:15px;
     cursor:pointer; display:flex; align-items:center; justify-content:center;
     transition:all 0.2s ease; flex-shrink:0; font-family:inherit;
   }
-  .notif-btn:active{ transform:scale(0.92); }
-  .notif-btn.on{ background:rgba(16,185,129,0.15); border-color:rgba(16,185,129,0.4); color:#34d399; }
-  .notif-btn.off{ opacity:0.4; }
+  .icon-btn:active{ transform:scale(0.9); }
+  .icon-btn.on{ background:rgba(16,185,129,0.15); border-color:rgba(16,185,129,0.4); color:#34d399; }
+  .icon-btn.off{ opacity:0.4; }
+  .icon-btn.logout{ color:#f87171; background:rgba(248,113,113,0.12); border-color:rgba(248,113,113,0.3); }
+
   .now-label{ font-size:10px; font-weight:800; color:#a78bfa; letter-spacing:3px; margin-bottom:8px; padding-right:4px; }
   .now-activity{
     padding:14px; background:rgba(255,255,255,0.03);
@@ -120,6 +205,7 @@
   .now-nav-name{ font-size:13px; font-weight:700; color:#fff; line-height:1.4; margin-bottom:5px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; word-break:break-word; }
   .now-nav-time{ font-size:10.5px; color:#8b8ba7; font-variant-numeric:tabular-nums; direction:rtl; text-align:right; }
   .now-nav-day{ font-size:10px; color:#a78bfa; margin-top:3px; font-weight:600; }
+
   .tabs{ display:flex; gap:6px; overflow-x:auto; padding-bottom:8px; margin-bottom:16px; scrollbar-width:none; }
   .tabs::-webkit-scrollbar{ display:none; }
   .tab{ flex-shrink:0; padding:10px 16px; border-radius:14px; background:var(--card); border:1px solid var(--border); color:var(--muted); font-size:13px; font-weight:600; cursor:pointer; transition:all 0.25s ease; font-family:inherit; white-space:nowrap; position:relative; }
@@ -165,78 +251,406 @@
   .dot.free{ background:linear-gradient(135deg,#64748b,#475569); }
   .dot.sleep{ background:linear-gradient(135deg,#1e293b,#0f172a); border:1px solid #334155; }
   .dot.meal{ background:linear-gradient(135deg,#f472b6,#ec4899); }
+  .dot.narges{ background:linear-gradient(135deg,#ec4899,#be185d); }
   .footer{ text-align:center; margin-top:24px; font-size:11px; color:var(--muted); line-height:1.8; }
   .footer strong{ color:#a78bfa; }
-  .toast{ position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(100px); background:linear-gradient(135deg,#1e1e35,#252540); border:1px solid rgba(139,92,246,0.4); padding:12px 20px; border-radius:14px; font-size:13px; color:#fff; font-weight:600; box-shadow:0 8px 32px rgba(0,0,0,0.5); transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1); z-index:1000; max-width:calc(100% - 40px); text-align:center; }
+  .toast{ position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(100px); background:linear-gradient(135deg,#1e1e35,#252540); border:1px solid rgba(139,92,246,0.4); padding:12px 20px; border-radius:14px; font-size:13px; color:#fff; font-weight:600; box-shadow:0 8px 32px rgba(0,0,0,0.5); transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1); z-index:10000; max-width:calc(100% - 40px); text-align:center; }
   .toast.show{ transform:translateX(-50%) translateY(0); }
+
+  /* ============ INSTALL MODAL ============ */
+  .modal-overlay{
+    position:fixed; inset:0; z-index:9998;
+    background:rgba(0,0,0,0.7);
+    backdrop-filter:blur(6px);
+    display:flex; align-items:center; justify-content:center;
+    padding:20px;
+    opacity:0; visibility:hidden;
+    transition:all 0.3s ease;
+  }
+  .modal-overlay.show{ opacity:1; visibility:visible; }
+  .modal-card{
+    width:100%; max-width:400px;
+    background:linear-gradient(135deg,#1e1e35,#252540);
+    border-radius:24px; padding:26px 22px;
+    border:1px solid rgba(139,92,246,0.35);
+    box-shadow:0 20px 60px rgba(0,0,0,0.6);
+    transform:scale(0.9);
+    transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    max-height:90vh; overflow-y:auto;
+  }
+  .modal-overlay.show .modal-card{ transform:scale(1); }
+  .modal-icon{
+    width:72px; height:72px; margin:0 auto 16px;
+    border-radius:20px; overflow:hidden;
+    box-shadow:0 8px 24px rgba(139,92,246,0.4);
+  }
+  .modal-icon svg{ width:100%; height:100%; display:block; }
+  .modal-card h3{
+    font-size:18px; font-weight:800; text-align:center; margin-bottom:6px; color:#fff;
+  }
+  .modal-card .modal-sub{
+    font-size:12.5px; color:#8b8ba7; text-align:center; margin-bottom:20px;
+  }
+  .install-steps{
+    display:flex; flex-direction:column; gap:12px;
+    margin-bottom:20px;
+  }
+  .install-step{
+    display:flex; gap:12px; align-items:flex-start;
+    padding:12px; background:rgba(255,255,255,0.03);
+    border-radius:14px; border-right:3px solid #8b5cf6;
+  }
+  .install-step .step-num{
+    width:26px; height:26px; flex-shrink:0;
+    border-radius:50%; background:linear-gradient(135deg,#8b5cf6,#06b6d4);
+    display:flex; align-items:center; justify-content:center;
+    font-size:12px; font-weight:800; color:#fff;
+  }
+  .install-step .step-text{
+    font-size:12.5px; color:#e8e8f0; line-height:1.7; flex:1;
+  }
+  .install-step .step-text b{ color:#a78bfa; }
+  .modal-actions{ display:flex; gap:10px; }
+  .modal-btn{
+    flex:1; padding:13px; border-radius:14px; border:none;
+    font-family:inherit; font-size:14px; font-weight:700;
+    cursor:pointer; transition:all 0.2s ease;
+  }
+  .modal-btn.primary{
+    background:linear-gradient(135deg,#8b5cf6,#06b6d4);
+    color:#fff;
+    box-shadow:0 6px 20px rgba(139,92,246,0.4);
+  }
+  .modal-btn.secondary{
+    background:rgba(139,92,246,0.12);
+    color:#a78bfa;
+    border:1px solid rgba(139,92,246,0.3);
+  }
+  .modal-btn:active{ transform:scale(0.97); }
 </style>
 </head>
 <body>
 
-<div class="now-box" id="nowBox">
-  <div class="now-header">
-    <div class="now-day-wrap">
-      <span class="now-day" id="nowDay">—</span>
-      <span class="now-date" id="nowDate">—</span>
-    </div>
-    <div class="now-right">
-      <span class="now-time" id="nowTime">—:—</span>
-      <button class="notif-btn" id="notifBtn" title="یادآوری">🔔</button>
-    </div>
-  </div>
-  <div class="now-label">الان</div>
-  <div id="nowCurrent"></div>
-  <div class="now-nav">
-    <div class="now-nav-item prev">
-      <div class="now-nav-label">قبلی</div>
-      <div id="nowPrev"><div class="now-nav-name">—</div></div>
-    </div>
-    <div class="now-nav-item next">
-      <div class="now-nav-label">بعدی</div>
-      <div id="nowNext"><div class="now-nav-name">—</div></div>
-    </div>
+<!-- ============ LOGIN ============ -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo" id="loginLogo"></div>
+    <h2>برنامه هفتگی</h2>
+    <p class="sub">برای دیدن برنامه وارد شوید</p>
+    <form class="login-form" id="loginForm" autocomplete="off">
+      <div class="login-field">
+        <input type="email" id="username" placeholder="ایمیل" autocomplete="username" required>
+        <span class="field-icon">👤</span>
+      </div>
+      <div class="login-field">
+        <input type="password" id="password" placeholder="رمز عبور" autocomplete="current-password" required>
+        <span class="field-icon">🔒</span>
+      </div>
+      <button type="submit" class="login-btn" id="loginBtn">ورود</button>
+      <div class="login-error" id="loginError"></div>
+    </form>
+    <div class="login-hint">ورود یک‌بار انجام می‌شود و در گوشی ذخیره می‌گردد</div>
   </div>
 </div>
 
-<div class="tabs" id="tabs">
-  <button class="tab active" data-day="sat">شنبه</button>
-  <button class="tab" data-day="sun">یکشنبه</button>
-  <button class="tab" data-day="mon">دوشنبه</button>
-  <button class="tab" data-day="tue">سه‌شنبه</button>
-  <button class="tab" data-day="wed">چهارشنبه</button>
-  <button class="tab" data-day="thu">پنجشنبه</button>
-  <button class="tab" data-day="fri">جمعه</button>
-</div>
+<!-- ============ APP ============ -->
+<div id="appContent" class="hidden">
 
-<div class="day active" id="sat"></div>
-<div class="day" id="sun"></div>
-<div class="day" id="mon"></div>
-<div class="day" id="tue"></div>
-<div class="day" id="wed"></div>
-<div class="day" id="thu"></div>
-<div class="day" id="fri"></div>
+  <div class="now-box" id="nowBox">
+    <div class="now-header">
+      <div class="now-day-wrap">
+        <span class="now-day" id="nowDay">—</span>
+        <span class="now-date" id="nowDate">—</span>
+      </div>
+      <div class="now-right">
+        <span class="now-time" id="nowTime">—:—</span>
+        <button class="icon-btn" id="notifBtn" title="یادآوری">🔔</button>
+        <button class="icon-btn logout" id="logoutBtn" title="خروج">⏻</button>
+      </div>
+    </div>
+    <div class="now-label">الان</div>
+    <div id="nowCurrent"></div>
+    <div class="now-nav">
+      <div class="now-nav-item prev">
+        <div class="now-nav-label">قبلی</div>
+        <div id="nowPrev"><div class="now-nav-name">—</div></div>
+      </div>
+      <div class="now-nav-item next">
+        <div class="now-nav-label">بعدی</div>
+        <div id="nowNext"><div class="now-nav-name">—</div></div>
+      </div>
+    </div>
+  </div>
 
-<div class="legend">
-  <h3>راهنمای رنگ‌ها</h3>
-  <div class="legend-grid">
-    <div class="legend-item"><span class="dot uni"></span>کلاس دانشگاه</div>
-    <div class="legend-item"><span class="dot lang"></span>زبان (مجازی)</div>
-    <div class="legend-item"><span class="dot sport"></span>ورزش</div>
-    <div class="legend-item"><span class="dot work"></span>مغازه</div>
-    <div class="legend-item"><span class="dot free"></span>آزاد</div>
-    <div class="legend-item"><span class="dot sleep"></span>خواب</div>
-    <div class="legend-item"><span class="dot meal"></span>وعده غذایی</div>
-    <div class="legend-item"><span class="dot narges"></span>کلاس نرگس</div>
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-day="sat">شنبه</button>
+    <button class="tab" data-day="sun">یکشنبه</button>
+    <button class="tab" data-day="mon">دوشنبه</button>
+    <button class="tab" data-day="tue">سه‌شنبه</button>
+    <button class="tab" data-day="wed">چهارشنبه</button>
+    <button class="tab" data-day="thu">پنجشنبه</button>
+    <button class="tab" data-day="fri">جمعه</button>
+  </div>
+
+  <div class="day active" id="sat"></div>
+  <div class="day" id="sun"></div>
+  <div class="day" id="mon"></div>
+  <div class="day" id="tue"></div>
+  <div class="day" id="wed"></div>
+  <div class="day" id="thu"></div>
+  <div class="day" id="fri"></div>
+
+  <div class="legend">
+    <h3>راهنمای رنگ‌ها</h3>
+    <div class="legend-grid">
+      <div class="legend-item"><span class="dot uni"></span>کلاس دانشگاه</div>
+      <div class="legend-item"><span class="dot lang"></span>زبان (مجازی)</div>
+      <div class="legend-item"><span class="dot sport"></span>ورزش</div>
+      <div class="legend-item"><span class="dot work"></span>مغازه</div>
+      <div class="legend-item"><span class="dot free"></span>آزاد</div>
+      <div class="legend-item"><span class="dot sleep"></span>خواب</div>
+      <div class="legend-item"><span class="dot meal"></span>وعده غذایی</div>
+      <div class="legend-item"><span class="dot narges"></span>کلاس نرگس</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <strong>حضور پدر:</strong> یکشنبه کامل، دوشنبه عصر، سه‌شنبه صبح، چهارشنبه عصر — ۲۰ ساعت در هفته
   </div>
 </div>
 
-<div class="footer">
-  <strong>حضور پدر:</strong> یکشنبه کامل، دوشنبه عصر، سه‌شنبه صبح، چهارشنبه عصر — ۲۰ ساعت در هفته
+<!-- ============ INSTALL MODAL ============ -->
+<div class="modal-overlay" id="installModal">
+  <div class="modal-card">
+    <div class="modal-icon" id="modalIcon"></div>
+    <h3>اپ را نصب کن!</h3>
+    <p class="modal-sub">این اپ آفلاین کار می‌کند و همیشه همراهت است</p>
+    <div class="install-steps" id="installSteps"></div>
+    <div class="modal-actions">
+      <button class="modal-btn secondary" id="installLater">بعداً</button>
+      <button class="modal-btn primary" id="installOk">فهمیدم</button>
+    </div>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
+/* ================== ICON ================== */
+const ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8b5cf6"/>
+      <stop offset="1" stop-color="#06b6d4"/>
+    </linearGradient>
+    <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#e8e8f0"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#g)"/>
+  <rect x="88" y="148" width="336" height="300" rx="34" fill="url(#g2)"/>
+  <rect x="88" y="148" width="336" height="76" rx="34" fill="#1a1a2e"/>
+  <rect x="88" y="190" width="336" height="34" fill="#1a1a2e"/>
+  <rect x="150" y="112" width="26" height="76" rx="13" fill="#1a1a2e"/>
+  <rect x="336" y="112" width="26" height="76" rx="13" fill="#1a1a2e"/>
+  <circle cx="172" cy="278" r="19" fill="#8b5cf6"/>
+  <circle cx="256" cy="278" r="19" fill="#06b6d4"/>
+  <circle cx="340" cy="278" r="19" fill="#10b981"/>
+  <circle cx="172" cy="356" r="19" fill="#f59e0b"/>
+  <circle cx="256" cy="356" r="19" fill="#ec4899"/>
+  <circle cx="340" cy="356" r="19" fill="#6366f1"/>
+</svg>`;
+
+// تزریق آیکون داخل لوگو و مدال
+document.getElementById('loginLogo').innerHTML = ICON_SVG;
+document.getElementById('modalIcon').innerHTML = ICON_SVG;
+
+// تبدیل SVG به PNG برای apple-touch-icon
+function svgToPng(svgString, size) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const blob = new Blob([svgString], {type: 'image/svg+xml;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    img.onload = () => {
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, size, size);
+        URL.revokeObjectURL(url);
+        resolve(canvas.toDataURL('image/png'));
+      } catch(e){ reject(e); }
+    };
+    img.onerror = reject;
+    img.src = url;
+  });
+}
+
+// ساخت آیکون PNG و تنظیم آن
+svgToPng(ICON_SVG, 512).then(pngUrl => {
+  document.getElementById('appleIcon').href = pngUrl;
+
+  // Manifest با آیکون PNG
+  const manifest = {
+    name: 'برنامه هفتگی',
+    short_name: 'برنامه',
+    description: 'برنامه هفتگی',
+    start_url: './',
+    scope: './',
+    display: 'standalone',
+    orientation: 'portrait',
+    background_color: '#0f0f1a',
+    theme_color: '#8b5cf6',
+    dir: 'rtl',
+    lang: 'fa',
+    icons: [
+      { src: pngUrl, sizes: '192x192', type: 'image/png', purpose: 'any' },
+      { src: pngUrl, sizes: '512x512', type: 'image/png', purpose: 'any' },
+      { src: pngUrl, sizes: '512x512', type: 'image/png', purpose: 'maskable' }
+    ]
+  };
+  const manifestUrl = 'data:application/manifest+json;charset=utf-8,' +
+    encodeURIComponent(JSON.stringify(manifest));
+  document.getElementById('manifestLink').href = manifestUrl;
+}).catch(e => console.log('Icon error:', e));
+
+/* ================== AUTH ================== */
+const CORRECT_USER = 'mok20id@gmail.com';
+const CORRECT_PASS = 'M@12345678';
+const AUTH_KEY = 'barnameh_auth_v1';
+const INSTALL_KEY = 'barnameh_install_seen_v1';
+
+const loginScreen = document.getElementById('loginScreen');
+const appContent = document.getElementById('appContent');
+const loginForm = document.getElementById('loginForm');
+const loginError = document.getElementById('loginError');
+const loginBtn = document.getElementById('loginBtn');
+
+function isAuthed(){
+  try { return localStorage.getItem(AUTH_KEY) === 'ok'; } catch(e){ return false; }
+}
+
+function showApp(){
+  loginScreen.classList.add('hidden');
+  appContent.classList.remove('hidden');
+  updateNotifBtn();
+  updateNowBox();
+  // نمایش راهنمای نصب فقط بار اول
+  try {
+    if (!localStorage.getItem(INSTALL_KEY)){
+      setTimeout(showInstallModal, 1200);
+    }
+  } catch(e){}
+}
+
+function showLogin(){
+  loginScreen.classList.remove('hidden');
+  appContent.classList.add('hidden');
+}
+
+loginForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const u = document.getElementById('username').value.trim();
+  const p = document.getElementById('password').value;
+  loginError.textContent = '';
+  if (!u || !p){
+    loginError.textContent = 'ایمیل و رمز را وارد کن';
+    return;
+  }
+  loginBtn.disabled = true;
+  loginBtn.textContent = 'در حال بررسی...';
+  setTimeout(() => {
+    if (u.toLowerCase() === CORRECT_USER.toLowerCase() && p === CORRECT_PASS){
+      try { localStorage.setItem(AUTH_KEY, 'ok'); } catch(e){}
+      loginBtn.disabled = false;
+      loginBtn.textContent = 'ورود';
+      showToast('خوش آمدی ✨');
+      showApp();
+    } else {
+      loginBtn.disabled = false;
+      loginBtn.textContent = 'ورود';
+      loginError.textContent = 'ایمیل یا رمز اشتباه است';
+      const card = document.querySelector('.login-card');
+      card.style.animation = 'none';
+      setTimeout(() => { card.style.animation = ''; }, 50);
+    }
+  }, 500);
+});
+
+document.getElementById('logoutBtn').addEventListener('click', () => {
+  if (confirm('از حساب خارج می‌شوی؟')){
+    try { localStorage.removeItem(AUTH_KEY); } catch(e){}
+    document.getElementById('password').value = '';
+    showLogin();
+    showToast('خارج شدی');
+  }
+});
+
+/* ================== INSTALL MODAL ================== */
+const installModal = document.getElementById('installModal');
+const installSteps = document.getElementById('installSteps');
+
+function isIOS(){
+  return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
+function isAndroid(){ return /Android/.test(navigator.userAgent); }
+function isStandalone(){
+  return window.matchMedia('(display-mode: standalone)').matches ||
+    window.navigator.standalone === true;
+}
+
+function buildInstallSteps(){
+  if (isStandalone()){
+    return `<div class="install-step"><div class="step-num">✓</div><div class="step-text">اپ روی صفحه اصلی نصب شده و در حال اجراست</div></div>`;
+  }
+  if (isIOS()){
+    return `
+      <div class="install-step"><div class="step-num">۱</div><div class="step-text">این صفحه را در <b>Safari</b> باز کن</div></div>
+      <div class="install-step"><div class="step-num">۲</div><div class="step-text">روی دکمه <b>Share</b> (مربع با فلش رو به بالا) پایین صفحه بزن</div></div>
+      <div class="install-step"><div class="step-num">۳</div><div class="step-text"><b>Add to Home Screen</b> را انتخاب کن</div></div>
+      <div class="install-step"><div class="step-num">۴</div><div class="step-text">گزینه <b>Open as Web App</b> را روشن کن و <b>Add</b> بزن</div></div>
+    `;
+  }
+  if (isAndroid()){
+    return `
+      <div class="install-step"><div class="step-num">۱</div><div class="step-text">این صفحه را در <b>Chrome</b> باز کن</div></div>
+      <div class="install-step"><div class="step-num">۲</div><div class="step-text">روی منوی سه‌نقطه بالای صفحه بزن</div></div>
+      <div class="install-step"><div class="step-num">۳</div><div class="step-text"><b>Install app</b> یا <b>Add to Home screen</b> را انتخاب کن</div></div>
+      <div class="install-step"><div class="step-num">۴</div><div class="step-text">تأیید کن تا آیکون روی صفحه اصلی بیاید</div></div>
+    `;
+  }
+  return `
+    <div class="install-step"><div class="step-num">۱</div><div class="step-text">از منوی مرورگر گزینه <b>Add to Home Screen</b> یا <b>Install</b> را بزن</div></div>
+    <div class="install-step"><div class="step-num">۲</div><div class="step-text">تأیید کن تا اپ روی صفحه اصلی نصب شود</div></div>
+  `;
+}
+
+function showInstallModal(){
+  installSteps.innerHTML = buildInstallSteps();
+  installModal.classList.add('show');
+  try { localStorage.setItem(INSTALL_KEY, '1'); } catch(e){}
+
+  // نوتیفیکیشن هم بفرست (اگه اجازه داشته باشه)
+  if ('Notification' in window && Notification.permission === 'granted'){
+    try {
+      new Notification('برنامه هفتگی', {
+        body: 'این اپ را روی صفحه اصلی گوشی نصب کن تا همیشه همراهت باشه',
+        dir: 'rtl', lang: 'fa', tag: 'install-tip'
+      });
+    } catch(e){}
+  }
+}
+
+document.getElementById('installOk').addEventListener('click', () => {
+  installModal.classList.remove('show');
+});
+document.getElementById('installLater').addEventListener('click', () => {
+  installModal.classList.remove('show');
+});
+
 /* ================== DATA ================== */
 const scheduleData = {
   sat: [
@@ -357,10 +771,7 @@ const scheduleData = {
 };
 
 const dayOrder = ['sat','sun','mon','tue','wed','thu','fri'];
-const dayNames = {
-  sat:'شنبه', sun:'یکشنبه', mon:'دوشنبه', tue:'سه‌شنبه',
-  wed:'چهارشنبه', thu:'پنجشنبه', fri:'جمعه'
-};
+const dayNames = { sat:'شنبه', sun:'یکشنبه', mon:'دوشنبه', tue:'سه‌شنبه', wed:'چهارشنبه', thu:'پنجشنبه', fri:'جمعه' };
 const WEEK = 10080;
 
 function fa(s){ return String(s).replace(/[0-9]/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]); }
@@ -389,7 +800,7 @@ dayOrder.forEach((day, i) => {
   scheduleData[day].forEach(([start, end, name, meta, type]) => {
     const s = toMin(start);
     const dur = durOf(start, end);
-    flat.push({ absStart: offset + s, absEnd: offset + s + dur, name, meta, type, day, startStr: start, endStr: end, crosses: toMin(end) <= toMin(start) });
+    flat.push({ absStart: offset + s, absEnd: offset + s + dur, name, meta, type, day, startStr: start, endStr: end });
   });
 });
 
@@ -528,12 +939,12 @@ function updateNotifBtn(){
   else { notifBtn.classList.remove('on','off'); notifBtn.textContent = '🔔'; }
 }
 notifBtn.addEventListener('click', async () => {
-  if (!('Notification' in window)){ showToast('مرورگر تو نوتیفیکیشن پشتیبانی نمی‌کند'); return; }
+  if (!('Notification' in window)){ showToast('مرورگر پشتیبانی نمی‌کند'); return; }
   if (Notification.permission === 'granted'){ showToast('یادآوری فعال است ✓'); return; }
-  if (Notification.permission === 'denied'){ showToast('ابتدا از تنظیمات مرورگر اجازه بده'); return; }
+  if (Notification.permission === 'denied'){ showToast('از تنظیمات مرورگر اجازه بده'); return; }
   const perm = await Notification.requestPermission();
   updateNotifBtn();
-  if (perm === 'granted'){ showToast('یادآوری فعال شد ✓'); new Notification('یادآوری فعال شد', { body: '۱۰ دقیقه قبل از هر برنامه بهت اطلاع می‌دهم', dir: 'rtl', lang: 'fa' }); }
+  if (perm === 'granted'){ showToast('یادآوری فعال شد ✓'); }
 });
 
 function getNotifiedToday(){
@@ -577,40 +988,27 @@ tabs.forEach(tab => {
   });
 });
 
-(function setupPWA(){
-  const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8b5cf6"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs><rect width="512" height="512" rx="110" fill="url(#g)"/><rect x="96" y="120" width="320" height="300" rx="30" fill="#ffffff" opacity="0.96"/><rect x="96" y="120" width="320" height="80" rx="30" fill="#1a1a2e"/><rect x="96" y="170" width="320" height="30" fill="#1a1a2e"/><circle cx="180" cy="250" r="16" fill="#8b5cf6"/><circle cx="256" cy="250" r="16" fill="#1a1a2e"/><circle cx="332" cy="250" r="16" fill="#1a1a2e"/><circle cx="180" cy="320" r="16" fill="#1a1a2e"/><circle cx="256" cy="320" r="16" fill="#06b6d4"/><circle cx="332" cy="320" r="16" fill="#1a1a2e"/><circle cx="180" cy="390" r="16" fill="#1a1a2e"/><circle cx="256" cy="390" r="16" fill="#1a1a2e"/><circle cx="332" cy="390" r="16" fill="#8b5cf6"/></svg>`;
-  const iconUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(iconSvg);
-  const manifest = {
-    name: 'برنامه هفتگی', short_name: 'برنامه', description: 'برنامه هفتگی دانشگاه، مغازه، ورزش و خواب',
-    start_url: './', scope: './', display: 'standalone', orientation: 'portrait',
-    background_color: '#0f0f1a', theme_color: '#8b5cf6', dir: 'rtl', lang: 'fa',
-    icons: [
-      { src: iconUrl, sizes: '192x192', type: 'image/svg+xml', purpose: 'any' },
-      { src: iconUrl, sizes: '512x512', type: 'image/svg+xml', purpose: 'any' },
-      { src: iconUrl, sizes: '512x512', type: 'image/svg+xml', purpose: 'maskable' }
-    ]
-  };
-  const manifestUrl = 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(JSON.stringify(manifest));
-  document.getElementById('manifestLink').href = manifestUrl;
-  document.getElementById('appleIcon').href = iconUrl;
-})();
-
-/* ================== SERVICE WORKER REGISTRATION ================== */
+/* ================== SERVICE WORKER ================== */
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('./sw.js')
-      .then(reg => console.log('✓ Service Worker registered:', reg.scope))
-      .catch(err => console.log('✗ Service Worker failed:', err));
+      .then(r => console.log('SW ✓', r.scope))
+      .catch(e => console.log('SW ✗', e));
   });
 }
 
-const saved = localStorage.getItem('lastDay');
-if (saved && document.querySelector(`.tab[data-day="${saved}"]`)){ document.querySelector(`.tab[data-day="${saved}"]`).click(); }
-updateNotifBtn();
-updateNowBox();
-let lastMin = -1;
-setInterval(() => { const m = new Date().getMinutes(); if (m !== lastMin){ lastMin = m; updateNowBox(); } }, 5000);
-document.addEventListener('visibilitychange', () => { if (!document.hidden){ updateNowBox(); updateNotifBtn(); } });
+/* ================== INIT ================== */
+if (isAuthed()){
+  showApp();
+} else {
+  showLogin();
+  setTimeout(() => document.getElementById('username').focus(), 400);
+}
+
+setInterval(() => { if (isAuthed()) updateNowBox(); }, 30000);
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden && isAuthed()){ updateNowBox(); updateNotifBtn(); }
+});
 </script>
 
 </body>
