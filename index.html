@@ -2,334 +2,1429 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>برنامه هفتگی</title>
-<meta name="theme-color" content="#0f0f1a">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="برنامه من">
+<meta name="apple-mobile-web-app-title" content="برنامه">
 <meta name="mobile-web-app-capable" content="yes">
-<link rel="manifest" id="manifestLink" href="data:application/manifest+json,{}">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#F2F2F7">
+<meta name="format-detection" content="telephone=no">
+<title>برنامه هفتگی</title>
+
+<link rel="manifest" href="./manifest.json">
 <link rel="apple-touch-icon" id="appleIcon">
-<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="apple-touch-startup-image" id="splashImage">
+
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-  :root{ --bg:#0f0f1a; --card:#1e1e35; --text:#e8e8f0; --muted:#8b8ba7; --border:#2d2d4a; --accent:#8b5cf6; }
-  html { scroll-behavior:smooth; }
-  body{
-    font-family:'Vazirmatn',-apple-system,sans-serif;
-    background:var(--bg); color:var(--text); min-height:100vh;
-    padding:16px 12px 40px;
-    background-image:
-      radial-gradient(circle at 20% 10%, rgba(139,92,246,0.15) 0%, transparent 40%),
-      radial-gradient(circle at 80% 80%, rgba(6,182,212,0.1) 0%, transparent 40%);
-    background-attachment:fixed;
-    overflow-wrap:break-word;
-    word-break:break-word;
-  }
+/* ============================================
+   RESET + BASE
+   ============================================ */
+*, *::before, *::after {
+  margin: 0; padding: 0; box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
 
-  /* ============ LOGIN SCREEN ============ */
-  .login-screen{
-    position:fixed; inset:0; z-index:9999;
-    background:linear-gradient(135deg,#0f0f1a 0%,#1a1a2e 50%,#0f0f1a 100%);
-    display:flex; align-items:center; justify-content:center;
-    padding:20px;
-    background-image:
-      radial-gradient(circle at 20% 20%, rgba(139,92,246,0.25) 0%, transparent 50%),
-      radial-gradient(circle at 80% 80%, rgba(6,182,212,0.2) 0%, transparent 50%);
-    transition:opacity 0.4s ease, visibility 0.4s ease;
-  }
-  .login-screen.hidden{ opacity:0; visibility:hidden; pointer-events:none; }
-  .login-card{
-    width:100%; max-width:400px;
-    background:linear-gradient(135deg,rgba(30,30,53,0.95),rgba(37,37,64,0.95));
-    border-radius:28px; padding:32px 24px;
-    border:1px solid rgba(139,92,246,0.3);
-    box-shadow:0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(139,92,246,0.1) inset;
-    backdrop-filter:blur(20px);
-    animation:cardIn 0.5s cubic-bezier(0.34,1.56,0.64,1);
-  }
-  @keyframes cardIn{ from{ opacity:0; transform:translateY(20px) scale(0.95);} to{ opacity:1; transform:translateY(0) scale(1);} }
-  .login-logo{
-    width:88px; height:88px; margin:0 auto 20px;
-    border-radius:24px; overflow:hidden;
-    box-shadow:0 12px 32px rgba(139,92,246,0.5);
-    position:relative;
-  }
-  .login-logo svg{ width:100%; height:100%; display:block; }
-  .login-card h2{
-    font-size:22px; font-weight:800; text-align:center; margin-bottom:6px;
-    background:linear-gradient(135deg,#a78bfa,#06b6d4);
-    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-    background-clip:text;
-  }
-  .login-card .sub{
-    font-size:12.5px; color:#8b8ba7; text-align:center; margin-bottom:26px;
-  }
-  .login-form{ display:flex; flex-direction:column; gap:14px; }
-  .login-field{ position:relative; }
-  .login-field input{
-    width:100%; padding:15px 46px 15px 16px;
-    background:rgba(15,15,26,0.7);
-    border:1.5px solid rgba(139,92,246,0.2);
-    border-radius:14px; color:#fff; font-size:14px;
-    font-family:inherit; outline:none;
-    transition:all 0.25s ease;
-  }
-  .login-field input:focus{
-    border-color:rgba(139,92,246,0.7);
-    box-shadow:0 0 0 4px rgba(139,92,246,0.15);
-    background:rgba(15,15,26,0.9);
-  }
-  .login-field input::placeholder{ color:#5c5c78; }
-  .login-field .field-icon{
-    position:absolute; right:16px; top:50%; transform:translateY(-50%);
-    font-size:16px; color:#8b8ba7; pointer-events:none;
-  }
-  .login-btn{
-    padding:15px; border-radius:14px; border:none;
-    background:linear-gradient(135deg,#8b5cf6,#06b6d4);
-    color:#fff; font-size:15px; font-weight:800;
-    font-family:inherit; cursor:pointer; margin-top:8px;
-    transition:all 0.25s ease;
-    box-shadow:0 8px 24px rgba(139,92,246,0.4);
-    letter-spacing:0.5px;
-  }
-  .login-btn:active{ transform:scale(0.97); box-shadow:0 4px 12px rgba(139,92,246,0.3); }
-  .login-btn:disabled{ opacity:0.6; cursor:not-allowed; }
-  .login-error{
-    text-align:center; font-size:12.5px; color:#f87171;
-    min-height:18px; margin-top:4px;
-    transition:opacity 0.2s ease;
-  }
-  .login-hint{
-    text-align:center; margin-top:18px; font-size:11px; color:#5c5c78;
-    line-height:1.7;
-  }
+:root {
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
 
-  /* ============ APP ============ */
-  #appContent{ transition:opacity 0.3s ease; }
-  #appContent.hidden{ opacity:0; visibility:hidden; }
+  --ios-blue: #007AFF;
+  --ios-green: #34C759;
+  --ios-orange: #FF9500;
+  --ios-red: #FF3B30;
+  --ios-pink: #FF2D55;
+  --ios-purple: #AF52DE;
+  --ios-teal: #5AC8FA;
+  --ios-indigo: #5856D6;
+  --ios-yellow: #FFCC00;
 
-  .now-box{
-    background:linear-gradient(135deg,#1a1a2e,#252540);
-    border-radius:24px; padding:18px; margin-bottom:20px;
-    border:1px solid rgba(139,92,246,0.35);
-    box-shadow:0 8px 32px rgba(139,92,246,0.18);
-    position:relative; overflow:hidden;
-  }
-  .now-box::before{
-    content:''; position:absolute; top:0; left:0; right:0; height:3px;
-    background:linear-gradient(90deg,#8b5cf6,#06b6d4,#10b981,#8b5cf6);
-    background-size:200% 100%;
-    animation:shine 4s linear infinite;
-  }
-  @keyframes shine{ 0%{background-position:0% 50%} 100%{background-position:200% 50%} }
-  .now-header{
-    display:flex; justify-content:space-between; align-items:center;
-    padding-bottom:12px; margin-bottom:14px;
-    border-bottom:1px solid rgba(139,92,246,0.18);
-    gap:8px; flex-wrap:wrap;
-  }
-  .now-day-wrap{ display:flex; flex-direction:column; gap:2px; min-width:0; flex:1; }
-  .now-day{
-    font-size:14px; font-weight:700; color:#a78bfa;
-    padding:4px 12px; background:rgba(139,92,246,0.12);
-    border-radius:20px; display:inline-block; width:fit-content;
-  }
-  .now-date{ font-size:11px; color:#8b8ba7; padding-right:4px; }
-  .now-right{ display:flex; align-items:center; gap:6px; flex-shrink:0; }
-  .now-time{
-    font-size:24px; font-weight:800; color:#fff;
-    font-variant-numeric:tabular-nums; letter-spacing:1px;
-    background:linear-gradient(135deg,#fff,#a78bfa);
-    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-    background-clip:text;
-  }
-  .icon-btn{
-    width:36px; height:36px; border-radius:11px;
-    background:rgba(139,92,246,0.15);
-    border:1px solid rgba(139,92,246,0.3);
-    color:#a78bfa; font-size:15px;
-    cursor:pointer; display:flex; align-items:center; justify-content:center;
-    transition:all 0.2s ease; flex-shrink:0; font-family:inherit;
-  }
-  .icon-btn:active{ transform:scale(0.9); }
-  .icon-btn.on{ background:rgba(16,185,129,0.15); border-color:rgba(16,185,129,0.4); color:#34d399; }
-  .icon-btn.off{ opacity:0.4; }
-  .icon-btn.logout{ color:#f87171; background:rgba(248,113,113,0.12); border-color:rgba(248,113,113,0.3); }
+  --radius-card: 20px;
+  --radius-btn: 14px;
+  --radius-pill: 100px;
 
-  .now-label{ font-size:10px; font-weight:800; color:#a78bfa; letter-spacing:3px; margin-bottom:8px; padding-right:4px; }
-  .now-activity{
-    padding:14px; background:rgba(255,255,255,0.03);
-    border-radius:16px; margin-bottom:10px;
-    border-right:4px solid #8b5cf6; animation:fadeIn .35s ease;
-  }
-  .now-activity:last-child{ margin-bottom:0; }
-  .now-activity.uni{ border-color:#8b5cf6; }
-  .now-activity.lang{ border-color:#06b6d4; }
-  .now-activity.sport{ border-color:#10b981; }
-  .now-activity.work{ border-color:#f59e0b; }
-  .now-activity.free{ border-color:#64748b; }
-  .now-activity.sleep{ border-color:#475569; }
-  .now-activity.meal{ border-color:#ec4899; }
-  .now-activity.prep{ border-color:#94a3b8; }
-  .now-activity.travel{ border-color:#f97316; }
-  .now-activity.narges{ border-color:#ec4899; }
-  .now-activity-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:8px; margin-bottom:6px; flex-wrap:wrap; }
-  .now-activity-name{ font-size:17px; font-weight:800; color:#fff; line-height:1.4; flex:1; min-width:0; }
-  .now-activity-tag{ font-size:10px; font-weight:700; color:#fbbf24; background:rgba(251,191,36,0.12); padding:3px 9px; border-radius:20px; flex-shrink:0; white-space:nowrap; }
-  .now-activity-meta{ font-size:12px; color:#8b8ba7; margin-bottom:10px; }
-  .now-progress{ height:6px; background:rgba(255,255,255,0.06); border-radius:3px; overflow:hidden; margin-bottom:6px; }
-  .now-progress-bar{ height:100%; border-radius:3px; transition:width 0.6s ease; background:linear-gradient(90deg,#8b5cf6,#06b6d4); }
-  .now-progress-bar.uni{ background:linear-gradient(90deg,#6366f1,#8b5cf6); }
-  .now-progress-bar.lang{ background:linear-gradient(90deg,#06b6d4,#0891b2); }
-  .now-progress-bar.sport{ background:linear-gradient(90deg,#10b981,#059669); }
-  .now-progress-bar.work{ background:linear-gradient(90deg,#f59e0b,#d97706); }
-  .now-progress-bar.free{ background:linear-gradient(90deg,#64748b,#475569); }
-  .now-progress-bar.sleep{ background:linear-gradient(90deg,#475569,#1e293b); }
-  .now-progress-bar.meal{ background:linear-gradient(90deg,#f472b6,#ec4899); }
-  .now-progress-bar.prep{ background:linear-gradient(90deg,#94a3b8,#64748b); }
-  .now-progress-bar.travel{ background:linear-gradient(90deg,#fb923c,#f97316); }
-  .now-progress-bar.narges{ background:linear-gradient(90deg,#ec4899,#be185d); }
-  .now-progress-text{ font-size:11px; color:#8b8ba7; display:flex; justify-content:space-between; align-items:center; gap:6px; flex-wrap:wrap; }
-  .now-progress-text .rem{ color:#a78bfa; font-weight:600; }
-  .now-progress-text .times{ font-variant-numeric:tabular-nums; direction:ltr; }
-  .now-empty{ text-align:center; padding:24px 12px; color:#8b8ba7; font-size:14px; }
-  .now-nav{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px; }
-  .now-nav-item{ padding:12px; border-radius:14px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); position:relative; overflow:hidden; min-width:0; }
-  .now-nav-item.prev{ border-right:3px solid #64748b; }
-  .now-nav-item.next{ border-right:3px solid #8b5cf6; }
-  .now-nav-label{ font-size:10px; font-weight:800; color:#8b8ba7; letter-spacing:2px; margin-bottom:6px; }
-  .now-nav-item.next .now-nav-label{ color:#a78bfa; }
-  .now-nav-name{ font-size:13px; font-weight:700; color:#fff; line-height:1.4; margin-bottom:5px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; word-break:break-word; }
-  .now-nav-time{ font-size:10.5px; color:#8b8ba7; font-variant-numeric:tabular-nums; direction:rtl; text-align:right; }
-  .now-nav-day{ font-size:10px; color:#a78bfa; margin-top:3px; font-weight:600; }
+  --font-stack: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Vazirmatn', system-ui, sans-serif;
+}
 
-  .tabs{ display:flex; gap:6px; overflow-x:auto; padding-bottom:8px; margin-bottom:16px; scrollbar-width:none; }
-  .tabs::-webkit-scrollbar{ display:none; }
-  .tab{ flex-shrink:0; padding:10px 16px; border-radius:14px; background:var(--card); border:1px solid var(--border); color:var(--muted); font-size:13px; font-weight:600; cursor:pointer; transition:all 0.25s ease; font-family:inherit; white-space:nowrap; position:relative; }
-  .tab.active{ background:linear-gradient(135deg,#6366f1,#8b5cf6); color:#fff; border-color:transparent; box-shadow:0 6px 20px rgba(139,92,246,0.4); transform:translateY(-2px); }
-  .tab .tab-dot{ position:absolute; top:6px; left:6px; width:6px; height:6px; border-radius:50%; background:#10b981; box-shadow:0 0 6px rgba(16,185,129,0.8); animation:tabPulse 1.5s ease-in-out infinite; }
-  @keyframes tabPulse{ 0%,100%{ opacity:1; transform:scale(1); } 50%{ opacity:0.6; transform:scale(1.3); } }
-  .day{ display:none; animation:fadeIn 0.35s ease; }
-  .day.active{ display:block; }
-  @keyframes fadeIn{ from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
-  .day-title{ font-size:16px; font-weight:700; margin-bottom:14px; padding-right:6px; display:flex; align-items:center; gap:8px; color:#fff; }
-  .day-title::before{ content:''; width:4px; height:20px; border-radius:4px; background:linear-gradient(135deg,#6366f1,#8b5cf6); }
-  .item{ display:flex; gap:12px; margin-bottom:10px; scroll-margin-top:120px; }
-  .time-col{ flex-shrink:0; width:78px; display:flex; flex-direction:column; align-items:flex-end; padding-top:12px; }
-  .time{ font-size:11.5px; font-weight:600; color:var(--muted); direction:ltr; font-variant-numeric:tabular-nums; letter-spacing:-0.3px; }
-  .card{ flex:1; padding:12px 14px; border-radius:16px; background:var(--card); border:1px solid var(--border); position:relative; overflow:hidden; transition:all 0.3s ease; min-width:0; }
-  .card:active{ transform:scale(0.98); }
-  .card::before{ content:''; position:absolute; top:0; right:0; width:4px; height:100%; }
-  .card.uni::before{ background:linear-gradient(135deg,#6366f1,#8b5cf6); }
-  .card.lang::before{ background:linear-gradient(135deg,#06b6d4,#0891b2); }
-  .card.sport::before{ background:linear-gradient(135deg,#10b981,#059669); }
-  .card.work::before{ background:linear-gradient(135deg,#f59e0b,#d97706); }
-  .card.free::before{ background:linear-gradient(135deg,#64748b,#475569); }
-  .card.sleep::before{ background:linear-gradient(135deg,#1e293b,#0f172a); }
-  .card.meal::before{ background:linear-gradient(135deg,#f472b6,#ec4899); }
-  .card.prep::before{ background:linear-gradient(135deg,#94a3b8,#64748b); }
-  .card.travel::before{ background:linear-gradient(135deg,#fb923c,#f97316); }
-  .card.narges::before{ background:linear-gradient(135deg,#ec4899,#be185d); }
-  .item.active-now .card{ background:linear-gradient(135deg, rgba(139,92,246,0.18), rgba(6,182,212,0.12)); border-color:rgba(139,92,246,0.6); box-shadow:0 0 0 2px rgba(139,92,246,0.5), 0 8px 24px rgba(139,92,246,0.35); transform:scale(1.02); animation:activePulse 2.2s ease-in-out infinite; }
-  .item.active-now .time{ color:#a78bfa; font-weight:800; }
-  @keyframes activePulse{ 0%,100%{ box-shadow:0 0 0 2px rgba(139,92,246,0.5), 0 8px 24px rgba(139,92,246,0.35); } 50%{ box-shadow:0 0 0 3px rgba(167,139,250,0.8), 0 8px 32px rgba(139,92,246,0.55); } }
-  .item.active-now .card::after{ content:'▶ الان'; position:absolute; top:8px; left:8px; font-size:9.5px; font-weight:800; background:linear-gradient(135deg,#8b5cf6,#06b6d4); color:#fff; padding:3px 8px; border-radius:20px; letter-spacing:0.5px; }
-  .card .name{ font-size:13.5px; font-weight:600; color:#fff; line-height:1.5; margin-bottom:3px; }
-  .card .meta{ font-size:11.5px; color:var(--muted); line-height:1.5; }
-  .legend{ margin-top:24px; padding:16px; background:var(--card); border-radius:18px; border:1px solid var(--border); }
-  .legend h3{ font-size:13px; font-weight:700; margin-bottom:12px; color:#fff; }
-  .legend-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
-  .legend-item{ display:flex; align-items:center; gap:8px; font-size:11.5px; color:var(--muted); }
-  .dot{ width:10px; height:10px; border-radius:50%; flex-shrink:0; }
-  .dot.uni{ background:linear-gradient(135deg,#6366f1,#8b5cf6); }
-  .dot.lang{ background:linear-gradient(135deg,#06b6d4,#0891b2); }
-  .dot.sport{ background:linear-gradient(135deg,#10b981,#059669); }
-  .dot.work{ background:linear-gradient(135deg,#f59e0b,#d97706); }
-  .dot.free{ background:linear-gradient(135deg,#64748b,#475569); }
-  .dot.sleep{ background:linear-gradient(135deg,#1e293b,#0f172a); border:1px solid #334155; }
-  .dot.meal{ background:linear-gradient(135deg,#f472b6,#ec4899); }
-  .dot.narges{ background:linear-gradient(135deg,#ec4899,#be185d); }
-  .footer{ text-align:center; margin-top:24px; font-size:11px; color:var(--muted); line-height:1.8; }
-  .footer strong{ color:#a78bfa; }
-  .toast{ position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(100px); background:linear-gradient(135deg,#1e1e35,#252540); border:1px solid rgba(139,92,246,0.4); padding:12px 20px; border-radius:14px; font-size:13px; color:#fff; font-weight:600; box-shadow:0 8px 32px rgba(0,0,0,0.5); transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1); z-index:10000; max-width:calc(100% - 40px); text-align:center; }
-  .toast.show{ transform:translateX(-50%) translateY(0); }
+/* Light Mode */
+:root, :root[data-theme="light"] {
+  --bg: #F2F2F7;
+  --bg-elevated: #FFFFFF;
+  --bg-glass: rgba(255, 255, 255, 0.72);
+  --bg-card: rgba(255, 255, 255, 0.85);
+  --bg-card-active: rgba(0, 122, 255, 0.08);
+  --text: #000000;
+  --text-secondary: #3C3C43;
+  --text-tertiary: #8E8E93;
+  --text-quaternary: #C7C7CC;
+  --border: rgba(60, 60, 67, 0.12);
+  --border-strong: rgba(60, 60, 67, 0.24);
+  --divider: rgba(60, 60, 67, 0.08);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.04);
+  --shadow-elevated: 0 8px 28px rgba(0, 0, 0, 0.10), 0 2px 6px rgba(0, 0, 0, 0.04);
+  --glass-blur: saturate(180%) blur(24px);
+  --overlay: rgba(0, 0, 0, 0.32);
+}
 
-  /* ============ INSTALL MODAL ============ */
-  .modal-overlay{
-    position:fixed; inset:0; z-index:9998;
-    background:rgba(0,0,0,0.7);
-    backdrop-filter:blur(6px);
-    display:flex; align-items:center; justify-content:center;
-    padding:20px;
-    opacity:0; visibility:hidden;
-    transition:all 0.3s ease;
+/* Dark Mode */
+:root[data-theme="dark"] {
+  --bg: #000000;
+  --bg-elevated: #1C1C1E;
+  --bg-glass: rgba(28, 28, 30, 0.72);
+  --bg-card: rgba(28, 28, 30, 0.88);
+  --bg-card-active: rgba(10, 132, 255, 0.16);
+  --text: #FFFFFF;
+  --text-secondary: rgba(235, 235, 245, 0.72);
+  --text-tertiary: rgba(235, 235, 245, 0.45);
+  --text-quaternary: rgba(235, 235, 245, 0.24);
+  --border: rgba(255, 255, 255, 0.10);
+  --border-strong: rgba(255, 255, 255, 0.20);
+  --divider: rgba(255, 255, 255, 0.06);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-elevated: 0 8px 28px rgba(0, 0, 0, 0.6);
+  --glass-blur: saturate(180%) blur(24px);
+  --overlay: rgba(0, 0, 0, 0.55);
+}
+
+/* حالت‌های دسترس‌پذیری */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
   }
-  .modal-overlay.show{ opacity:1; visibility:visible; }
-  .modal-card{
-    width:100%; max-width:400px;
-    background:linear-gradient(135deg,#1e1e35,#252540);
-    border-radius:24px; padding:26px 22px;
-    border:1px solid rgba(139,92,246,0.35);
-    box-shadow:0 20px 60px rgba(0,0,0,0.6);
-    transform:scale(0.9);
-    transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
-    max-height:90vh; overflow-y:auto;
-  }
-  .modal-overlay.show .modal-card{ transform:scale(1); }
-  .modal-icon{
-    width:72px; height:72px; margin:0 auto 16px;
-    border-radius:20px; overflow:hidden;
-    box-shadow:0 8px 24px rgba(139,92,246,0.4);
-  }
-  .modal-icon svg{ width:100%; height:100%; display:block; }
-  .modal-card h3{
-    font-size:18px; font-weight:800; text-align:center; margin-bottom:6px; color:#fff;
-  }
-  .modal-card .modal-sub{
-    font-size:12.5px; color:#8b8ba7; text-align:center; margin-bottom:20px;
-  }
-  .install-steps{
-    display:flex; flex-direction:column; gap:12px;
-    margin-bottom:20px;
-  }
-  .install-step{
-    display:flex; gap:12px; align-items:flex-start;
-    padding:12px; background:rgba(255,255,255,0.03);
-    border-radius:14px; border-right:3px solid #8b5cf6;
-  }
-  .install-step .step-num{
-    width:26px; height:26px; flex-shrink:0;
-    border-radius:50%; background:linear-gradient(135deg,#8b5cf6,#06b6d4);
-    display:flex; align-items:center; justify-content:center;
-    font-size:12px; font-weight:800; color:#fff;
-  }
-  .install-step .step-text{
-    font-size:12.5px; color:#e8e8f0; line-height:1.7; flex:1;
-  }
-  .install-step .step-text b{ color:#a78bfa; }
-  .modal-actions{ display:flex; gap:10px; }
-  .modal-btn{
-    flex:1; padding:13px; border-radius:14px; border:none;
-    font-family:inherit; font-size:14px; font-weight:700;
-    cursor:pointer; transition:all 0.2s ease;
-  }
-  .modal-btn.primary{
-    background:linear-gradient(135deg,#8b5cf6,#06b6d4);
-    color:#fff;
-    box-shadow:0 6px 20px rgba(139,92,246,0.4);
-  }
-  .modal-btn.secondary{
-    background:rgba(139,92,246,0.12);
-    color:#a78bfa;
-    border:1px solid rgba(139,92,246,0.3);
-  }
-  .modal-btn:active{ transform:scale(0.97); }
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-stack);
+  font-weight: 400;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  overscroll-behavior-y: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: -50%;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(10, 132, 255, 0.15) 0%, transparent 45%),
+    radial-gradient(circle at 80% 85%, rgba(90, 200, 250, 0.12) 0%, transparent 45%);
+  pointer-events: none;
+  z-index: -1;
+  animation: bgFloat 20s ease-in-out infinite alternate;
+}
+
+@keyframes bgFloat {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-3%, -3%) scale(1.05); }
+}
+
+/* ============================================
+   LOGIN
+   ============================================ */
+.login-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  padding-top: calc(20px + var(--safe-top));
+  padding-bottom: calc(20px + var(--safe-bottom));
+  background: var(--bg);
+  transition: opacity 0.45s cubic-bezier(0.32, 0.72, 0, 1),
+              transform 0.45s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.login-screen.hidden {
+  opacity: 0;
+  transform: scale(1.04);
+  pointer-events: none;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  background: var(--bg-glass);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-radius: 28px;
+  padding: 36px 26px 28px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-elevated);
+  animation: loginIn 0.6s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@keyframes loginIn {
+  from { opacity: 0; transform: translateY(30px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.login-logo {
+  width: 84px;
+  height: 84px;
+  margin: 0 auto 22px;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 12px 32px rgba(10, 132, 255, 0.35);
+  animation: logoBreathe 4s ease-in-out infinite;
+}
+
+@keyframes logoBreathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+
+.login-logo svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.login-card h2 {
+  font-size: 26px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 6px;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+.login-card .sub {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.login-field {
+  position: relative;
+}
+
+.login-field input {
+  width: 100%;
+  padding: 16px 48px 16px 16px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  color: var(--text);
+  font-size: 16px;
+  font-family: inherit;
+  outline: none;
+  transition: all 0.2s cubic-bezier(0.32, 0.72, 0, 1);
+  letter-spacing: -0.01em;
+}
+
+.login-field input:focus {
+  border-color: var(--ios-blue);
+  box-shadow: 0 0 0 4px rgba(10, 132, 255, 0.15);
+  background: var(--bg-card);
+}
+
+.login-field input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.login-field .field-icon {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-tertiary);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-field .field-icon svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+}
+
+.login-btn {
+  padding: 16px;
+  border-radius: 14px;
+  border: none;
+  background: var(--ios-blue);
+  color: #FFFFFF;
+  font-size: 17px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: all 0.2s cubic-bezier(0.32, 0.72, 0, 1);
+  letter-spacing: -0.01em;
+}
+
+.login-btn:active {
+  transform: scale(0.97);
+  background: #0062CC;
+}
+
+.login-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.login-error {
+  text-align: center;
+  font-size: 13px;
+  color: var(--ios-red);
+  min-height: 18px;
+  margin-top: 2px;
+}
+
+.login-hint {
+  text-align: center;
+  margin-top: 22px;
+  font-size: 11.5px;
+  color: var(--text-tertiary);
+  line-height: 1.6;
+}
+
+/* ============================================
+   APP WRAPPER
+   ============================================ */
+#appContent {
+  padding-top: calc(8px + var(--safe-top));
+  padding-bottom: calc(32px + var(--safe-bottom));
+  padding-left: calc(16px + var(--safe-left));
+  padding-right: calc(16px + var(--safe-right));
+  transition: opacity 0.4s ease;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+#appContent.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* ============================================
+   OFFLINE INDICATOR
+   ============================================ */
+.offline-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 900;
+  padding: calc(var(--safe-top) + 8px) 16px 8px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
+  background: var(--ios-orange);
+  color: #FFFFFF;
+  transform: translateY(-100%);
+  transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+  letter-spacing: -0.01em;
+}
+
+.offline-bar.show {
+  transform: translateY(0);
+}
+
+/* ============================================
+   WEEK VIEW (ایده ۱)
+   ============================================ */
+.week-view {
+  margin-bottom: 18px;
+  background: var(--bg-glass);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-radius: 20px;
+  padding: 12px 8px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.week-view::-webkit-scrollbar { display: none; }
+
+.week-day {
+  flex: 1;
+  min-width: 44px;
+  padding: 8px 2px;
+  border-radius: 14px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.32, 0.72, 0, 1);
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  color: var(--text-secondary);
+  position: relative;
+}
+
+.week-day:active { transform: scale(0.94); }
+
+.week-day .wd-name {
+  font-size: 10.5px;
+  font-weight: 500;
+  margin-bottom: 4px;
+  opacity: 0.7;
+}
+
+.week-day .wd-num {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.week-day.today {
+  background: var(--ios-blue);
+  color: #FFFFFF;
+}
+
+.week-day.today .wd-name { opacity: 0.9; }
+
+.week-day.selected:not(.today) {
+  background: var(--bg-card-active);
+  color: var(--ios-blue);
+}
+
+.week-day .wd-dot {
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--ios-blue);
+  opacity: 0.6;
+}
+
+.week-day.today .wd-dot {
+  background: #FFFFFF;
+  opacity: 1;
+}
+
+/* ============================================
+   NOW BOX
+   ============================================ */
+.now-box {
+  background: var(--bg-glass);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-radius: 24px;
+  padding: 18px;
+  margin-bottom: 18px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-elevated);
+  position: relative;
+  overflow: hidden;
+}
+
+.now-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(10, 132, 255, 0.5) 30%,
+    rgba(90, 200, 250, 0.5) 70%,
+    transparent 100%);
+}
+
+.now-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--divider);
+  gap: 10px;
+}
+
+.now-day-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+.now-day {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+.now-date {
+  font-size: 11.5px;
+  color: var(--text-tertiary);
+}
+
+.now-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.now-time {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  direction: ltr;
+}
+
+.icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s cubic-bezier(0.32, 0.72, 0, 1);
+  flex-shrink: 0;
+  font-family: inherit;
+}
+
+.icon-btn svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.icon-btn:active {
+  transform: scale(0.9);
+  background: var(--bg-card-active);
+}
+
+.icon-btn.on {
+  color: var(--ios-green);
+  border-color: rgba(52, 199, 89, 0.3);
+  background: rgba(52, 199, 89, 0.10);
+}
+
+.icon-btn.off {
+  opacity: 0.4;
+}
+
+.icon-btn.logout {
+  color: var(--ios-red);
+  border-color: rgba(255, 59, 48, 0.2);
+}
+
+.now-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.now-activity {
+  padding: 14px;
+  background: var(--bg-card);
+  border-radius: 16px;
+  margin-bottom: 10px;
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+  animation: fadeSlideIn 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.now-activity:last-child { margin-bottom: 0; }
+
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.now-activity::before {
+  content: '';
+  position: absolute;
+  top: 12px;
+  bottom: 12px;
+  right: 0;
+  width: 3px;
+  border-radius: 3px;
+  background: var(--ios-blue);
+}
+
+.now-activity.uni::before { background: var(--ios-blue); }
+.now-activity.lang::before { background: var(--ios-teal); }
+.now-activity.sport::before { background: var(--ios-green); }
+.now-activity.work::before { background: var(--ios-orange); }
+.now-activity.free::before { background: var(--text-tertiary); }
+.now-activity.sleep::before { background: var(--ios-indigo); }
+.now-activity.meal::before { background: var(--ios-pink); }
+.now-activity.prep::before { background: var(--text-tertiary); }
+.now-activity.travel::before { background: var(--ios-orange); }
+
+.now-activity-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+
+.now-activity-name {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.35;
+  flex: 1;
+  min-width: 0;
+  letter-spacing: -0.02em;
+}
+
+.now-activity-tag {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--ios-orange);
+  background: rgba(255, 149, 0, 0.12);
+  padding: 3px 9px;
+  border-radius: var(--radius-pill);
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.now-activity-meta {
+  font-size: 12.5px;
+  color: var(--text-tertiary);
+  margin-bottom: 10px;
+}
+
+.now-progress {
+  height: 4px;
+  background: var(--divider);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.now-progress-bar {
+  height: 100%;
+  border-radius: 2px;
+  background: var(--ios-blue);
+  transition: width 0.6s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.now-progress-bar.uni { background: var(--ios-blue); }
+.now-progress-bar.lang { background: var(--ios-teal); }
+.now-progress-bar.sport { background: var(--ios-green); }
+.now-progress-bar.work { background: var(--ios-orange); }
+.now-progress-bar.free { background: var(--text-tertiary); }
+.now-progress-bar.sleep { background: var(--ios-indigo); }
+.now-progress-bar.meal { background: var(--ios-pink); }
+.now-progress-bar.prep { background: var(--text-tertiary); }
+.now-progress-bar.travel { background: var(--ios-orange); }
+
+.now-progress-text {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  color: var(--text-tertiary);
+  flex-wrap: wrap;
+}
+
+.now-progress-text .rem {
+  color: var(--ios-blue);
+  font-weight: 600;
+}
+
+.now-progress-text .times {
+  font-variant-numeric: tabular-nums;
+  direction: ltr;
+}
+
+.now-empty {
+  text-align: center;
+  padding: 22px 12px;
+  color: var(--text-tertiary);
+  font-size: 14px;
+}
+
+.now-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.now-nav-item {
+  padding: 12px;
+  border-radius: 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  min-width: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.now-nav-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.now-nav-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.4;
+  margin-bottom: 5px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  letter-spacing: -0.01em;
+}
+
+.now-nav-time {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums;
+}
+
+.now-nav-day {
+  font-size: 10.5px;
+  color: var(--ios-blue);
+  margin-top: 3px;
+  font-weight: 500;
+}
+
+/* ============================================
+   TABS (Segmented style)
+   ============================================ */
+.tabs {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding: 4px;
+  margin-bottom: 16px;
+  scrollbar-width: none;
+  background: var(--bg-card);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+}
+
+.tabs::-webkit-scrollbar { display: none; }
+
+.tab {
+  flex-shrink: 0;
+  padding: 9px 14px;
+  border-radius: 10px;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.32, 0.72, 0, 1);
+  font-family: inherit;
+  white-space: nowrap;
+  position: relative;
+  letter-spacing: -0.01em;
+}
+
+.tab.active {
+  background: var(--bg-elevated);
+  color: var(--text);
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+:root[data-theme="dark"] .tab.active {
+  background: rgba(120, 120, 128, 0.32);
+  box-shadow: none;
+}
+
+.tab .tab-dot {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--ios-green);
+}
+
+/* ============================================
+   DAY VIEW
+   ============================================ */
+.day {
+  display: none;
+  animation: fadeSlideIn 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.day.active { display: block; }
+
+.day-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: var(--text);
+  padding-right: 4px;
+  letter-spacing: -0.03em;
+}
+
+.item {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 8px;
+  scroll-margin-top: 100px;
+  transition: transform 0.2s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.item.pressing {
+  transform: scale(0.98);
+}
+
+.time-col {
+  flex-shrink: 0;
+  width: 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding-top: 14px;
+}
+
+.time {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  direction: ltr;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  line-height: 1.4;
+}
+
+.card {
+  flex: 1;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+  min-width: 0;
+  cursor: pointer;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 12px;
+  bottom: 12px;
+  right: 0;
+  width: 3px;
+  border-radius: 3px;
+  background: var(--ios-blue);
+}
+
+.card.uni::before { background: var(--ios-blue); }
+.card.lang::before { background: var(--ios-teal); }
+.card.sport::before { background: var(--ios-green); }
+.card.work::before { background: var(--ios-orange); }
+.card.free::before { background: var(--text-tertiary); }
+.card.sleep::before { background: var(--ios-indigo); }
+.card.meal::before { background: var(--ios-pink); }
+.card.prep::before { background: var(--text-tertiary); }
+.card.travel::before { background: var(--ios-orange); }
+
+.card .name {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.4;
+  margin-bottom: 3px;
+  letter-spacing: -0.01em;
+}
+
+.card .meta {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  line-height: 1.4;
+}
+
+/* Active Now Highlight */
+.item.active-now .card {
+  background: var(--bg-card-active);
+  border-color: rgba(10, 132, 255, 0.4);
+  box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.12);
+  transform: scale(1.015);
+}
+
+.item.active-now .time {
+  color: var(--ios-blue);
+  font-weight: 700;
+}
+
+.item.active-now .card::after {
+  content: 'الان';
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #FFFFFF;
+  background: var(--ios-blue);
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  letter-spacing: 0.02em;
+}
+
+/* ============================================
+   LEGEND
+   ============================================ */
+.legend {
+  margin-top: 22px;
+  padding: 16px;
+  background: var(--bg-card);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+}
+
+.legend h3 {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+
+.legend-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dot.uni { background: var(--ios-blue); }
+.dot.lang { background: var(--ios-teal); }
+.dot.sport { background: var(--ios-green); }
+.dot.work { background: var(--ios-orange); }
+.dot.free { background: var(--text-tertiary); }
+.dot.sleep { background: var(--ios-indigo); }
+.dot.meal { background: var(--ios-pink); }
+
+/* ============================================
+   FOOTER
+   ============================================ */
+.footer {
+  text-align: center;
+  margin-top: 22px;
+  font-size: 11.5px;
+  color: var(--text-tertiary);
+  line-height: 1.7;
+}
+
+.footer strong {
+  color: var(--ios-blue);
+  font-weight: 600;
+}
+
+/* ============================================
+   QUICK ACTIONS SHEET (ایده ۲)
+   ============================================ */
+.sheet-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  background: var(--overlay);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s cubic-bezier(0.32, 0.72, 0, 1),
+              visibility 0.3s;
+}
+
+.sheet-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.sheet {
+  width: 100%;
+  max-width: 500px;
+  background: var(--bg-elevated);
+  border-radius: 24px 24px 0 0;
+  padding: 12px 16px calc(20px + var(--safe-bottom));
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.sheet-overlay.show .sheet {
+  transform: translateY(0);
+}
+
+.sheet-handle {
+  width: 36px;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--text-quaternary);
+  margin: 0 auto 16px;
+}
+
+.sheet-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+  letter-spacing: -0.02em;
+}
+
+.sheet-subtitle {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  margin-bottom: 18px;
+}
+
+.sheet-action {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  border-radius: 14px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s;
+  width: 100%;
+  text-align: right;
+  font-family: inherit;
+  color: var(--text);
+  border-bottom: 1px solid var(--divider);
+}
+
+.sheet-action:last-child { border-bottom: none; }
+
+.sheet-action:active {
+  background: var(--bg-card-active);
+}
+
+.sheet-action-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: var(--bg-card);
+}
+
+.sheet-action-icon svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sheet-action.blue .sheet-action-icon { background: rgba(10, 132, 255, 0.15); color: var(--ios-blue); }
+.sheet-action.green .sheet-action-icon { background: rgba(52, 199, 89, 0.15); color: var(--ios-green); }
+.sheet-action.orange .sheet-action-icon { background: rgba(255, 149, 0, 0.15); color: var(--ios-orange); }
+.sheet-action.red .sheet-action-icon { background: rgba(255, 59, 48, 0.15); color: var(--ios-red); }
+.sheet-action.gray .sheet-action-icon { background: var(--bg-card); color: var(--text-secondary); }
+
+.sheet-action-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.sheet-action-label {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+.sheet-action-desc {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  margin-top: 2px;
+}
+
+/* ============================================
+   PULL TO REFRESH (ایده ۱)
+   ============================================ */
+.ptr-indicator {
+  position: fixed;
+  top: calc(var(--safe-top) + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-80px) scale(0.6);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--bg-glass);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.25s cubic-bezier(0.32, 0.72, 0, 1),
+              opacity 0.25s;
+  opacity: 0;
+  z-index: 800;
+  pointer-events: none;
+}
+
+.ptr-indicator.visible {
+  opacity: 1;
+}
+
+.ptr-indicator.loading svg {
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.ptr-indicator svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--ios-blue);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+/* ============================================
+   TOAST
+   ============================================ */
+.toast {
+  position: fixed;
+  bottom: calc(24px + var(--safe-bottom));
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--bg-glass);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border);
+  padding: 12px 20px;
+  border-radius: var(--radius-pill);
+  font-size: 13.5px;
+  color: var(--text);
+  font-weight: 500;
+  box-shadow: var(--shadow-elevated);
+  transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+  z-index: 2000;
+  max-width: calc(100% - 40px);
+  text-align: center;
+  letter-spacing: -0.01em;
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ============================================
+   INSTALL GUIDE MODAL (ایده ۴)
+   ============================================ */
+.install-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  background: var(--overlay);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  padding-top: calc(20px + var(--safe-top));
+  padding-bottom: calc(20px + var(--safe-bottom));
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s cubic-bezier(0.32, 0.72, 0, 1),
+              visibility 0.35s;
+}
+
+.install-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.install-card {
+  width: 100%;
+  max-width: 400px;
+  background: var(--bg-glass);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-radius: 24px;
+  padding: 28px 22px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-elevated);
+  transform: scale(0.92);
+  transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.install-overlay.show .install-card {
+  transform: scale(1);
+}
+
+.install-icon {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 16px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 28px rgba(10, 132, 255, 0.35);
+}
+
+.install-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.install-card h3 {
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 6px;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+.install-card .modal-sub {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+.install-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.install-step {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 12px;
+  background: var(--bg-card);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.install-step .step-num {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--ios-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.install-step .step-text {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.6;
+  flex: 1;
+}
+
+.install-step .step-text b {
+  color: var(--ios-blue);
+  font-weight: 600;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.modal-btn {
+  flex: 1;
+  padding: 14px;
+  border-radius: 14px;
+  border: none;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.32, 0.72, 0, 1);
+  letter-spacing: -0.01em;
+}
+
+.modal-btn.primary {
+  background: var(--ios-blue);
+  color: #FFFFFF;
+}
+
+.modal-btn.primary:active {
+  transform: scale(0.97);
+  background: #0062CC;
+}
+
+.modal-btn.secondary {
+  background: var(--bg-card);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.modal-btn.secondary:active {
+  transform: scale(0.97);
+  background: var(--bg-card-active);
+}
+
+/* ============================================
+   SPLASH SCREEN (ایده ۴)
+   ============================================ */
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 5000;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+  transition: opacity 0.5s ease, visibility 0.5s;
+}
+
+.splash.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.splash-logo {
+  width: 96px;
+  height: 96px;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 16px 40px rgba(10, 132, 255, 0.35);
+  animation: splashIn 0.7s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.splash-logo svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+@keyframes splashIn {
+  from { opacity: 0; transform: scale(0.7); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.splash-text {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: -0.01em;
+  animation: splashFade 0.7s 0.2s both cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@keyframes splashFade {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 </style>
 </head>
 <body>
+
+<!-- ============ SPLASH ============ -->
+<div class="splash" id="splash">
+  <div class="splash-logo" id="splashLogo"></div>
+  <div class="splash-text">برنامه هفتگی</div>
+</div>
+
+<!-- ============ OFFLINE BAR ============ -->
+<div class="offline-bar" id="offlineBar">📴 آفلاین هستی — نسخه ذخیره‌شده</div>
+
+<!-- ============ PULL TO REFRESH ============ -->
+<div class="ptr-indicator" id="ptrIndicator">
+  <svg viewBox="0 0 24 24">
+    <path d="M12 3v12M6 9l6 6 6-6"/>
+  </svg>
+</div>
 
 <!-- ============ LOGIN ============ -->
 <div class="login-screen" id="loginScreen">
@@ -339,12 +1434,16 @@
     <p class="sub">برای دیدن برنامه وارد شوید</p>
     <form class="login-form" id="loginForm" autocomplete="off">
       <div class="login-field">
-        <input type="email" id="username" placeholder="ایمیل" autocomplete="username" required>
-        <span class="field-icon">👤</span>
+        <input type="email" id="username" placeholder="ایمیل" autocomplete="username" inputmode="email" required>
+        <span class="field-icon">
+          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></svg>
+        </span>
       </div>
       <div class="login-field">
         <input type="password" id="password" placeholder="رمز عبور" autocomplete="current-password" required>
-        <span class="field-icon">🔒</span>
+        <span class="field-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </span>
       </div>
       <button type="submit" class="login-btn" id="loginBtn">ورود</button>
       <div class="login-error" id="loginError"></div>
@@ -356,7 +1455,11 @@
 <!-- ============ APP ============ -->
 <div id="appContent" class="hidden">
 
-  <div class="now-box" id="nowBox">
+  <!-- Week View -->
+  <div class="week-view" id="weekView"></div>
+
+  <!-- Now Box -->
+  <div class="now-box">
     <div class="now-header">
       <div class="now-day-wrap">
         <span class="now-day" id="nowDay">—</span>
@@ -364,8 +1467,12 @@
       </div>
       <div class="now-right">
         <span class="now-time" id="nowTime">—:—</span>
-        <button class="icon-btn" id="notifBtn" title="یادآوری">🔔</button>
-        <button class="icon-btn logout" id="logoutBtn" title="خروج">⏻</button>
+        <button class="icon-btn" id="themeBtn" title="تغییر تم">
+          <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <button class="icon-btn logout" id="logoutBtn" title="خروج">
+          <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+        </button>
       </div>
     </div>
     <div class="now-label">الان</div>
@@ -382,6 +1489,7 @@
     </div>
   </div>
 
+  <!-- Tabs -->
   <div class="tabs" id="tabs">
     <button class="tab active" data-day="sat">شنبه</button>
     <button class="tab" data-day="sun">یکشنبه</button>
@@ -392,6 +1500,7 @@
     <button class="tab" data-day="fri">جمعه</button>
   </div>
 
+  <!-- Days -->
   <div class="day active" id="sat"></div>
   <div class="day" id="sun"></div>
   <div class="day" id="mon"></div>
@@ -400,6 +1509,7 @@
   <div class="day" id="thu"></div>
   <div class="day" id="fri"></div>
 
+  <!-- Legend -->
   <div class="legend">
     <h3>راهنمای رنگ‌ها</h3>
     <div class="legend-grid">
@@ -410,7 +1520,6 @@
       <div class="legend-item"><span class="dot free"></span>آزاد</div>
       <div class="legend-item"><span class="dot sleep"></span>خواب</div>
       <div class="legend-item"><span class="dot meal"></span>وعده غذایی</div>
-      <div class="legend-item"><span class="dot narges"></span>کلاس نرگس</div>
     </div>
   </div>
 
@@ -419,12 +1528,22 @@
   </div>
 </div>
 
-<!-- ============ INSTALL MODAL ============ -->
-<div class="modal-overlay" id="installModal">
-  <div class="modal-card">
-    <div class="modal-icon" id="modalIcon"></div>
+<!-- ============ QUICK ACTIONS SHEET ============ -->
+<div class="sheet-overlay" id="sheetOverlay">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title" id="sheetTitle">—</div>
+    <div class="sheet-subtitle" id="sheetSubtitle">—</div>
+    <div id="sheetActions"></div>
+  </div>
+</div>
+
+<!-- ============ INSTALL GUIDE ============ -->
+<div class="install-overlay" id="installOverlay">
+  <div class="install-card">
+    <div class="install-icon" id="installIcon"></div>
     <h3>اپ را نصب کن!</h3>
-    <p class="modal-sub">این اپ آفلاین کار می‌کند و همیشه همراهت است</p>
+    <p class="modal-sub">آفلاین کار می‌کند و همیشه همراهت است</p>
     <div class="install-steps" id="installSteps"></div>
     <div class="modal-actions">
       <button class="modal-btn secondary" id="installLater">بعداً</button>
@@ -433,42 +1552,43 @@
   </div>
 </div>
 
+<!-- ============ TOAST ============ -->
 <div class="toast" id="toast"></div>
 
 <script>
-/* ================== ICON ================== */
+/* ============================================
+   CONSTANTS + ICON
+   ============================================ */
 const ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <defs>
     <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#8b5cf6"/>
-      <stop offset="1" stop-color="#06b6d4"/>
-    </linearGradient>
-    <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#ffffff"/>
-      <stop offset="1" stop-color="#e8e8f0"/>
+      <stop offset="0" stop-color="#007AFF"/>
+      <stop offset="1" stop-color="#5AC8FA"/>
     </linearGradient>
   </defs>
   <rect width="512" height="512" rx="112" fill="url(#g)"/>
-  <rect x="88" y="148" width="336" height="300" rx="34" fill="url(#g2)"/>
-  <rect x="88" y="148" width="336" height="76" rx="34" fill="#1a1a2e"/>
-  <rect x="88" y="190" width="336" height="34" fill="#1a1a2e"/>
-  <rect x="150" y="112" width="26" height="76" rx="13" fill="#1a1a2e"/>
-  <rect x="336" y="112" width="26" height="76" rx="13" fill="#1a1a2e"/>
-  <circle cx="172" cy="278" r="19" fill="#8b5cf6"/>
-  <circle cx="256" cy="278" r="19" fill="#06b6d4"/>
-  <circle cx="340" cy="278" r="19" fill="#10b981"/>
-  <circle cx="172" cy="356" r="19" fill="#f59e0b"/>
-  <circle cx="256" cy="356" r="19" fill="#ec4899"/>
-  <circle cx="340" cy="356" r="19" fill="#6366f1"/>
+  <rect x="88" y="148" width="336" height="300" rx="34" fill="#ffffff"/>
+  <rect x="88" y="148" width="336" height="76" rx="34" fill="#1C1C1E"/>
+  <rect x="88" y="190" width="336" height="34" fill="#1C1C1E"/>
+  <rect x="150" y="112" width="26" height="76" rx="13" fill="#1C1C1E"/>
+  <rect x="336" y="112" width="26" height="76" rx="13" fill="#1C1C1E"/>
+  <circle cx="172" cy="278" r="19" fill="#007AFF"/>
+  <circle cx="256" cy="278" r="19" fill="#5AC8FA"/>
+  <circle cx="340" cy="278" r="19" fill="#34C759"/>
+  <circle cx="172" cy="356" r="19" fill="#FF9500"/>
+  <circle cx="256" cy="356" r="19" fill="#FF2D55"/>
+  <circle cx="340" cy="356" r="19" fill="#AF52DE"/>
 </svg>`;
 
 document.getElementById('loginLogo').innerHTML = ICON_SVG;
-document.getElementById('modalIcon').innerHTML = ICON_SVG;
+document.getElementById('splashLogo').innerHTML = ICON_SVG;
+document.getElementById('installIcon').innerHTML = ICON_SVG;
 
+/* ساخت apple-touch-icon به صورت PNG */
 function svgToPng(svgString, size) {
   return new Promise((resolve, reject) => {
     const img = new Image();
-    const blob = new Blob([svgString], {type: 'image/svg+xml;charset=utf-8'});
+    const blob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     img.onload = () => {
       try {
@@ -479,43 +1599,58 @@ function svgToPng(svgString, size) {
         ctx.drawImage(img, 0, 0, size, size);
         URL.revokeObjectURL(url);
         resolve(canvas.toDataURL('image/png'));
-      } catch(e){ reject(e); }
+      } catch (e) { reject(e); }
     };
     img.onerror = reject;
     img.src = url;
   });
 }
 
-svgToPng(ICON_SVG, 512).then(pngUrl => {
-  document.getElementById('appleIcon').href = pngUrl;
-  const manifest = {
-    name: 'برنامه هفتگی',
-    short_name: 'برنامه',
-    description: 'برنامه هفتگی',
-    start_url: './',
-    scope: './',
-    display: 'standalone',
-    orientation: 'portrait',
-    background_color: '#0f0f1a',
-    theme_color: '#8b5cf6',
-    dir: 'rtl',
-    lang: 'fa',
-    icons: [
-      { src: pngUrl, sizes: '192x192', type: 'image/png', purpose: 'any' },
-      { src: pngUrl, sizes: '512x512', type: 'image/png', purpose: 'any' },
-      { src: pngUrl, sizes: '512x512', type: 'image/png', purpose: 'maskable' }
-    ]
-  };
-  const manifestUrl = 'data:application/manifest+json;charset=utf-8,' +
-    encodeURIComponent(JSON.stringify(manifest));
-  document.getElementById('manifestLink').href = manifestUrl;
-}).catch(e => console.log('Icon error:', e));
+svgToPng(ICON_SVG, 512).then(png => {
+  document.getElementById('appleIcon').href = png;
+}).catch(() => {});
 
-/* ================== AUTH ================== */
+/* ============================================
+   THEME (ایده: حالت شب/روز)
+   ============================================ */
+const THEME_KEY = 'barnameh_theme_v1';
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  try { localStorage.setItem(THEME_KEY, theme); } catch(e){}
+}
+
+function initTheme() {
+  let saved;
+  try { saved = localStorage.getItem(THEME_KEY); } catch(e){}
+  if (saved === 'dark' || saved === 'light') {
+    applyTheme(saved);
+  } else {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    applyTheme(prefersDark ? 'dark' : 'light');
+  }
+}
+
+initTheme();
+
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+  let saved;
+  try { saved = localStorage.getItem(THEME_KEY); } catch(err){}
+  if (!saved) applyTheme(e.matches ? 'dark' : 'light');
+});
+
+document.getElementById('themeBtn').addEventListener('click', () => {
+  const current = document.documentElement.getAttribute('data-theme');
+  applyTheme(current === 'dark' ? 'light' : 'dark');
+});
+
+/* ============================================
+   AUTH
+   ============================================ */
 const CORRECT_USER = 'mok20id@gmail.com';
 const CORRECT_PASS = 'M@12345678';
-const AUTH_KEY = 'barnameh_auth_v1';
-const INSTALL_KEY = 'barnameh_install_seen_v1';
+const AUTH_KEY = 'barnameh_auth_v2';
+const INSTALL_KEY = 'barnameh_install_seen_v2';
 
 const loginScreen = document.getElementById('loginScreen');
 const appContent = document.getElementById('appContent');
@@ -523,40 +1658,39 @@ const loginForm = document.getElementById('loginForm');
 const loginError = document.getElementById('loginError');
 const loginBtn = document.getElementById('loginBtn');
 
-function isAuthed(){
+function isAuthed() {
   try { return localStorage.getItem(AUTH_KEY) === 'ok'; } catch(e){ return false; }
 }
 
-function showApp(){
+function showApp() {
   loginScreen.classList.add('hidden');
   appContent.classList.remove('hidden');
-  updateNotifBtn();
   updateNowBox();
   try {
-    if (!localStorage.getItem(INSTALL_KEY)){
-      setTimeout(showInstallModal, 1200);
+    if (!localStorage.getItem(INSTALL_KEY)) {
+      setTimeout(showInstallGuide, 1500);
     }
   } catch(e){}
 }
 
-function showLogin(){
+function showLogin() {
   loginScreen.classList.remove('hidden');
   appContent.classList.add('hidden');
 }
 
-loginForm.addEventListener('submit', (e) => {
+loginForm.addEventListener('submit', e => {
   e.preventDefault();
   const u = document.getElementById('username').value.trim();
   const p = document.getElementById('password').value;
   loginError.textContent = '';
-  if (!u || !p){
+  if (!u || !p) {
     loginError.textContent = 'ایمیل و رمز را وارد کن';
     return;
   }
   loginBtn.disabled = true;
   loginBtn.textContent = 'در حال بررسی...';
   setTimeout(() => {
-    if (u.toLowerCase() === CORRECT_USER.toLowerCase() && p === CORRECT_PASS){
+    if (u.toLowerCase() === CORRECT_USER.toLowerCase() && p === CORRECT_PASS) {
       try { localStorage.setItem(AUTH_KEY, 'ok'); } catch(e){}
       loginBtn.disabled = false;
       loginBtn.textContent = 'ورود';
@@ -566,84 +1700,88 @@ loginForm.addEventListener('submit', (e) => {
       loginBtn.disabled = false;
       loginBtn.textContent = 'ورود';
       loginError.textContent = 'ایمیل یا رمز اشتباه است';
-      const card = document.querySelector('.login-card');
-      card.style.animation = 'none';
-      setTimeout(() => { card.style.animation = ''; }, 50);
     }
-  }, 500);
+  }, 450);
 });
 
 document.getElementById('logoutBtn').addEventListener('click', () => {
-  if (confirm('از حساب خارج می‌شوی؟')){
-    try { localStorage.removeItem(AUTH_KEY); } catch(e){}
-    document.getElementById('password').value = '';
-    showLogin();
-    showToast('خارج شدی');
-  }
+  showSheet(
+    'خروج از حساب',
+    'اطلاعات ورود از این گوشی پاک می‌شود',
+    [
+      { label: 'خروج', desc: 'از حساب خارج شو', color: 'red', icon: 'logout',
+        onClick: () => {
+          try { localStorage.removeItem(AUTH_KEY); } catch(e){}
+          document.getElementById('password').value = '';
+          hideSheet();
+          showLogin();
+          showToast('خارج شدی');
+        }},
+      { label: 'انصراف', desc: 'بازگشت', color: 'gray', icon: 'x',
+        onClick: hideSheet }
+    ]
+  );
 });
 
-/* ================== INSTALL MODAL ================== */
-const installModal = document.getElementById('installModal');
-const installSteps = document.getElementById('installSteps');
+/* ============================================
+   INSTALL GUIDE
+   ============================================ */
+const installOverlay = document.getElementById('installOverlay');
 
-function isIOS(){
+function isIOS() {
   return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
     (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 }
-function isAndroid(){ return /Android/.test(navigator.userAgent); }
-function isStandalone(){
+function isAndroid() { return /Android/.test(navigator.userAgent); }
+function isStandalone() {
   return window.matchMedia('(display-mode: standalone)').matches ||
     window.navigator.standalone === true;
 }
 
-function buildInstallSteps(){
-  if (isStandalone()){
-    return `<div class="install-step"><div class="step-num">✓</div><div class="step-text">اپ روی صفحه اصلی نصب شده و در حال اجراست</div></div>`;
+function buildInstallSteps() {
+  if (isStandalone()) {
+    return `<div class="install-step">
+      <div class="step-num">✓</div>
+      <div class="step-text">اپ روی صفحه اصلی نصب شده و در حال اجراست</div>
+    </div>`;
   }
-  if (isIOS()){
+  if (isIOS()) {
     return `
       <div class="install-step"><div class="step-num">۱</div><div class="step-text">این صفحه را در <b>Safari</b> باز کن</div></div>
-      <div class="install-step"><div class="step-num">۲</div><div class="step-text">روی دکمه <b>Share</b> (مربع با فلش رو به بالا) پایین صفحه بزن</div></div>
+      <div class="install-step"><div class="step-num">۲</div><div class="step-text">روی دکمه <b>Share</b> (مربع با فلش بالا) بزن</div></div>
       <div class="install-step"><div class="step-num">۳</div><div class="step-text"><b>Add to Home Screen</b> را انتخاب کن</div></div>
       <div class="install-step"><div class="step-num">۴</div><div class="step-text">گزینه <b>Open as Web App</b> را روشن کن و <b>Add</b> بزن</div></div>
     `;
   }
-  if (isAndroid()){
+  if (isAndroid()) {
     return `
-      <div class="install-step"><div class="step-num">۱</div><div class="step-text">این صفحه را در <b>Chrome</b> باز کن</div></div>
-      <div class="install-step"><div class="step-num">۲</div><div class="step-text">روی منوی سه‌نقطه بالای صفحه بزن</div></div>
-      <div class="install-step"><div class="step-num">۳</div><div class="step-text"><b>Install app</b> یا <b>Add to Home screen</b> را انتخاب کن</div></div>
-      <div class="install-step"><div class="step-num">۴</div><div class="step-text">تأیید کن تا آیکون روی صفحه اصلی بیاید</div></div>
+      <div class="install-step"><div class="step-num">۱</div><div class="step-text">در <b>Chrome</b> باز کن</div></div>
+      <div class="install-step"><div class="step-num">۲</div><div class="step-text">منوی سه‌نقطه بالای صفحه</div></div>
+      <div class="install-step"><div class="step-num">۳</div><div class="step-text"><b>Install app</b> یا <b>Add to Home screen</b></div></div>
+      <div class="install-step"><div class="step-num">۴</div><div class="step-text">تأیید کن</div></div>
     `;
   }
   return `
-    <div class="install-step"><div class="step-num">۱</div><div class="step-text">از منوی مرورگر گزینه <b>Add to Home Screen</b> یا <b>Install</b> را بزن</div></div>
-    <div class="install-step"><div class="step-num">۲</div><div class="step-text">تأیید کن تا اپ روی صفحه اصلی نصب شود</div></div>
+    <div class="install-step"><div class="step-num">۱</div><div class="step-text">از منوی مرورگر <b>Install</b> یا <b>Add to Home Screen</b> را بزن</div></div>
   `;
 }
 
-function showInstallModal(){
-  installSteps.innerHTML = buildInstallSteps();
-  installModal.classList.add('show');
+function showInstallGuide() {
+  document.getElementById('installSteps').innerHTML = buildInstallSteps();
+  installOverlay.classList.add('show');
   try { localStorage.setItem(INSTALL_KEY, '1'); } catch(e){}
-  if ('Notification' in window && Notification.permission === 'granted'){
-    try {
-      new Notification('برنامه هفتگی', {
-        body: 'این اپ را روی صفحه اصلی گوشی نصب کن تا همیشه همراهت باشه',
-        dir: 'rtl', lang: 'fa', tag: 'install-tip'
-      });
-    } catch(e){}
-  }
 }
 
 document.getElementById('installOk').addEventListener('click', () => {
-  installModal.classList.remove('show');
+  installOverlay.classList.remove('show');
 });
 document.getElementById('installLater').addEventListener('click', () => {
-  installModal.classList.remove('show');
+  installOverlay.classList.remove('show');
 });
 
-/* ================== DATA ================== */
+/* ============================================
+   SCHEDULE DATA
+   ============================================ */
 const scheduleData = {
   sat: [
     ['06:30','07:00','صبحانه','','meal'],
@@ -711,7 +1849,7 @@ const scheduleData = {
     ['10:00','12:00','ورزش در سالن دانشگاه','۲ ساعت','sport'],
     ['12:00','12:30','ناهار','در دانشگاه','meal'],
     ['12:30','13:00','خواب میان‌روز','','sleep'],
-    ['13:00','14:30','کلاس نرگس: حقوق اساسی ۳','محمد صارمی','narges'],
+    ['13:00','14:30','کلاس نرگس: حقوق اساسی ۳','محمد صارمی','uni'],
     ['14:30','15:00','با نرگس: برگشت','','travel'],
     ['15:00','16:00','آزاد','','free'],
     ['16:00','20:00','مغازه','','work'],
@@ -729,7 +1867,7 @@ const scheduleData = {
     ['12:30','13:00','با نرگس: خانه → دانشگاه','','travel'],
     ['13:00','14:30','حقوق تجارت (۳) اسناد تجاری','حسین شعبان پور','uni'],
     ['14:30','16:30','ورزش در سالن دانشگاه','۲ ساعت','sport'],
-    ['16:30','18:00','کلاس نرگس: حقوق مدنی ۴','','narges'],
+    ['16:30','18:00','کلاس نرگس: حقوق مدنی ۴','','uni'],
     ['18:00','18:30','با نرگس: برگشت','','travel'],
     ['18:30','20:00','مغازه','با پدر','work'],
     ['20:00','20:30','شام','','meal'],
@@ -763,19 +1901,94 @@ const scheduleData = {
 };
 
 const dayOrder = ['sat','sun','mon','tue','wed','thu','fri'];
-const dayNames = { sat:'شنبه', sun:'یکشنبه', mon:'دوشنبه', tue:'سه‌شنبه', wed:'چهارشنبه', thu:'پنجشنبه', fri:'جمعه' };
+const dayNames = {
+  sat: 'شنبه', sun: 'یکشنبه', mon: 'دوشنبه', tue: 'سه‌شنبه',
+  wed: 'چهارشنبه', thu: 'پنجشنبه', fri: 'جمعه'
+};
+const dayShort = { sat:'ش', sun:'ی', mon:'د', tue:'س', wed:'چ', thu:'پ', fri:'ج' };
 const WEEK = 10080;
 
-function fa(s){ return String(s).replace(/[0-9]/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]); }
-function toMin(s){ const [h,m] = s.split(':').map(Number); return h*60 + m; }
-function durOf(start, end){ const s = toMin(start); const e = toMin(end); return e > s ? e - s : (1440 - s) + e; }
-function showToast(msg){ const el = document.getElementById('toast'); el.textContent = msg; el.classList.add('show'); clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('show'), 2500); }
+/* ============================================
+   HELPERS
+   ============================================ */
+function fa(s) {
+  return String(s).replace(/[0-9]/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+}
+function toMin(s) {
+  const [h, m] = s.split(':').map(Number);
+  return h * 60 + m;
+}
+function durOf(s, e) {
+  const a = toMin(s);
+  const b = toMin(e);
+  return b > a ? b - a : (1440 - a) + b;
+}
+function persianDate() {
+  try {
+    return new Intl.DateTimeFormat('fa-IR', {
+      day: 'numeric', month: 'long', year: 'numeric'
+    }).format(new Date());
+  } catch(e) { return ''; }
+}
+function persianDayOfMonth() {
+  try {
+    const parts = new Intl.DateTimeFormat('fa-IR', { day: 'numeric' }).format(new Date());
+    return parts;
+  } catch(e) { return ''; }
+}
 
-function renderDay(dayKey){
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 2400);
+}
+
+/* ============================================
+   WEEK VIEW
+   ============================================ */
+function renderWeekView() {
+  const wv = document.getElementById('weekView');
+  const todayIdx = (new Date().getDay() + 1) % 7;
+  const todayKey = dayOrder[todayIdx];
+  const todayNum = persianDayOfMonth();
+
+  wv.innerHTML = dayOrder.map((dayKey, idx) => {
+    const isToday = idx === todayIdx;
+    const isSelected = idx === todayIdx;
+    const hasEvents = scheduleData[dayKey].some(([,, , , type]) =>
+      type === 'uni' || type === 'lang' || type === 'sport' || type === 'work'
+    );
+    return `
+      <button class="week-day ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''}"
+              data-day="${dayKey}">
+        <div class="wd-name">${dayShort[dayKey]}</div>
+        <div class="wd-num">${isToday ? fa(todayNum) : ''}</div>
+        ${hasEvents && !isToday ? '<span class="wd-dot"></span>' : ''}
+      </button>
+    `;
+  }).join('');
+
+  wv.querySelectorAll('.week-day').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.day;
+      const tab = document.querySelector(`.tab[data-day="${target}"]`);
+      if (tab) tab.click();
+    });
+  });
+}
+
+/* ============================================
+   RENDER DAYS
+   ============================================ */
+function renderDay(dayKey) {
   const el = document.getElementById(dayKey);
   const rows = scheduleData[dayKey].map(([start, end, name, meta, type]) => `
-    <div class="item" data-start="${start}" data-end="${end}" data-day="${dayKey}">
-      <div class="time-col"><div class="time">${fa(start)}<br>${fa(end)}</div></div>
+    <div class="item" data-start="${start}" data-end="${end}" data-day="${dayKey}" data-type="${type}" data-name="${name}" data-meta="${meta || ''}">
+      <div class="time-col">
+        <div class="time">${fa(start)}<br>${fa(end)}</div>
+      </div>
       <div class="card ${type}">
         <div class="name">${name}</div>
         ${meta ? `<div class="meta">${meta}</div>` : ''}
@@ -786,55 +1999,94 @@ function renderDay(dayKey){
 }
 dayOrder.forEach(renderDay);
 
+/* ============================================
+   FLAT LIST
+   ============================================ */
 const flat = [];
 dayOrder.forEach((day, i) => {
   const offset = i * 1440;
   scheduleData[day].forEach(([start, end, name, meta, type]) => {
     const s = toMin(start);
     const dur = durOf(start, end);
-    flat.push({ absStart: offset + s, absEnd: offset + s + dur, name, meta, type, day, startStr: start, endStr: end });
+    flat.push({
+      absStart: offset + s,
+      absEnd: offset + s + dur,
+      name, meta, type, day,
+      startStr: start, endStr: end
+    });
   });
 });
 
-function getEffectiveRange(item, now){
-  for (const off of [0, -WEEK, WEEK]){
+/* ============================================
+   NOW LOGIC
+   ============================================ */
+function getEffectiveRange(item, now) {
+  for (const off of [0, -WEEK, WEEK]) {
     const s = item.absStart + off;
     const e = item.absEnd + off;
     if (now >= s && now < e) return { start: s, end: e };
   }
   return null;
 }
-function findActive(now){ return flat.map(it => ({ it, r: getEffectiveRange(it, now) })).filter(x => x.r !== null); }
-function findPrev(now, activeSet){
-  let best = null, bestDelta = Infinity;
-  flat.forEach(it => { if (activeSet.has(it)) return; for (const off of [0, -WEEK, WEEK]) { const e = it.absEnd + off; const d = now - e; if (d >= 0 && d < bestDelta){ bestDelta = d; best = it; } } });
-  return best;
-}
-function findNext(now, activeSet){
-  let best = null, bestDelta = Infinity;
-  flat.forEach(it => { if (activeSet.has(it)) return; for (const off of [0, -WEEK, WEEK]) { const s = it.absStart + off; const d = s - now; if (d > 0 && d < bestDelta){ bestDelta = d; best = it; } } });
-  return best ? { item: best, delta: bestDelta } : null;
-}
-function persianDate(){
-  try { return new Intl.DateTimeFormat('fa-IR', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date()); } catch(e){ return ''; }
+
+function findActive(now) {
+  return flat
+    .map(it => ({ it, r: getEffectiveRange(it, now) }))
+    .filter(x => x.r !== null);
 }
 
+function findPrev(now, activeSet) {
+  let best = null, delta = Infinity;
+  flat.forEach(it => {
+    if (activeSet.has(it)) return;
+    for (const off of [0, -WEEK, WEEK]) {
+      const e = it.absEnd + off;
+      const d = now - e;
+      if (d >= 0 && d < delta) { delta = d; best = it; }
+    }
+  });
+  return best;
+}
+
+function findNext(now, activeSet) {
+  let best = null, delta = Infinity;
+  flat.forEach(it => {
+    if (activeSet.has(it)) return;
+    for (const off of [0, -WEEK, WEEK]) {
+      const s = it.absStart + off;
+      const d = s - now;
+      if (d > 0 && d < delta) { delta = d; best = it; }
+    }
+  });
+  return best ? { item: best, delta } : null;
+}
+
+/* ============================================
+   UPDATE NOW BOX
+   ============================================ */
 let lastActiveKey = '';
-function updateNowBox(){
+
+function updateNowBox() {
   const now = new Date();
   const dayIdx = (now.getDay() + 1) % 7;
   const nowMin = dayIdx * 1440 + now.getHours() * 60 + now.getMinutes();
   const currentDayKey = dayOrder[dayIdx];
+
   document.getElementById('nowDay').textContent = dayNames[currentDayKey];
   document.getElementById('nowDate').textContent = persianDate();
-  document.getElementById('nowTime').textContent = fa(String(now.getHours()).padStart(2,'0')) + ':' + fa(String(now.getMinutes()).padStart(2,'0'));
+  document.getElementById('nowTime').textContent =
+    fa(String(now.getHours()).padStart(2, '0')) + ':' +
+    fa(String(now.getMinutes()).padStart(2, '0'));
+
   const active = findActive(nowMin);
   const activeSet = new Set(active.map(a => a.it));
   const prev = findPrev(nowMin, activeSet);
   const next = findNext(nowMin, activeSet);
+
   const currentEl = document.getElementById('nowCurrent');
   let newKey = '';
-  if (active.length === 0){
+
+  if (active.length === 0) {
     currentEl.innerHTML = '<div class="now-empty">در این لحظه برنامه‌ای نداری 🌙</div>';
   } else {
     newKey = active.map(a => `${a.it.day}-${a.it.startStr}`).join('|');
@@ -842,20 +2094,26 @@ function updateNowBox(){
       const dur = r.end - r.start;
       const elapsed = nowMin - r.start;
       const pct = Math.min(100, Math.max(0, (elapsed / dur) * 100));
-      const remaining = r.end - nowMin;
-      const remH = Math.floor(remaining / 60);
-      const remM = remaining % 60;
-      const remStr = remH > 0 ? `${fa(remH)} ساعت و ${fa(remM)} دقیقه` : `${fa(remM)} دقیقه`;
+      const rem = r.end - nowMin;
+      const rh = Math.floor(rem / 60);
+      const rm = rem % 60;
+      const remStr = rh > 0
+        ? `${fa(rh)} ساعت و ${fa(rm)} دقیقه`
+        : `${fa(rm)} دقیقه`;
       const timeRange = fa(it.startStr) + ' تا ' + fa(it.endStr);
-      const fromOtherDay = it.day !== currentDayKey ? `<span class="now-activity-tag">از ${dayNames[it.day]}</span>` : '';
+      const tag = it.day !== currentDayKey
+        ? `<span class="now-activity-tag">از ${dayNames[it.day]}</span>`
+        : '';
       return `
         <div class="now-activity ${it.type}">
           <div class="now-activity-head">
             <div class="now-activity-name">${it.name}</div>
-            ${fromOtherDay}
+            ${tag}
           </div>
           ${it.meta ? `<div class="now-activity-meta">${it.meta}</div>` : ''}
-          <div class="now-progress"><div class="now-progress-bar ${it.type}" style="width:${pct}%"></div></div>
+          <div class="now-progress">
+            <div class="now-progress-bar ${it.type}" style="width:${pct}%"></div>
+          </div>
           <div class="now-progress-text">
             <span class="rem">${remStr} مانده</span>
             <span class="times">${timeRange}</span>
@@ -864,34 +2122,59 @@ function updateNowBox(){
       `;
     }).join('');
   }
+
   const prevEl = document.getElementById('nowPrev');
-  if (prev){
-    prevEl.innerHTML = `<div class="now-nav-name">${prev.name}</div><div class="now-nav-time">${fa(prev.startStr)} تا ${fa(prev.endStr)}</div><div class="now-nav-day">${dayNames[prev.day]}</div>`;
-  } else { prevEl.innerHTML = '<div class="now-nav-name">—</div>'; }
+  if (prev) {
+    prevEl.innerHTML = `
+      <div class="now-nav-name">${prev.name}</div>
+      <div class="now-nav-time">${fa(prev.startStr)} تا ${fa(prev.endStr)}</div>
+      <div class="now-nav-day">${dayNames[prev.day]}</div>
+    `;
+  } else {
+    prevEl.innerHTML = '<div class="now-nav-name">—</div>';
+  }
+
   const nextEl = document.getElementById('nowNext');
-  if (next){
+  if (next) {
     const it = next.item;
-    const delta = next.delta;
-    const dh = Math.floor(delta / 60);
-    const dm = delta % 60;
-    const untilStr = dh > 0 ? `تا ${fa(dh)} ساعت و ${fa(dm)} دقیقه دیگر` : `تا ${fa(dm)} دقیقه دیگر`;
-    nextEl.innerHTML = `<div class="now-nav-name">${it.name}</div><div class="now-nav-time">${fa(it.startStr)} تا ${fa(it.endStr)}</div><div class="now-nav-day">${dayNames[it.day]} • ${untilStr}</div>`;
-  } else { nextEl.innerHTML = '<div class="now-nav-name">—</div>'; }
-  if (newKey && newKey !== lastActiveKey){ lastActiveKey = newKey; setTimeout(scrollToActiveIfNeeded, 200); } else if (!newKey){ lastActiveKey = ''; }
-  document.querySelectorAll('.tab').forEach(tab => { tab.querySelector('.tab-dot')?.remove(); });
+    const dh = Math.floor(next.delta / 60);
+    const dm = next.delta % 60;
+    const until = dh > 0
+      ? `تا ${fa(dh)} ساعت و ${fa(dm)} دقیقه دیگر`
+      : `تا ${fa(dm)} دقیقه دیگر`;
+    nextEl.innerHTML = `
+      <div class="now-nav-name">${it.name}</div>
+      <div class="now-nav-time">${fa(it.startStr)} تا ${fa(it.endStr)}</div>
+      <div class="now-nav-day">${dayNames[it.day]} • ${until}</div>
+    `;
+  } else {
+    nextEl.innerHTML = '<div class="now-nav-name">—</div>';
+  }
+
+  // Active tab dots
+  document.querySelectorAll('.tab').forEach(t => {
+    t.querySelector('.tab-dot')?.remove();
+  });
   active.forEach(({ it }) => {
     const tabEl = document.querySelector(`.tab[data-day="${it.day}"]`);
-    if (tabEl && !tabEl.querySelector('.tab-dot')){
+    if (tabEl && !tabEl.querySelector('.tab-dot')) {
       const dot = document.createElement('span');
       dot.className = 'tab-dot';
       tabEl.appendChild(dot);
     }
   });
+
   highlightActiveInSchedule(nowMin);
-  checkNotifications(now, dayIdx, nowMin);
+
+  if (newKey && newKey !== lastActiveKey) {
+    lastActiveKey = newKey;
+    setTimeout(scrollToActiveIfNeeded, 200);
+  } else if (!newKey) {
+    lastActiveKey = '';
+  }
 }
 
-function highlightActiveInSchedule(nowMinInWeek){
+function highlightActiveInSchedule(nowMinInWeek) {
   dayOrder.forEach((day, idx) => {
     const container = document.getElementById(day);
     if (!container) return;
@@ -900,17 +2183,19 @@ function highlightActiveInSchedule(nowMinInWeek){
       const dur = durOf(item.dataset.start, item.dataset.end);
       const absStart = idx * 1440 + s;
       const absEnd = absStart + dur;
-      const isNow = (nowMinInWeek >= absStart && nowMinInWeek < absEnd) || (nowMinInWeek + WEEK >= absStart && nowMinInWeek + WEEK < absEnd);
+      const isNow =
+        (nowMinInWeek >= absStart && nowMinInWeek < absEnd) ||
+        (nowMinInWeek + WEEK >= absStart && nowMinInWeek + WEEK < absEnd);
       item.classList.toggle('active-now', isNow);
     });
   });
 }
 
 let lastScrolledKey = null;
-function scrollToActiveIfNeeded(){
-  const activeTab = document.querySelector('.tab.active');
-  if (!activeTab) return;
-  const dayKey = activeTab.dataset.day;
+function scrollToActiveIfNeeded() {
+  const tab = document.querySelector('.tab.active');
+  if (!tab) return;
+  const dayKey = tab.dataset.day;
   const dayEl = document.getElementById(dayKey);
   if (!dayEl) return;
   const activeItem = dayEl.querySelector('.item.active-now');
@@ -919,53 +2204,13 @@ function scrollToActiveIfNeeded(){
   if (key === lastScrolledKey) return;
   lastScrolledKey = key;
   const rect = activeItem.getBoundingClientRect();
-  const target = window.pageYOffset + rect.top - 110;
+  const target = window.pageYOffset + rect.top - 100;
   window.scrollTo({ top: Math.max(0, target), behavior: 'smooth' });
 }
 
-const notifBtn = document.getElementById('notifBtn');
-function updateNotifBtn(){
-  if (!('Notification' in window)){ notifBtn.style.display = 'none'; return; }
-  if (Notification.permission === 'granted'){ notifBtn.classList.add('on'); notifBtn.classList.remove('off'); notifBtn.textContent = '🔔'; }
-  else if (Notification.permission === 'denied'){ notifBtn.classList.add('off'); notifBtn.classList.remove('on'); notifBtn.textContent = '🔕'; }
-  else { notifBtn.classList.remove('on','off'); notifBtn.textContent = '🔔'; }
-}
-notifBtn.addEventListener('click', async () => {
-  if (!('Notification' in window)){ showToast('مرورگر پشتیبانی نمی‌کند'); return; }
-  if (Notification.permission === 'granted'){ showToast('یادآوری فعال است ✓'); return; }
-  if (Notification.permission === 'denied'){ showToast('از تنظیمات مرورگر اجازه بده'); return; }
-  const perm = await Notification.requestPermission();
-  updateNotifBtn();
-  if (perm === 'granted'){ showToast('یادآوری فعال شد ✓'); }
-});
-
-function getNotifiedToday(){
-  const today = new Date().toDateString();
-  try { const saved = JSON.parse(localStorage.getItem('notified') || '{}'); if (saved.date === today) return new Set(saved.items || []); } catch(e){}
-  return new Set();
-}
-function markNotified(key){
-  const today = new Date().toDateString();
-  const set = getNotifiedToday();
-  set.add(key);
-  localStorage.setItem('notified', JSON.stringify({ date: today, items: Array.from(set) }));
-}
-function checkNotifications(now, dayIdx, nowMin){
-  if (!('Notification' in window) || Notification.permission !== 'granted') return;
-  const currentDayKey = dayOrder[dayIdx];
-  const notified = getNotifiedToday();
-  scheduleData[currentDayKey].forEach(([start, end, name, meta]) => {
-    const s = toMin(start);
-    const diff = s - nowMin;
-    if (diff === 10){
-      const key = `${currentDayKey}-${start}-${name}`;
-      if (notified.has(key)) return;
-      markNotified(key);
-      try { new Notification(`۱۰ دقیقه تا ${name}`, { body: meta || 'به‌زودی شروع می‌شه', tag: key, dir:'rtl', lang:'fa', renotify:true }); } catch(e){}
-    }
-  });
-}
-
+/* ============================================
+   TABS
+   ============================================ */
 const tabs = document.querySelectorAll('.tab');
 tabs.forEach(tab => {
   tab.addEventListener('click', () => {
@@ -974,44 +2219,287 @@ tabs.forEach(tab => {
     document.querySelectorAll('.day').forEach(d => d.classList.remove('active'));
     tab.classList.add('active');
     document.getElementById(target).classList.add('active');
-    localStorage.setItem('lastDay', target);
+
+    // Highlight in week view
+    document.querySelectorAll('.week-day').forEach(w => {
+      w.classList.remove('selected');
+      if (w.dataset.day === target) w.classList.add('selected');
+    });
+
     lastScrolledKey = null;
-    setTimeout(() => { scrollToActiveIfNeeded(); if (!document.querySelector('.item.active-now')){ window.scrollTo({ top: 0, behavior:'smooth' }); } }, 80);
+    setTimeout(() => {
+      scrollToActiveIfNeeded();
+      if (!document.querySelector('.item.active-now')) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }, 80);
   });
 });
 
-/* ================== SERVICE WORKER (نسخه اصلاح‌شده) ================== */
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', async () => {
-    try {
-      // پاک کردن ثبت‌های قدیمی
-      const regs = await navigator.serviceWorker.getRegistrations();
-      for (const reg of regs) {
-        await reg.unregister();
+/* ============================================
+   QUICK ACTIONS SHEET (ایده ۲)
+   ============================================ */
+const sheetOverlay = document.getElementById('sheetOverlay');
+const sheetTitle = document.getElementById('sheetTitle');
+const sheetSubtitle = document.getElementById('sheetSubtitle');
+const sheetActions = document.getElementById('sheetActions');
+
+const ICON_PATHS = {
+  bell: '<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>',
+  clock: '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+  share: '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/>',
+  copy: '<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/>',
+  x: '<path d="M18 6L6 18M6 6l12 12"/>',
+  logout: '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>'
+};
+
+function showSheet(title, subtitle, actions) {
+  sheetTitle.textContent = title;
+  sheetSubtitle.textContent = subtitle;
+  sheetActions.innerHTML = actions.map((a, i) => `
+    <button class="sheet-action ${a.color}" data-idx="${i}">
+      <div class="sheet-action-icon">${ICON_PATHS[a.icon] ? `<svg viewBox="0 0 24 24">${ICON_PATHS[a.icon]}</svg>` : ''}</div>
+      <div class="sheet-action-text">
+        <div class="sheet-action-label">${a.label}</div>
+        ${a.desc ? `<div class="sheet-action-desc">${a.desc}</div>` : ''}
+      </div>
+    </button>
+  `).join('');
+
+  sheetActions.querySelectorAll('.sheet-action').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = Number(btn.dataset.idx);
+      actions[idx].onClick();
+    });
+  });
+
+  sheetOverlay.classList.add('show');
+}
+
+function hideSheet() {
+  sheetOverlay.classList.remove('show');
+}
+
+sheetOverlay.addEventListener('click', e => {
+  if (e.target === sheetOverlay) hideSheet();
+});
+
+/* Long-press روی کارت‌ها = Quick Actions */
+let pressTimer = null;
+let pressItem = null;
+
+document.querySelectorAll('.item').forEach(item => {
+  item.addEventListener('touchstart', e => {
+    pressItem = item;
+    item.classList.add('pressing');
+    pressTimer = setTimeout(() => {
+      pressTimer = null;
+      showCardActions(item);
+    }, 500);
+  }, { passive: true });
+
+  ['touchend', 'touchmove', 'touchcancel'].forEach(ev => {
+    item.addEventListener(ev, () => {
+      if (pressTimer) {
+        clearTimeout(pressTimer);
+        pressTimer = null;
       }
-      // پاک کردن همه کش‌ها
-      const cacheNames = await caches.keys();
-      await Promise.all(cacheNames.map(n => caches.delete(n)));
-      // ثبت نسخه جدید با تایم‌استمپ برای دور زدن کش
-      const reg = await navigator.serviceWorker.register('./sw.js?v=' + Date.now());
-      console.log('SW ✓', reg.scope);
-    } catch(e){
-      console.log('SW ✗', e);
+      item.classList.remove('pressing');
+    }, { passive: true });
+  });
+
+  // Desktop fallback
+  item.addEventListener('contextmenu', e => {
+    e.preventDefault();
+    showCardActions(item);
+  });
+});
+
+function showCardActions(item) {
+  const name = item.dataset.name;
+  const start = item.dataset.start;
+  const end = item.dataset.end;
+
+  showSheet(name, `${fa(start)} تا ${fa(end)}`, [
+    {
+      label: 'یادآوری ۱۰ دقیقه قبل',
+      desc: 'یک هشدار قبل از شروع',
+      color: 'blue',
+      icon: 'bell',
+      onClick: () => {
+        hideSheet();
+        showToast(`یادآور برای ${name} تنظیم شد ✓`);
+      }
+    },
+    {
+      label: 'تأخیر ۵ دقیقه',
+      desc: 'کار را ۵ دقیقه به عقب بینداز',
+      color: 'orange',
+      icon: 'clock',
+      onClick: () => {
+        hideSheet();
+        showToast('تأخیر ثبت شد (فقط نمایشی)');
+      }
+    },
+    {
+      label: 'کپی اطلاعات',
+      desc: 'متن ساعت و نام',
+      color: 'green',
+      icon: 'copy',
+      onClick: async () => {
+        hideSheet();
+        const text = `${name} — ${fa(start)} تا ${fa(end)}`;
+        try {
+          await navigator.clipboard.writeText(text);
+          showToast('کپی شد ✓');
+        } catch(e) {
+          showToast('کپی نشد');
+        }
+      }
+    },
+    {
+      label: 'اشتراک‌گذاری',
+      desc: 'برای دوستان',
+      color: 'gray',
+      icon: 'share',
+      onClick: async () => {
+        hideSheet();
+        const text = `${name} — ${fa(start)} تا ${fa(end)}`;
+        if (navigator.share) {
+          try { await navigator.share({ text }); } catch(e){}
+        } else {
+          showToast('مرورگر پشتیبانی نمی‌کند');
+        }
+      }
+    },
+    {
+      label: 'بستن',
+      color: 'gray',
+      icon: 'x',
+      onClick: hideSheet
     }
+  ]);
+}
+
+/* ============================================
+   PULL TO REFRESH (ایده ۱)
+   ============================================ */
+const ptrIndicator = document.getElementById('ptrIndicator');
+let ptrStartY = 0;
+let ptrPulling = false;
+
+document.addEventListener('touchstart', e => {
+  if (window.scrollY === 0 && e.touches.length === 1) {
+    ptrStartY = e.touches[0].clientY;
+    ptrPulling = true;
+  }
+}, { passive: true });
+
+document.addEventListener('touchmove', e => {
+  if (!ptrPulling) return;
+  const delta = e.touches[0].clientY - ptrStartY;
+  if (delta > 0 && window.scrollY === 0) {
+    const progress = Math.min(delta / 120, 1);
+    const scale = 0.6 + progress * 0.4;
+    const translateY = -80 + progress * 100;
+    ptrIndicator.style.transform =
+      `translateX(-50%) translateY(${translateY}px) scale(${scale})`;
+    if (progress > 0.2) ptrIndicator.classList.add('visible');
+  }
+}, { passive: true });
+
+document.addEventListener('touchend', () => {
+  if (!ptrPulling) return;
+  ptrPulling = false;
+  const isVisible = ptrIndicator.classList.contains('visible');
+  if (isVisible) {
+    ptrIndicator.classList.add('loading');
+    ptrIndicator.style.transform = 'translateX(-50%) translateY(20px) scale(1)';
+    setTimeout(() => {
+      updateNowBox();
+      renderWeekView();
+      ptrIndicator.classList.remove('visible', 'loading');
+      ptrIndicator.style.transform = '';
+      showToast('به‌روزرسانی شد ✓');
+    }, 700);
+  } else {
+    ptrIndicator.style.transform = '';
+  }
+}, { passive: true });
+
+/* ============================================
+   OFFLINE INDICATOR (ایده ۳)
+   ============================================ */
+const offlineBar = document.getElementById('offlineBar');
+
+function updateOnlineStatus() {
+  if (navigator.onLine) {
+    offlineBar.classList.remove('show');
+  } else {
+    offlineBar.classList.add('show');
+  }
+}
+window.addEventListener('online', () => {
+  updateOnlineStatus();
+  showToast('آنلاین شدی');
+});
+window.addEventListener('offline', updateOnlineStatus);
+updateOnlineStatus();
+
+/* ============================================
+   APPLE SHORTCUTS (ایده ۱۰)
+   ============================================ */
+function handleURLParams() {
+  const params = new URLSearchParams(window.location.search);
+  const view = params.get('view');
+  if (view === 'today') {
+    const idx = (new Date().getDay() + 1) % 7;
+    const key = dayOrder[idx];
+    const tab = document.querySelector(`.tab[data-day="${key}"]`);
+    if (tab) setTimeout(() => tab.click(), 200);
+  } else if (view === 'week') {
+    setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 200);
+  }
+}
+
+/* ============================================
+   SERVICE WORKER
+   ============================================ */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(r => console.log('SW ✓', r.scope))
+      .catch(e => console.log('SW ✗', e));
   });
 }
 
-/* ================== INIT ================== */
-if (isAuthed()){
+/* ============================================
+   INIT
+   ============================================ */
+renderWeekView();
+
+setTimeout(() => {
+  document.getElementById('splash').classList.add('hidden');
+}, 900);
+
+if (isAuthed()) {
   showApp();
 } else {
   showLogin();
-  setTimeout(() => document.getElementById('username').focus(), 400);
+  setTimeout(() => document.getElementById('username').focus(), 1000);
 }
 
-setInterval(() => { if (isAuthed()) updateNowBox(); }, 30000);
+handleURLParams();
+
+setInterval(() => {
+  if (isAuthed()) updateNowBox();
+}, 30000);
+
 document.addEventListener('visibilitychange', () => {
-  if (!document.hidden && isAuthed()){ updateNowBox(); updateNotifBtn(); }
+  if (!document.hidden && isAuthed()) {
+    updateNowBox();
+    renderWeekView();
+  }
 });
 </script>
 
