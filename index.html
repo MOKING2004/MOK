@@ -13,11 +13,9 @@
 <link rel="apple-touch-icon" id="appleIcon">
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+  /* همان CSS قبلی بدون تغییر */
   * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-  :root{
-    --bg:#0f0f1a; --card:#1e1e35; --text:#e8e8f0;
-    --muted:#8b8ba7; --border:#2d2d4a; --accent:#8b5cf6;
-  }
+  :root{ --bg:#0f0f1a; --card:#1e1e35; --text:#e8e8f0; --muted:#8b8ba7; --border:#2d2d4a; --accent:#8b5cf6; }
   html { scroll-behavior:smooth; }
   body{
     font-family:'Vazirmatn',-apple-system,sans-serif;
@@ -30,8 +28,6 @@
     overflow-wrap:break-word;
     word-break:break-word;
   }
-
-  /* ==== NOW BOX ==== */
   .now-box{
     background:linear-gradient(135deg,#1a1a2e,#252540);
     border-radius:24px; padding:18px; margin-bottom:20px;
@@ -46,7 +42,6 @@
     animation:shine 4s linear infinite;
   }
   @keyframes shine{ 0%{background-position:0% 50%} 100%{background-position:200% 50%} }
-
   .now-header{
     display:flex; justify-content:space-between; align-items:center;
     padding-bottom:12px; margin-bottom:14px;
@@ -59,12 +54,8 @@
     padding:4px 12px; background:rgba(139,92,246,0.12);
     border-radius:20px; display:inline-block; width:fit-content;
   }
-  .now-date{
-    font-size:11px; color:#8b8ba7; padding-right:4px;
-  }
-  .now-right{
-    display:flex; align-items:center; gap:8px; flex-shrink:0;
-  }
+  .now-date{ font-size:11px; color:#8b8ba7; padding-right:4px; }
+  .now-right{ display:flex; align-items:center; gap:8px; flex-shrink:0; }
   .now-time{
     font-size:26px; font-weight:800; color:#fff;
     font-variant-numeric:tabular-nums; letter-spacing:1px;
@@ -78,27 +69,16 @@
     border:1px solid rgba(139,92,246,0.3);
     color:#a78bfa; font-size:16px;
     cursor:pointer; display:flex; align-items:center; justify-content:center;
-    transition:all 0.2s ease; flex-shrink:0;
-    font-family:inherit;
+    transition:all 0.2s ease; flex-shrink:0; font-family:inherit;
   }
   .notif-btn:active{ transform:scale(0.92); }
-  .notif-btn.on{
-    background:rgba(16,185,129,0.15);
-    border-color:rgba(16,185,129,0.4);
-    color:#34d399;
-  }
+  .notif-btn.on{ background:rgba(16,185,129,0.15); border-color:rgba(16,185,129,0.4); color:#34d399; }
   .notif-btn.off{ opacity:0.4; }
-
-  .now-label{
-    font-size:10px; font-weight:800; color:#a78bfa;
-    letter-spacing:3px; margin-bottom:8px; padding-right:4px;
-  }
-
+  .now-label{ font-size:10px; font-weight:800; color:#a78bfa; letter-spacing:3px; margin-bottom:8px; padding-right:4px; }
   .now-activity{
     padding:14px; background:rgba(255,255,255,0.03);
     border-radius:16px; margin-bottom:10px;
-    border-right:4px solid #8b5cf6;
-    animation:fadeIn .35s ease;
+    border-right:4px solid #8b5cf6; animation:fadeIn .35s ease;
   }
   .now-activity:last-child{ margin-bottom:0; }
   .now-activity.uni{ border-color:#8b5cf6; }
@@ -111,33 +91,12 @@
   .now-activity.prep{ border-color:#94a3b8; }
   .now-activity.travel{ border-color:#f97316; }
   .now-activity.narges{ border-color:#ec4899; }
-
-  .now-activity-head{
-    display:flex; justify-content:space-between; align-items:flex-start;
-    gap:8px; margin-bottom:6px; flex-wrap:wrap;
-  }
-  .now-activity-name{
-    font-size:17px; font-weight:800; color:#fff;
-    line-height:1.4; flex:1; min-width:0;
-  }
-  .now-activity-tag{
-    font-size:10px; font-weight:700; color:#fbbf24;
-    background:rgba(251,191,36,0.12);
-    padding:3px 9px; border-radius:20px;
-    flex-shrink:0; white-space:nowrap;
-  }
-  .now-activity-meta{
-    font-size:12px; color:#8b8ba7; margin-bottom:10px;
-  }
-  .now-progress{
-    height:6px; background:rgba(255,255,255,0.06);
-    border-radius:3px; overflow:hidden; margin-bottom:6px;
-  }
-  .now-progress-bar{
-    height:100%; border-radius:3px;
-    transition:width 0.6s ease;
-    background:linear-gradient(90deg,#8b5cf6,#06b6d4);
-  }
+  .now-activity-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:8px; margin-bottom:6px; flex-wrap:wrap; }
+  .now-activity-name{ font-size:17px; font-weight:800; color:#fff; line-height:1.4; flex:1; min-width:0; }
+  .now-activity-tag{ font-size:10px; font-weight:700; color:#fbbf24; background:rgba(251,191,36,0.12); padding:3px 9px; border-radius:20px; flex-shrink:0; white-space:nowrap; }
+  .now-activity-meta{ font-size:12px; color:#8b8ba7; margin-bottom:10px; }
+  .now-progress{ height:6px; background:rgba(255,255,255,0.06); border-radius:3px; overflow:hidden; margin-bottom:6px; }
+  .now-progress-bar{ height:100%; border-radius:3px; transition:width 0.6s ease; background:linear-gradient(90deg,#8b5cf6,#06b6d4); }
   .now-progress-bar.uni{ background:linear-gradient(90deg,#6366f1,#8b5cf6); }
   .now-progress-bar.lang{ background:linear-gradient(90deg,#06b6d4,#0891b2); }
   .now-progress-bar.sport{ background:linear-gradient(90deg,#10b981,#059669); }
@@ -148,123 +107,36 @@
   .now-progress-bar.prep{ background:linear-gradient(90deg,#94a3b8,#64748b); }
   .now-progress-bar.travel{ background:linear-gradient(90deg,#fb923c,#f97316); }
   .now-progress-bar.narges{ background:linear-gradient(90deg,#ec4899,#be185d); }
-
-  .now-progress-text{
-    font-size:11px; color:#8b8ba7;
-    display:flex; justify-content:space-between; align-items:center;
-    gap:6px; flex-wrap:wrap;
-  }
+  .now-progress-text{ font-size:11px; color:#8b8ba7; display:flex; justify-content:space-between; align-items:center; gap:6px; flex-wrap:wrap; }
   .now-progress-text .rem{ color:#a78bfa; font-weight:600; }
   .now-progress-text .times{ font-variant-numeric:tabular-nums; direction:ltr; }
-
-  .now-empty{
-    text-align:center; padding:24px 12px;
-    color:#8b8ba7; font-size:14px;
-  }
-
-  .now-nav{
-    display:grid; grid-template-columns:1fr 1fr;
-    gap:10px; margin-top:14px;
-  }
-  .now-nav-item{
-    padding:12px; border-radius:14px;
-    background:rgba(255,255,255,0.02);
-    border:1px solid rgba(255,255,255,0.06);
-    position:relative; overflow:hidden;
-    min-width:0;
-  }
+  .now-empty{ text-align:center; padding:24px 12px; color:#8b8ba7; font-size:14px; }
+  .now-nav{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px; }
+  .now-nav-item{ padding:12px; border-radius:14px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); position:relative; overflow:hidden; min-width:0; }
   .now-nav-item.prev{ border-right:3px solid #64748b; }
   .now-nav-item.next{ border-right:3px solid #8b5cf6; }
-  .now-nav-label{
-    font-size:10px; font-weight:800; color:#8b8ba7;
-    letter-spacing:2px; margin-bottom:6px;
-  }
+  .now-nav-label{ font-size:10px; font-weight:800; color:#8b8ba7; letter-spacing:2px; margin-bottom:6px; }
   .now-nav-item.next .now-nav-label{ color:#a78bfa; }
-  .now-nav-name{
-    font-size:13px; font-weight:700; color:#fff;
-    line-height:1.4; margin-bottom:5px;
-    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
-    overflow:hidden;
-    word-break:break-word;
-  }
-  .now-nav-time{
-    font-size:10.5px; color:#8b8ba7;
-    font-variant-numeric:tabular-nums;
-    direction:rtl; text-align:right;
-  }
-  .now-nav-day{
-    font-size:10px; color:#a78bfa; margin-top:3px; font-weight:600;
-  }
-
-  /* Tabs */
-  .tabs{
-    display:flex; gap:6px; overflow-x:auto;
-    padding-bottom:8px; margin-bottom:16px;
-    scrollbar-width:none;
-  }
+  .now-nav-name{ font-size:13px; font-weight:700; color:#fff; line-height:1.4; margin-bottom:5px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; word-break:break-word; }
+  .now-nav-time{ font-size:10.5px; color:#8b8ba7; font-variant-numeric:tabular-nums; direction:rtl; text-align:right; }
+  .now-nav-day{ font-size:10px; color:#a78bfa; margin-top:3px; font-weight:600; }
+  .tabs{ display:flex; gap:6px; overflow-x:auto; padding-bottom:8px; margin-bottom:16px; scrollbar-width:none; }
   .tabs::-webkit-scrollbar{ display:none; }
-  .tab{
-    flex-shrink:0; padding:10px 16px; border-radius:14px;
-    background:var(--card); border:1px solid var(--border);
-    color:var(--muted); font-size:13px; font-weight:600;
-    cursor:pointer; transition:all 0.25s ease;
-    font-family:inherit; white-space:nowrap;
-    position:relative;
-  }
-  .tab.active{
-    background:linear-gradient(135deg,#6366f1,#8b5cf6);
-    color:#fff; border-color:transparent;
-    box-shadow:0 6px 20px rgba(139,92,246,0.4);
-    transform:translateY(-2px);
-  }
-  .tab .tab-dot{
-    position:absolute; top:6px; left:6px;
-    width:6px; height:6px; border-radius:50%;
-    background:#10b981;
-    box-shadow:0 0 6px rgba(16,185,129,0.8);
-    animation:tabPulse 1.5s ease-in-out infinite;
-  }
-  @keyframes tabPulse{
-    0%,100%{ opacity:1; transform:scale(1); }
-    50%{ opacity:0.6; transform:scale(1.3); }
-  }
-
+  .tab{ flex-shrink:0; padding:10px 16px; border-radius:14px; background:var(--card); border:1px solid var(--border); color:var(--muted); font-size:13px; font-weight:600; cursor:pointer; transition:all 0.25s ease; font-family:inherit; white-space:nowrap; position:relative; }
+  .tab.active{ background:linear-gradient(135deg,#6366f1,#8b5cf6); color:#fff; border-color:transparent; box-shadow:0 6px 20px rgba(139,92,246,0.4); transform:translateY(-2px); }
+  .tab .tab-dot{ position:absolute; top:6px; left:6px; width:6px; height:6px; border-radius:50%; background:#10b981; box-shadow:0 0 6px rgba(16,185,129,0.8); animation:tabPulse 1.5s ease-in-out infinite; }
+  @keyframes tabPulse{ 0%,100%{ opacity:1; transform:scale(1); } 50%{ opacity:0.6; transform:scale(1.3); } }
   .day{ display:none; animation:fadeIn 0.35s ease; }
   .day.active{ display:block; }
   @keyframes fadeIn{ from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
-
-  .day-title{
-    font-size:16px; font-weight:700; margin-bottom:14px;
-    padding-right:6px; display:flex; align-items:center;
-    gap:8px; color:#fff;
-  }
-  .day-title::before{
-    content:''; width:4px; height:20px; border-radius:4px;
-    background:linear-gradient(135deg,#6366f1,#8b5cf6);
-  }
-
+  .day-title{ font-size:16px; font-weight:700; margin-bottom:14px; padding-right:6px; display:flex; align-items:center; gap:8px; color:#fff; }
+  .day-title::before{ content:''; width:4px; height:20px; border-radius:4px; background:linear-gradient(135deg,#6366f1,#8b5cf6); }
   .item{ display:flex; gap:12px; margin-bottom:10px; scroll-margin-top:120px; }
-  .time-col{
-    flex-shrink:0; width:78px;
-    display:flex; flex-direction:column;
-    align-items:flex-end; padding-top:12px;
-  }
-  .time{
-    font-size:11.5px; font-weight:600; color:var(--muted);
-    direction:ltr; font-variant-numeric:tabular-nums;
-    letter-spacing:-0.3px;
-  }
-  .card{
-    flex:1; padding:12px 14px; border-radius:16px;
-    background:var(--card); border:1px solid var(--border);
-    position:relative; overflow:hidden; transition:all 0.3s ease;
-    min-width:0;
-  }
+  .time-col{ flex-shrink:0; width:78px; display:flex; flex-direction:column; align-items:flex-end; padding-top:12px; }
+  .time{ font-size:11.5px; font-weight:600; color:var(--muted); direction:ltr; font-variant-numeric:tabular-nums; letter-spacing:-0.3px; }
+  .card{ flex:1; padding:12px 14px; border-radius:16px; background:var(--card); border:1px solid var(--border); position:relative; overflow:hidden; transition:all 0.3s ease; min-width:0; }
   .card:active{ transform:scale(0.98); }
-  .card::before{
-    content:''; position:absolute; top:0; right:0;
-    width:4px; height:100%;
-  }
+  .card::before{ content:''; position:absolute; top:0; right:0; width:4px; height:100%; }
   .card.uni::before{ background:linear-gradient(135deg,#6366f1,#8b5cf6); }
   .card.lang::before{ background:linear-gradient(135deg,#06b6d4,#0891b2); }
   .card.sport::before{ background:linear-gradient(135deg,#10b981,#059669); }
@@ -275,47 +147,16 @@
   .card.prep::before{ background:linear-gradient(135deg,#94a3b8,#64748b); }
   .card.travel::before{ background:linear-gradient(135deg,#fb923c,#f97316); }
   .card.narges::before{ background:linear-gradient(135deg,#ec4899,#be185d); }
-
-  .item.active-now .card{
-    background:linear-gradient(135deg, rgba(139,92,246,0.18), rgba(6,182,212,0.12));
-    border-color:rgba(139,92,246,0.6);
-    box-shadow:0 0 0 2px rgba(139,92,246,0.5), 0 8px 24px rgba(139,92,246,0.35);
-    transform:scale(1.02);
-    animation:activePulse 2.2s ease-in-out infinite;
-  }
-  .item.active-now .time{
-    color:#a78bfa; font-weight:800;
-  }
-  @keyframes activePulse{
-    0%,100%{ box-shadow:0 0 0 2px rgba(139,92,246,0.5), 0 8px 24px rgba(139,92,246,0.35); }
-    50%{ box-shadow:0 0 0 3px rgba(167,139,250,0.8), 0 8px 32px rgba(139,92,246,0.55); }
-  }
-  .item.active-now .card::after{
-    content:'▶ الان';
-    position:absolute; top:8px; left:8px;
-    font-size:9.5px; font-weight:800;
-    background:linear-gradient(135deg,#8b5cf6,#06b6d4);
-    color:#fff; padding:3px 8px; border-radius:20px;
-    letter-spacing:0.5px;
-  }
-
-  .card .name{
-    font-size:13.5px; font-weight:600; color:#fff;
-    line-height:1.5; margin-bottom:3px;
-  }
+  .item.active-now .card{ background:linear-gradient(135deg, rgba(139,92,246,0.18), rgba(6,182,212,0.12)); border-color:rgba(139,92,246,0.6); box-shadow:0 0 0 2px rgba(139,92,246,0.5), 0 8px 24px rgba(139,92,246,0.35); transform:scale(1.02); animation:activePulse 2.2s ease-in-out infinite; }
+  .item.active-now .time{ color:#a78bfa; font-weight:800; }
+  @keyframes activePulse{ 0%,100%{ box-shadow:0 0 0 2px rgba(139,92,246,0.5), 0 8px 24px rgba(139,92,246,0.35); } 50%{ box-shadow:0 0 0 3px rgba(167,139,250,0.8), 0 8px 32px rgba(139,92,246,0.55); } }
+  .item.active-now .card::after{ content:'▶ الان'; position:absolute; top:8px; left:8px; font-size:9.5px; font-weight:800; background:linear-gradient(135deg,#8b5cf6,#06b6d4); color:#fff; padding:3px 8px; border-radius:20px; letter-spacing:0.5px; }
+  .card .name{ font-size:13.5px; font-weight:600; color:#fff; line-height:1.5; margin-bottom:3px; }
   .card .meta{ font-size:11.5px; color:var(--muted); line-height:1.5; }
-
-  .legend{
-    margin-top:24px; padding:16px;
-    background:var(--card); border-radius:18px;
-    border:1px solid var(--border);
-  }
+  .legend{ margin-top:24px; padding:16px; background:var(--card); border-radius:18px; border:1px solid var(--border); }
   .legend h3{ font-size:13px; font-weight:700; margin-bottom:12px; color:#fff; }
   .legend-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
-  .legend-item{
-    display:flex; align-items:center; gap:8px;
-    font-size:11.5px; color:var(--muted);
-  }
+  .legend-item{ display:flex; align-items:center; gap:8px; font-size:11.5px; color:var(--muted); }
   .dot{ width:10px; height:10px; border-radius:50%; flex-shrink:0; }
   .dot.uni{ background:linear-gradient(135deg,#6366f1,#8b5cf6); }
   .dot.lang{ background:linear-gradient(135deg,#06b6d4,#0891b2); }
@@ -324,26 +165,9 @@
   .dot.free{ background:linear-gradient(135deg,#64748b,#475569); }
   .dot.sleep{ background:linear-gradient(135deg,#1e293b,#0f172a); border:1px solid #334155; }
   .dot.meal{ background:linear-gradient(135deg,#f472b6,#ec4899); }
-  .dot.narges{ background:linear-gradient(135deg,#ec4899,#be185d); }
-
-  .footer{
-    text-align:center; margin-top:24px;
-    font-size:11px; color:var(--muted); line-height:1.8;
-  }
+  .footer{ text-align:center; margin-top:24px; font-size:11px; color:var(--muted); line-height:1.8; }
   .footer strong{ color:#a78bfa; }
-
-  .toast{
-    position:fixed; bottom:24px; left:50%;
-    transform:translateX(-50%) translateY(100px);
-    background:linear-gradient(135deg,#1e1e35,#252540);
-    border:1px solid rgba(139,92,246,0.4);
-    padding:12px 20px; border-radius:14px;
-    font-size:13px; color:#fff; font-weight:600;
-    box-shadow:0 8px 32px rgba(0,0,0,0.5);
-    transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
-    z-index:1000; max-width:calc(100% - 40px);
-    text-align:center;
-  }
+  .toast{ position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(100px); background:linear-gradient(135deg,#1e1e35,#252540); border:1px solid rgba(139,92,246,0.4); padding:12px 20px; border-radius:14px; font-size:13px; color:#fff; font-weight:600; box-shadow:0 8px 32px rgba(0,0,0,0.5); transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1); z-index:1000; max-width:calc(100% - 40px); text-align:center; }
   .toast.show{ transform:translateX(-50%) translateY(0); }
 </style>
 </head>
@@ -360,10 +184,8 @@
       <button class="notif-btn" id="notifBtn" title="یادآوری">🔔</button>
     </div>
   </div>
-
   <div class="now-label">الان</div>
   <div id="nowCurrent"></div>
-
   <div class="now-nav">
     <div class="now-nav-item prev">
       <div class="now-nav-label">قبلی</div>
@@ -409,7 +231,7 @@
 </div>
 
 <div class="footer">
-  <strong>حضور پدر:</strong> یکشنبه کامل، دوشنبه عصر، سه‌شنبه صبح، چهارشنبه عصر
+  <strong>حضور پدر:</strong> یکشنبه کامل، دوشنبه عصر، سه‌شنبه صبح، چهارشنبه عصر — ۲۰ ساعت در هفته
 </div>
 
 <div class="toast" id="toast"></div>
@@ -541,35 +363,16 @@ const dayNames = {
 };
 const WEEK = 10080;
 
-/* ================== HELPERS ================== */
-function fa(s){
-  return String(s).replace(/[0-9]/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
-}
-function toMin(s){
-  const [h,m] = s.split(':').map(Number);
-  return h*60 + m;
-}
-function durOf(start, end){
-  const s = toMin(start);
-  const e = toMin(end);
-  return e > s ? e - s : (1440 - s) + e;
-}
-function showToast(msg){
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.classList.add('show');
-  clearTimeout(el._t);
-  el._t = setTimeout(() => el.classList.remove('show'), 2500);
-}
+function fa(s){ return String(s).replace(/[0-9]/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]); }
+function toMin(s){ const [h,m] = s.split(':').map(Number); return h*60 + m; }
+function durOf(start, end){ const s = toMin(start); const e = toMin(end); return e > s ? e - s : (1440 - s) + e; }
+function showToast(msg){ const el = document.getElementById('toast'); el.textContent = msg; el.classList.add('show'); clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('show'), 2500); }
 
-/* ================== RENDER DAYS ================== */
 function renderDay(dayKey){
   const el = document.getElementById(dayKey);
   const rows = scheduleData[dayKey].map(([start, end, name, meta, type]) => `
     <div class="item" data-start="${start}" data-end="${end}" data-day="${dayKey}">
-      <div class="time-col">
-        <div class="time">${fa(start)}<br>${fa(end)}</div>
-      </div>
+      <div class="time-col"><div class="time">${fa(start)}<br>${fa(end)}</div></div>
       <div class="card ${type}">
         <div class="name">${name}</div>
         ${meta ? `<div class="meta">${meta}</div>` : ''}
@@ -580,24 +383,16 @@ function renderDay(dayKey){
 }
 dayOrder.forEach(renderDay);
 
-/* ================== FLAT LIST ================== */
 const flat = [];
 dayOrder.forEach((day, i) => {
   const offset = i * 1440;
   scheduleData[day].forEach(([start, end, name, meta, type]) => {
     const s = toMin(start);
     const dur = durOf(start, end);
-    flat.push({
-      absStart: offset + s,
-      absEnd: offset + s + dur,
-      name, meta, type, day,
-      startStr: start, endStr: end,
-      crosses: toMin(end) <= toMin(start)
-    });
+    flat.push({ absStart: offset + s, absEnd: offset + s + dur, name, meta, type, day, startStr: start, endStr: end, crosses: toMin(end) <= toMin(start) });
   });
 });
 
-/* ================== NOW LOGIC ================== */
 function getEffectiveRange(item, now){
   for (const off of [0, -WEEK, WEEK]){
     const s = item.absStart + off;
@@ -606,69 +401,34 @@ function getEffectiveRange(item, now){
   }
   return null;
 }
-
-function findActive(now){
-  return flat
-    .map(it => ({ it, r: getEffectiveRange(it, now) }))
-    .filter(x => x.r !== null);
-}
-
+function findActive(now){ return flat.map(it => ({ it, r: getEffectiveRange(it, now) })).filter(x => x.r !== null); }
 function findPrev(now, activeSet){
   let best = null, bestDelta = Infinity;
-  flat.forEach(it => {
-    if (activeSet.has(it)) return;
-    for (const off of [0, -WEEK, WEEK]){
-      const e = it.absEnd + off;
-      const d = now - e;
-      if (d >= 0 && d < bestDelta){ bestDelta = d; best = it; }
-    }
-  });
+  flat.forEach(it => { if (activeSet.has(it)) return; for (const off of [0, -WEEK, WEEK]) { const e = it.absEnd + off; const d = now - e; if (d >= 0 && d < bestDelta){ bestDelta = d; best = it; } } });
   return best;
 }
-
 function findNext(now, activeSet){
   let best = null, bestDelta = Infinity;
-  flat.forEach(it => {
-    if (activeSet.has(it)) return;
-    for (const off of [0, -WEEK, WEEK]){
-      const s = it.absStart + off;
-      const d = s - now;
-      if (d > 0 && d < bestDelta){ bestDelta = d; best = it; }
-    }
-  });
+  flat.forEach(it => { if (activeSet.has(it)) return; for (const off of [0, -WEEK, WEEK]) { const s = it.absStart + off; const d = s - now; if (d > 0 && d < bestDelta){ bestDelta = d; best = it; } } });
   return best ? { item: best, delta: bestDelta } : null;
 }
-
 function persianDate(){
-  try {
-    return new Intl.DateTimeFormat('fa-IR', {
-      day: 'numeric', month: 'long', year: 'numeric'
-    }).format(new Date());
-  } catch(e){
-    return '';
-  }
+  try { return new Intl.DateTimeFormat('fa-IR', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date()); } catch(e){ return ''; }
 }
 
-/* ================== UPDATE NOW BOX ================== */
 let lastActiveKey = '';
-
 function updateNowBox(){
   const now = new Date();
   const dayIdx = (now.getDay() + 1) % 7;
   const nowMin = dayIdx * 1440 + now.getHours() * 60 + now.getMinutes();
   const currentDayKey = dayOrder[dayIdx];
-
   document.getElementById('nowDay').textContent = dayNames[currentDayKey];
   document.getElementById('nowDate').textContent = persianDate();
-  document.getElementById('nowTime').textContent =
-    fa(String(now.getHours()).padStart(2,'0')) + ':' +
-    fa(String(now.getMinutes()).padStart(2,'0'));
-
+  document.getElementById('nowTime').textContent = fa(String(now.getHours()).padStart(2,'0')) + ':' + fa(String(now.getMinutes()).padStart(2,'0'));
   const active = findActive(nowMin);
   const activeSet = new Set(active.map(a => a.it));
   const prev = findPrev(nowMin, activeSet);
   const next = findNext(nowMin, activeSet);
-
   const currentEl = document.getElementById('nowCurrent');
   let newKey = '';
   if (active.length === 0){
@@ -682,13 +442,9 @@ function updateNowBox(){
       const remaining = r.end - nowMin;
       const remH = Math.floor(remaining / 60);
       const remM = remaining % 60;
-      const remStr = remH > 0
-        ? `${fa(remH)} ساعت و ${fa(remM)} دقیقه`
-        : `${fa(remM)} دقیقه`;
+      const remStr = remH > 0 ? `${fa(remH)} ساعت و ${fa(remM)} دقیقه` : `${fa(remM)} دقیقه`;
       const timeRange = fa(it.startStr) + ' تا ' + fa(it.endStr);
-      const fromOtherDay = it.day !== currentDayKey
-        ? `<span class="now-activity-tag">از ${dayNames[it.day]}</span>`
-        : '';
+      const fromOtherDay = it.day !== currentDayKey ? `<span class="now-activity-tag">از ${dayNames[it.day]}</span>` : '';
       return `
         <div class="now-activity ${it.type}">
           <div class="now-activity-head">
@@ -696,9 +452,7 @@ function updateNowBox(){
             ${fromOtherDay}
           </div>
           ${it.meta ? `<div class="now-activity-meta">${it.meta}</div>` : ''}
-          <div class="now-progress">
-            <div class="now-progress-bar ${it.type}" style="width:${pct}%"></div>
-          </div>
+          <div class="now-progress"><div class="now-progress-bar ${it.type}" style="width:${pct}%"></div></div>
           <div class="now-progress-text">
             <span class="rem">${remStr} مانده</span>
             <span class="times">${timeRange}</span>
@@ -707,46 +461,21 @@ function updateNowBox(){
       `;
     }).join('');
   }
-
   const prevEl = document.getElementById('nowPrev');
   if (prev){
-    prevEl.innerHTML = `
-      <div class="now-nav-name">${prev.name}</div>
-      <div class="now-nav-time">${fa(prev.startStr)} تا ${fa(prev.endStr)}</div>
-      <div class="now-nav-day">${dayNames[prev.day]}</div>
-    `;
-  } else {
-    prevEl.innerHTML = '<div class="now-nav-name">—</div>';
-  }
-
+    prevEl.innerHTML = `<div class="now-nav-name">${prev.name}</div><div class="now-nav-time">${fa(prev.startStr)} تا ${fa(prev.endStr)}</div><div class="now-nav-day">${dayNames[prev.day]}</div>`;
+  } else { prevEl.innerHTML = '<div class="now-nav-name">—</div>'; }
   const nextEl = document.getElementById('nowNext');
   if (next){
     const it = next.item;
     const delta = next.delta;
     const dh = Math.floor(delta / 60);
     const dm = delta % 60;
-    const untilStr = dh > 0
-      ? `تا ${fa(dh)} ساعت و ${fa(dm)} دقیقه دیگر`
-      : `تا ${fa(dm)} دقیقه دیگر`;
-    nextEl.innerHTML = `
-      <div class="now-nav-name">${it.name}</div>
-      <div class="now-nav-time">${fa(it.startStr)} تا ${fa(it.endStr)}</div>
-      <div class="now-nav-day">${dayNames[it.day]} • ${untilStr}</div>
-    `;
-  } else {
-    nextEl.innerHTML = '<div class="now-nav-name">—</div>';
-  }
-
-  if (newKey && newKey !== lastActiveKey){
-    lastActiveKey = newKey;
-    setTimeout(scrollToActiveIfNeeded, 200);
-  } else if (!newKey){
-    lastActiveKey = '';
-  }
-
-  document.querySelectorAll('.tab').forEach(tab => {
-    tab.querySelector('.tab-dot')?.remove();
-  });
+    const untilStr = dh > 0 ? `تا ${fa(dh)} ساعت و ${fa(dm)} دقیقه دیگر` : `تا ${fa(dm)} دقیقه دیگر`;
+    nextEl.innerHTML = `<div class="now-nav-name">${it.name}</div><div class="now-nav-time">${fa(it.startStr)} تا ${fa(it.endStr)}</div><div class="now-nav-day">${dayNames[it.day]} • ${untilStr}</div>`;
+  } else { nextEl.innerHTML = '<div class="now-nav-name">—</div>'; }
+  if (newKey && newKey !== lastActiveKey){ lastActiveKey = newKey; setTimeout(scrollToActiveIfNeeded, 200); } else if (!newKey){ lastActiveKey = ''; }
+  document.querySelectorAll('.tab').forEach(tab => { tab.querySelector('.tab-dot')?.remove(); });
   active.forEach(({ it }) => {
     const tabEl = document.querySelector(`.tab[data-day="${it.day}"]`);
     if (tabEl && !tabEl.querySelector('.tab-dot')){
@@ -755,7 +484,6 @@ function updateNowBox(){
       tabEl.appendChild(dot);
     }
   });
-
   highlightActiveInSchedule(nowMin);
   checkNotifications(now, dayIdx, nowMin);
 }
@@ -769,9 +497,7 @@ function highlightActiveInSchedule(nowMinInWeek){
       const dur = durOf(item.dataset.start, item.dataset.end);
       const absStart = idx * 1440 + s;
       const absEnd = absStart + dur;
-      const isNow =
-        (nowMinInWeek >= absStart && nowMinInWeek < absEnd) ||
-        (nowMinInWeek + WEEK >= absStart && nowMinInWeek + WEEK < absEnd);
+      const isNow = (nowMinInWeek >= absStart && nowMinInWeek < absEnd) || (nowMinInWeek + WEEK >= absStart && nowMinInWeek + WEEK < absEnd);
       item.classList.toggle('active-now', isNow);
     });
   });
@@ -794,69 +520,33 @@ function scrollToActiveIfNeeded(){
   window.scrollTo({ top: Math.max(0, target), behavior: 'smooth' });
 }
 
-/* ================== NOTIFICATIONS ================== */
 const notifBtn = document.getElementById('notifBtn');
-
 function updateNotifBtn(){
-  if (!('Notification' in window)){
-    notifBtn.style.display = 'none';
-    return;
-  }
-  if (Notification.permission === 'granted'){
-    notifBtn.classList.add('on');
-    notifBtn.classList.remove('off');
-    notifBtn.textContent = '🔔';
-  } else if (Notification.permission === 'denied'){
-    notifBtn.classList.add('off');
-    notifBtn.classList.remove('on');
-    notifBtn.textContent = '🔕';
-  } else {
-    notifBtn.classList.remove('on','off');
-    notifBtn.textContent = '🔔';
-  }
+  if (!('Notification' in window)){ notifBtn.style.display = 'none'; return; }
+  if (Notification.permission === 'granted'){ notifBtn.classList.add('on'); notifBtn.classList.remove('off'); notifBtn.textContent = '🔔'; }
+  else if (Notification.permission === 'denied'){ notifBtn.classList.add('off'); notifBtn.classList.remove('on'); notifBtn.textContent = '🔕'; }
+  else { notifBtn.classList.remove('on','off'); notifBtn.textContent = '🔔'; }
 }
-
 notifBtn.addEventListener('click', async () => {
-  if (!('Notification' in window)){
-    showToast('مرورگر تو نوتیفیکیشن پشتیبانی نمی‌کند');
-    return;
-  }
-  if (Notification.permission === 'granted'){
-    showToast('یادآوری فعال است ✓');
-    return;
-  }
-  if (Notification.permission === 'denied'){
-    showToast('ابتدا از تنظیمات مرورگر اجازه بده');
-    return;
-  }
+  if (!('Notification' in window)){ showToast('مرورگر تو نوتیفیکیشن پشتیبانی نمی‌کند'); return; }
+  if (Notification.permission === 'granted'){ showToast('یادآوری فعال است ✓'); return; }
+  if (Notification.permission === 'denied'){ showToast('ابتدا از تنظیمات مرورگر اجازه بده'); return; }
   const perm = await Notification.requestPermission();
   updateNotifBtn();
-  if (perm === 'granted'){
-    showToast('یادآوری فعال شد ✓');
-    new Notification('یادآوری فعال شد', {
-      body: '۱۰ دقیقه قبل از هر برنامه بهت اطلاع می‌دهم',
-      dir: 'rtl', lang: 'fa'
-    });
-  }
+  if (perm === 'granted'){ showToast('یادآوری فعال شد ✓'); new Notification('یادآوری فعال شد', { body: '۱۰ دقیقه قبل از هر برنامه بهت اطلاع می‌دهم', dir: 'rtl', lang: 'fa' }); }
 });
 
 function getNotifiedToday(){
   const today = new Date().toDateString();
-  try {
-    const saved = JSON.parse(localStorage.getItem('notified') || '{}');
-    if (saved.date === today) return new Set(saved.items || []);
-  } catch(e){}
+  try { const saved = JSON.parse(localStorage.getItem('notified') || '{}'); if (saved.date === today) return new Set(saved.items || []); } catch(e){}
   return new Set();
 }
 function markNotified(key){
   const today = new Date().toDateString();
   const set = getNotifiedToday();
   set.add(key);
-  localStorage.setItem('notified', JSON.stringify({
-    date: today, items: Array.from(set)
-  }));
+  localStorage.setItem('notified', JSON.stringify({ date: today, items: Array.from(set) }));
 }
-
 function checkNotifications(now, dayIdx, nowMin){
   if (!('Notification' in window) || Notification.permission !== 'granted') return;
   const currentDayKey = dayOrder[dayIdx];
@@ -868,17 +558,11 @@ function checkNotifications(now, dayIdx, nowMin){
       const key = `${currentDayKey}-${start}-${name}`;
       if (notified.has(key)) return;
       markNotified(key);
-      try {
-        new Notification(`۱۰ دقیقه تا ${name}`, {
-          body: meta || 'به‌زودی شروع می‌شه',
-          tag: key, dir:'rtl', lang:'fa', renotify:true
-        });
-      } catch(e){}
+      try { new Notification(`۱۰ دقیقه تا ${name}`, { body: meta || 'به‌زودی شروع می‌شه', tag: key, dir:'rtl', lang:'fa', renotify:true }); } catch(e){}
     }
   });
 }
 
-/* ================== TABS ================== */
 const tabs = document.querySelectorAll('.tab');
 tabs.forEach(tab => {
   tab.addEventListener('click', () => {
@@ -889,85 +573,44 @@ tabs.forEach(tab => {
     document.getElementById(target).classList.add('active');
     localStorage.setItem('lastDay', target);
     lastScrolledKey = null;
-    setTimeout(() => {
-      scrollToActiveIfNeeded();
-      if (!document.querySelector('.item.active-now')){
-        window.scrollTo({ top: 0, behavior:'smooth' });
-      }
-    }, 80);
+    setTimeout(() => { scrollToActiveIfNeeded(); if (!document.querySelector('.item.active-now')){ window.scrollTo({ top: 0, behavior:'smooth' }); } }, 80);
   });
 });
 
-/* ================== PWA ================== */
 (function setupPWA(){
-  const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-    <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#8b5cf6"/><stop offset="1" stop-color="#06b6d4"/>
-    </linearGradient></defs>
-    <rect width="512" height="512" rx="110" fill="url(#g)"/>
-    <rect x="96" y="120" width="320" height="300" rx="30" fill="#ffffff" opacity="0.96"/>
-    <rect x="96" y="120" width="320" height="80" rx="30" fill="#1a1a2e"/>
-    <rect x="96" y="170" width="320" height="30" fill="#1a1a2e"/>
-    <circle cx="180" cy="250" r="16" fill="#8b5cf6"/>
-    <circle cx="256" cy="250" r="16" fill="#1a1a2e"/>
-    <circle cx="332" cy="250" r="16" fill="#1a1a2e"/>
-    <circle cx="180" cy="320" r="16" fill="#1a1a2e"/>
-    <circle cx="256" cy="320" r="16" fill="#06b6d4"/>
-    <circle cx="332" cy="320" r="16" fill="#1a1a2e"/>
-    <circle cx="180" cy="390" r="16" fill="#1a1a2e"/>
-    <circle cx="256" cy="390" r="16" fill="#1a1a2e"/>
-    <circle cx="332" cy="390" r="16" fill="#8b5cf6"/>
-  </svg>`;
+  const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8b5cf6"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs><rect width="512" height="512" rx="110" fill="url(#g)"/><rect x="96" y="120" width="320" height="300" rx="30" fill="#ffffff" opacity="0.96"/><rect x="96" y="120" width="320" height="80" rx="30" fill="#1a1a2e"/><rect x="96" y="170" width="320" height="30" fill="#1a1a2e"/><circle cx="180" cy="250" r="16" fill="#8b5cf6"/><circle cx="256" cy="250" r="16" fill="#1a1a2e"/><circle cx="332" cy="250" r="16" fill="#1a1a2e"/><circle cx="180" cy="320" r="16" fill="#1a1a2e"/><circle cx="256" cy="320" r="16" fill="#06b6d4"/><circle cx="332" cy="320" r="16" fill="#1a1a2e"/><circle cx="180" cy="390" r="16" fill="#1a1a2e"/><circle cx="256" cy="390" r="16" fill="#1a1a2e"/><circle cx="332" cy="390" r="16" fill="#8b5cf6"/></svg>`;
   const iconUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(iconSvg);
-
   const manifest = {
-    name: 'برنامه هفتگی',
-    short_name: 'برنامه',
-    description: 'برنامه هفتگی دانشگاه، مغازه، ورزش و خواب',
-    start_url: './',
-    scope: './',
-    display: 'standalone',
-    orientation: 'portrait',
-    background_color: '#0f0f1a',
-    theme_color: '#8b5cf6',
-    dir: 'rtl',
-    lang: 'fa',
+    name: 'برنامه هفتگی', short_name: 'برنامه', description: 'برنامه هفتگی دانشگاه، مغازه، ورزش و خواب',
+    start_url: './', scope: './', display: 'standalone', orientation: 'portrait',
+    background_color: '#0f0f1a', theme_color: '#8b5cf6', dir: 'rtl', lang: 'fa',
     icons: [
       { src: iconUrl, sizes: '192x192', type: 'image/svg+xml', purpose: 'any' },
       { src: iconUrl, sizes: '512x512', type: 'image/svg+xml', purpose: 'any' },
       { src: iconUrl, sizes: '512x512', type: 'image/svg+xml', purpose: 'maskable' }
     ]
   };
-  const manifestUrl = 'data:application/manifest+json;charset=utf-8,' +
-    encodeURIComponent(JSON.stringify(manifest));
+  const manifestUrl = 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(JSON.stringify(manifest));
   document.getElementById('manifestLink').href = manifestUrl;
   document.getElementById('appleIcon').href = iconUrl;
 })();
 
-/* ================== INIT ================== */
-const saved = localStorage.getItem('lastDay');
-if (saved && document.querySelector(`.tab[data-day="${saved}"]`)){
-  document.querySelector(`.tab[data-day="${saved}"]`).click();
+/* ================== SERVICE WORKER REGISTRATION ================== */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(reg => console.log('✓ Service Worker registered:', reg.scope))
+      .catch(err => console.log('✗ Service Worker failed:', err));
+  });
 }
 
+const saved = localStorage.getItem('lastDay');
+if (saved && document.querySelector(`.tab[data-day="${saved}"]`)){ document.querySelector(`.tab[data-day="${saved}"]`).click(); }
 updateNotifBtn();
 updateNowBox();
-
 let lastMin = -1;
-setInterval(() => {
-  const m = new Date().getMinutes();
-  if (m !== lastMin){
-    lastMin = m;
-    updateNowBox();
-  }
-}, 5000);
-
-document.addEventListener('visibilitychange', () => {
-  if (!document.hidden){
-    updateNowBox();
-    updateNotifBtn();
-  }
-});
+setInterval(() => { const m = new Date().getMinutes(); if (m !== lastMin){ lastMin = m; updateNowBox(); } }, 5000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden){ updateNowBox(); updateNotifBtn(); } });
 </script>
 
 </body>
